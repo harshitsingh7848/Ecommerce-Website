@@ -3,16 +3,61 @@
 @section('title','Admin Dashboard')
 
     @section('head')
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <link href="https://use.fontawesome.com/releases/v5.0.7/css/all.css" rel="stylesheet">
-        <link href="assets/css/vertical-menu.css" rel="stylesheet">
+       
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+    <!-- font awesome icons CSS -->
+    <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+
+    <!-- morris charts css -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">    
+
+    <!-- Custom styles for this template -->
+    <link href="assets/css/simple-sidebar.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
 	@endsection
 
     
 	
     @section('body')
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Admin Dashboard</a>
+    <div id="wrapper" class="toggled">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper" >
+            <ul class="sidebar-nav">
+                <li>
+                    <a href="#">Dashboard</a>
+                </li>
+
+                <li>
+                    <a href="{{url('view-products') }}">Products</a>
+                </li>
+
+                <li>
+                    <a href="#">Order</a>
+                </li>
+
+                <li>
+                    <a href="#">Users</a>
+                </li>
+
+                <li>
+                    <a href="#">Roles</a>
+                </li>
+
+                <li>
+                    <a href="{{url('newUsers')}}">New Users</a>
+                </li>
+
+
+
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+    <!-- Nav bar -->
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" id="menu-toggle"> <i class="fas fa-bars"></i> Gadget Maniac</a>
+                
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
         </button>
@@ -20,21 +65,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Dashboard <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="new-user" href="{{ url('newUsers') }}">New Users</a>
-                </li>
-                
-                <li class="nav-item">
-                    <a class="nav-link" id="new-user" href="#">Add Product</a>
-                </li>
-
+              
                 @if (!empty($name))
-                          <!--  Hello {{  $name }} -->
-                             <li class="nav-item"><a class="nav-link"  href="{{ url('/') }}"> Logout</a></li>      
-                           @endif
-                
+                    
+                    <li><a class="nav-link" href="{{ url('/logout') }}">Logout</a></li>      
+                @endif
             </ul>
             <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -43,29 +80,141 @@
         </div>
     </nav>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <h1>Dashboard</h1>
+                <p>
+                @if(!empty($name))
+                    Hello {{$name}}
+                @endif     
+                Welcome to the Gadget Maniac dashboard. Very soon you will see cool widgets here!!!!
+                </p>
+
+                <!-- widgets -->
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+                            <div class="card-header">Users</div>
+                            <div class="card-body">
+                                <h5 class="card-title">Total Number of Users</h5>
+                                <p class="card-text" id="result"> <i class="fas fa-arrow-down"></i></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3"><div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+                            <div class="card-header">Products</div>
+                            <div class="card-body">
+                                <h5 class="card-title">New Products added</h5>
+                                <p class="card-text">335 <i class="fas fa-arrow-down"></i></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+                            <div class="card-header">Orders</div>
+                            <div class="card-body">
+                                <h5 class="card-title">Primary card title</h5>
+                                <p class="card-text">2000 <i class="fas fa-arrow-down"></i></p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+                            <div class="card-header">Roles</div>
+                            <div class="card-body">
+                                <h5 class="card-title">Primary card title</h5>
+                                <p class="card-text">2000 <i class="fas fa-arrow-up"></i></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- graph -->
+                <div class="row">
+                    <div class="col-md-8" style="text-align:center">
+                        <div id="myfirstchart" ></div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card" style="width: 18rem;">
+                            <img class="card-img-top" src="https://dummyimage.com/286x180/00000f/0011ff.png&text=top+performances" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- footer -->
+                <footer class="footer">
+                    <div class="container">
+                        <span class="text-muted">Place sticky footer content here.</span>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>  
+    <script src="assets/js/morris_chart.js"></script>  
+    
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
 
     <div id="tableusers">
             @yield('content')
     </div>
+       
+       
+<p >Number Of Employees: <output id="result"></output></p>
 
-    <!-- <script>
-        $(document).ready(function(){
-           $('#new-user').click(function(){
-            $.ajax({
-          url:"newUsers",
-          type:"get",
-          data:{'concatemailusertype':emailusertype},
-          success: function (response) {
-           //$('.btn  btn-xs').show();
-           $('#tableusers').html(response);
-        },
-        })   
-           })  ;   
-        });
-    </script> -->
+<script>
+if(typeof(EventSource) !== "undefined") {
+    var source = new EventSource("/Ecommerce/getdetails");
+    source.onmessage = function(event) {
+        document.getElementById("result").innerHTML = event.data ;
+    };
+} else {
+    timedCount();
+    
+   
+}
+function timedCount() {
+  var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 ) {
+         document.getElementById("result").innerHTML=this.responseText;
+      }
+    };  
+
+      xhttp.open("GET", "/Ecommerce/getdetails",true);
+      xhttp.send(); 
+     
+     //postMessage(i);
+     setTimeout("timedCount()",1000);
+}
+
+
+</script>
 
     
 	@endsection
+
+
+

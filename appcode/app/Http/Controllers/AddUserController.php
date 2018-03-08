@@ -26,6 +26,6 @@ class AddUserController extends Controller
 
       Session::put('name', $_POST['name']); 
       
-      return view('index');      
+      return redirect('/');      
   }   
 }

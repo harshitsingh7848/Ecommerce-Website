@@ -9,9 +9,6 @@ use Closure;
 use Session;
 class LogoutController extends Controller
 {
-    
-
-    
     /* 
      * function index
      *  Redirects to the Dashboard
@@ -19,6 +16,7 @@ class LogoutController extends Controller
 
     public function index()
     {
+        Session::flush();
        return redirect('/');
     }
 }

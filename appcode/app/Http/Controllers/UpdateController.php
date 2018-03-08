@@ -22,9 +22,19 @@ class UpdateController extends Controller
              $res    =  dropdownbind::where('user_type',$usertype)->get(['id']);
 
              print_r($res);
-             
-           
-            
+    }
 
+    /* 
+     * function getDetails
+     * It fetches the details of modules from Database and passes it to the Web Worker
+     */
+    public function getDetails()
+    {
+        header('Content-Type: text/event-stream');
+        header('Cache-Control: no-cache');
+
+        $time = ecommerce::count();
+        echo "data:  {$time}\n\n";
+        flush();
     }
 }

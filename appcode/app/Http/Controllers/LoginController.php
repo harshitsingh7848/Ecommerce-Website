@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\ecommerce;
+use App\Mapping;
 use Illuminate\Support\Facades\Hash;
 use Session;
 
@@ -20,28 +21,30 @@ class LoginController extends Controller
         $username=$_POST['username'];
         $password=$_POST['pass'];
 
-        $res    =  json_decode(ecommerce::where('emp_email',$username)->get(['emp_email','emp_pass','empname','emp_type']));
+        $res    =  json_decode(ecommerce::where('emp_email',$username)->get(['emp_email','emp_pass','empname','empid']));
         
+        $user_role  = json_decode(Mapping::where('emp_id',$res[0]->empid)->get(['role_id']));
+
         $userfromDb=$res[0]->emp_email;
         $passfromDb= $res[0]->emp_pass;
-       
+
        Session::put('username',$res[0]->empname);
        
        if( Hash::check($password,$passfromDb) ){
-            $params['name']=$res[0]->empname;
-            if(empty($res[0]->emp_type) || $res[0]->emp_type==2){
-                return view('index',$params);
+            //$params['name']=$res[0]->empname;
+            if(empty($user_role[0]->role_id) || $user_role[0]->role_id==3){
+                return redirect('/');
             }
-            else if($res[0]->emp_type==1 || $res[0]->emp_type==5){
-                return redirect('/admin',$params);
+            else if($user_role[0]->role_id==1 || $user_role[0]->role_id==2){
+                return redirect('/admin');
             }
-            else if($res[0]->emp_type==4){
-                return redirect('/vendor',$params);
+            else if($user_role[0]->role_id==4){
+                return redirect('/vendor');
             }
-            else if($res[0]->emp_type==3){
-                return redirect('/employee',$params);
+            else if($user_role->role_id==5){
+                return redirect('/employee');
             }
-           // $params['usertype']=$res[0]->emp_type;
+        
            
        }
        else{

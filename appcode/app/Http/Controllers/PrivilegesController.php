@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ecommerce;
-use App\dropdownbind;
+use App\Mapping;
 use Illuminate\Http\Request;
 
 class PrivilegesController extends Controller
@@ -16,9 +16,11 @@ class PrivilegesController extends Controller
     public function index()
     {
         
-        $usertype  = dropdownbind::get(['user_type']);
         
-        $res    =  ecommerce::whereNull('emp_type')->get(['emp_email','empname','empid']);
+        
+        $res    =  Mapping::whereNull('role_id')->get(['emp_id']);
+
+        print_r($res);exit;
     
         return view('userlist',['name'=>$res,'dropdown'=>$usertype]);
     }

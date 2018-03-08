@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Session;
 
 class DashboardController extends Controller
 {
@@ -13,7 +14,8 @@ class DashboardController extends Controller
     */
     function adminDashboard()
     {
-        return view('admindashboard');
+        $name=Session::get('username');
+        return view('admindashboard',['name'=>$name]);
     }
 
     /* 
