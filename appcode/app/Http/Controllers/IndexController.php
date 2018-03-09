@@ -53,7 +53,7 @@ class IndexController extends Controller
         $currentDate = Carbon::now();
         //$currentDateTime = $currentDate->toDateTimeString();
 
-         $latestProductList = json_decode(DB::table('products')->where('created_date','>=',$currentDate->subMonth())->select('product_name')->get());
+        $latestProductList = json_decode(DB::table('products')->where('created_date','>=',$currentDate->subMonth())->select('product_name')->get());
                
         $name=Session::get('username');
         return view('index',['name'=>$name,'latestProductList'=>$latestProductList]);   

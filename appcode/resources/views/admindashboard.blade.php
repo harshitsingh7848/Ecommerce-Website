@@ -34,7 +34,7 @@
                 </li>
 
                 <li>
-                    <a href="#">Order</a>
+                    <a href="#">Orders</a>
                 </li>
 
                 <li>
@@ -45,9 +45,7 @@
                     <a href="#">Roles</a>
                 </li>
 
-                <li>
-                    <a href="{{url('newUsers')}}">New Users</a>
-                </li>
+               
 
 
 
