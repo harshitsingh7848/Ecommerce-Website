@@ -11,10 +11,16 @@
     <title>Shop Item </title>
 
     <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link href="assets/css/bootstrap.min.css" rel="stylesheet"> -->
 
     <!-- Custom styles for this template -->
     <link href="assets/css/shop-item.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+    <!-- font awesome icons CSS -->
+    <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+
 
   </head>
 
@@ -56,7 +62,7 @@
         <div class="col-lg-4">
           <h2 class="my-4">{{ $productName}}</h2>
           <div class="list-group ">
-           <img src="img/redmi.jpg" alt="">
+           <img src="assets/img/product-1.jpg" alt="">
            <div>
            <a href="{{ url('cart')}}" class="btn btn-info btn-lg">
           <span class="glyphicon glyphicon-shopping-cart"></span> ADD TO CART
@@ -192,9 +198,9 @@
     </footer>
 
     <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
+    <!-- <script src="assets/shop/jquery/jquery.min.js"></script>
+    <script src="assets/shop/bootstrap/js/bootstrap.bundle.min.js"></script>
+ -->
   </body>
 
 </html>

@@ -21,68 +21,46 @@
 
     
 	
-    @section('body')
+    @section('content')
     
 
         <!-- Sidebar -->
       
-        <!-- /#sidebar-wrapper -->
-    <!-- Nav bar -->
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" id="menu-toggle"> <i class="fas fa-bars"></i> Gadget Maniac</a>
-                
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-              
-                @if (!empty($name))
-                    
-                    <li><a class="nav-link" href="{{ url('/logout') }}">Logout</a></li>      
-                @endif
-            </ul>
-           
-        </div>
-    </nav>
+       
 
         <!-- Page Content -->
         <div class="container">
             <div class="container-fluid">
                 <div class="jumbotron">
-                    <h1 class="">Add New Products</h1>
+                    <h1 class="">Update Products</h1>
                     <hr class="my-4">
                 </div>
               <form class=""  id="productForm" >
                 <div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="product_name" >Product Name</label>	
-                  <input class="col-sm-10 form-control"  class="col-sm-10 form-control" type="text"name="product_name" id="product_name"  placeholder="Enter Product Name"  />
+                  <input class="col-sm-10 form-control"  class="col-sm-10 form-control" value="{{ $productDetail[0]->product_name }}" type="text"name="product_name" id="product_name"  placeholder="Enter Product Name"  />
                 </div>
                 <div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="product_description" >Product Description</label>	
-                    <textarea id="product_description" class="col-sm-10 form-control" name="product_description" >
+                    <textarea id="product_description" class="col-sm-10 form-control" value="{{ $productDetail[0]->product_description }}" name="product_description" >
                     </textarea>  
                 </div>
                 <div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="product_sprice" >Product Selling Price</label>	
-                      <input class="col-sm-10 form-control" type="text"  name="product_sprice" id="product_sprice"  placeholder="Enter Product Selling Price"  />
+                      <input class="col-sm-10 form-control" type="text" value="{{ $productDetail[0]->sellingprice }}" name="product_sprice" id="product_sprice"  placeholder="Enter Product Selling Price"  />
                 </div>
                 <div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="product_aprice" >Product Actual Price</label>	
-                      <input class="col-sm-10 form-control" type="text"  name="product_aprice" id="product_aprice"  placeholder="Enter Product Actual Price"  />
+                      <input class="col-sm-10 form-control" type="text" value="{{ $productDetail[0]->actualprice }}" name="product_aprice" id="product_aprice"  placeholder="Enter Product Actual Price"  />
                 </div>
                 <div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="product_weight" >Product Weight</label>	
-                      <input class="col-sm-10 form-control" type="text"  name="product_weight" id="product_weight"  placeholder="Enter Product weight"  />
+                      <input class="col-sm-10 form-control" type="text" value="{{ $productDetail[0]->weight }}" name="product_weight" id="product_weight"  placeholder="Enter Product weight"  />
                 </div>
                 
                 <div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="product_color" >Product Color</label>	
-                      <input class="col-sm-10 form-control" type="textarea"  name="product_color" id="product_color"  placeholder="Enter Product Color"  />
+                      <input class="col-sm-10 form-control" type="textarea" value="{{ $productDetail[0]->color }}" name="product_color" id="product_color"  placeholder="Enter Product Color"  />
                 </div>
                  <div class="form-group row"> 
                    <label class="col-sm-2 col-form-label" for="file" > Upload Product Image</label>	
@@ -94,88 +72,88 @@
                 </div> -->
                 <div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="warranty" >Warranty Details</label>	
-                      <input class="col-sm-10 form-control" type="text"  name="warranty" id="warranty"  placeholder="warranty of product "  />
+                      <input class="col-sm-10 form-control" type="text" value="{{ $productDetail[0]->warranty_summary }}" name="warranty" id="warranty"  placeholder="warranty of product "  />
                 </div>
 
                 <div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="os" >Operating System</label>	
-                      <input class="col-sm-10 form-control" type="text"  name="os" id="os"  placeholder="OS of the product  "  />
+                      <input class="col-sm-10 form-control" type="text" value="{{ $productDetail[0]->os }}"  name="os" id="os"  placeholder="OS of the product  "  />
                 </div>
                 <div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="processtype" >Processor Type</label>	
-                      <input class="col-sm-10 form-control" type="text"  name="processtype" id="processtype"  placeholder="Processor of the product  "  />
+                      <input class="col-sm-10 form-control" type="text" value="{{ $productDetail[0]->processor_type }}"  name="processtype" id="processtype"  placeholder="Processor of the product  "  />
                 </div>
                 <div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="pcore" >Processor Core</label>	
-                      <input class="col-sm-10 form-control" type="text"  name="pcore" id="pcore"  placeholder="Processor Core of the product  "  />
+                      <input class="col-sm-10 form-control" type="text"value="{{ $productDetail[0]->processor_core }}"  name="pcore" id="pcore"  placeholder="Processor Core of the product  "  />
                 </div>
                 <div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="ram" >RAM</label>	
-                      <input class="col-sm-10 form-control" type="text"  name="ram" id="ram"  placeholder="RAM of the product  "  />
+                      <input class="col-sm-10 form-control" type="text" value="{{ $productDetail[0]->RAM }}" name="ram" id="ram"  placeholder="RAM of the product  "  />
                 </div>
 
                 <div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="istorage" >Internal Storage</label>	
-                      <input class="col-sm-10 form-control" type="text"  name="istorage" id="istorage"  placeholder="Internal Storage of the product  "  />
+                      <input class="col-sm-10 form-control" type="text" value="{{ $productDetail[0]->internal_storage }}" name="istorage" id="istorage"  placeholder="Internal Storage of the product  "  />
                 </div>
 
                 <div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="estorage" >Expandable Storage</label>	
-                      <input class="col-sm-10 form-control" type="text"  name="estorage" id="estorage"  placeholder="Expandable Storage of the product  "  />
+                      <input class="col-sm-10 form-control" type="text" value="{{ $productDetail[0]->expandable_storage }}" name="estorage" id="estorage"  placeholder="Expandable Storage of the product  "  />
                 </div>
 
                 <div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="dsize" >Display Size</label>	
-                      <input class="col-sm-10 form-control" type="text"  name="dsize" id="dsize"  placeholder="Display Size of the product  "  />
+                      <input class="col-sm-10 form-control" type="text" value="{{ $productDetail[0]->display_size }}" name="dsize" id="dsize"  placeholder="Display Size of the product  "  />
                 </div>
 
                 <div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="resolution" >Resolution</label>	
-                      <input class="col-sm-10 form-control" type="text"  name="resolution" id="resolution"  placeholder="Resolution of the product  "  />
+                      <input class="col-sm-10 form-control" type="text" value="{{ $productDetail[0]->resolution }}"  name="resolution" id="resolution"  placeholder="Resolution of the product  "  />
                 </div>
 
                 <div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="dcolors" >Display Colors</label>	
-                  <input class="col-sm-10 form-control" type="text"  name="dcolors" id="dcolors"  placeholder="Display Colors of the product  "  />
+                  <input class="col-sm-10 form-control" type="text" value="{{ $productDetail[0]->display_colors }}" name="dcolors" id="dcolors"  placeholder="Display Colors of the product  "  />
                   
                 </div>
 
                 <div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="dim" >Dimension</label>	
-                      <input class="col-sm-10 form-control" type="text"  name="dim" id="dim"  placeholder="Dimension of the product  "  />
+                      <input class="col-sm-10 form-control" type="text" value="{{ $productDetail[0]->dimension }}" name="dim" id="dim"  placeholder="Dimension of the product  "  />
                 </div>
 
                  <div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="ntype" >Network Type</label>	
-                      <input class="col-sm-10 form-control" type="text"  name="ntype" id="ntype"  placeholder="Network Type of the product  "  />
+                      <input class="col-sm-10 form-control" type="text" value="{{ $productDetail[0]->network_type }}"  name="ntype" id="ntype"  placeholder="Network Type of the product  "  />
                 </div>
 
                 <div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="snetworks" >Supported Networks</label>	
-                      <input class="col-sm-10 form-control" type="text"  name="snetworks" id="snetworks"  placeholder="Supported Networks of the product  "  />
+                      <input class="col-sm-10 form-control" type="text" value="{{ $productDetail[0]->supported_networks }}"  name="snetworks" id="snetworks"  placeholder="Supported Networks of the product  "  />
                 </div>
 
                 <div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="gprs" >GPRS</label>	
-                      <input class="col-sm-10 form-control" type="text"  name="gprs" id="gprs"  placeholder="Gprs setting of the product  "  />
+                      <input class="col-sm-10 form-control" value="{{ $productDetail[0]->gprs }}" type="text"  name="gprs" id="gprs"  placeholder="Gprs setting of the product  "  />
                 </div>
 
                 <div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="cfeatures" > Primary Camera Pixel</label>	
-                      <input class="col-sm-10 form-control" type="text"  name="cfeatures" id="cfeatures"  placeholder=" Primary Camera Pixel setting of the product  "  />
+                      <input class="col-sm-10 form-control" type="text" value="{{ $productDetail[0]->primary_camera }}" name="cfeatures" id="cfeatures"  placeholder=" Primary Camera Pixel setting of the product  "  />
                 </div>
 
                 <div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="scfeatures" > Secondary Camera Pixel</label>	
-                      <input class="col-sm-10 form-control" type="text"  name="scfeatures" id="scfeatures"  placeholder=" Secondary Camera Pixel setting of the product  "  />
+                      <input class="col-sm-10 form-control" value="{{ $productDetail[0]->secondary_camera }}" type="text"  name="scfeatures" id="scfeatures"  placeholder=" Secondary Camera Pixel setting of the product  "  />
                 </div>   
                 <div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="battcapac" > Battery Capacity</label>	
-                      <input class="col-sm-10 form-control" type="text"  name="battcapac" id="battcapac"  placeholder="  Battery Capacity of the product  "  />
+                      <input class="col-sm-10 form-control" type="text" value="{{ $productDetail[0]->battery_capacity }}" name="battcapac" id="battcapac"  placeholder="  Battery Capacity of the product  "  />
                 </div>    
                 <div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="simsize" > Sim Size</label>	
-                      <input class="col-sm-10 form-control" type="text"  name="simsize" id="simsize"  placeholder="   Sim Size of the product  "  />
+                      <input class="col-sm-10 form-control" type="text" value="{{ $productDetail[0]->sim_size}}" name="simsize" id="simsize"  placeholder="   Sim Size of the product  "  />
                 </div>  
 
                
@@ -233,106 +211,8 @@
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="assets/js/addproduct.js" ></script>
-    <script>
-
-    $(document).ready(function() {
-      $('#productForm').submit(function(e){
-        
-        e.preventDefault();
-
-        
-
-
-       
-  /* var ext = name.split('.').pop().toLowerCase();
-  alert(name);
-  if(jQuery.inArray(ext, ['gif','png','jpg','jpeg']) == -1) 
-  {
-   alert("Invalid Image File");
-  }
-  var oFReader = new FileReader();
-  oFReader.readAsDataURL(document.getElementById("file").files[0]);
-  var f = document.getElementById("file").files[0];
-  var fsize = f.size||f.fileSize;
-   if(fsize > 2000000)
-  {
-   alert("Image File Size is very big");
-  }
-    */
-    alert('jdkd');
-$.ajax({
-  type: 'get',
-  url: '/Ecommerce/add-product',
-  data:$(this).serialize(),
-  processData: false,
-  contentType: false,
-  cache: false,
-  success: function (response) {
-    alert(response);
-  }
-});
-
-
-});
-});
+    <!-- <script src="assets/js/addproduct.js" ></script> -->
     
-      //TODO remove these with awesome formdata
-    /*  $(document).ready(function(){
-         $('#btn').click(function(){
-
-              var productName = $('#product-name').val();
-             var productDescription =   $('#product-description').val();
-             var sp = $('#product-sprice').val();
-             var ap = $('#product-aprice').val();
-             var weight =   $('#product-weight').val();
-             var color =   $('#product-color').val();
-             var inbox = $('#box').val();
-             var warranty = $('#warranty').val();
-             var os =   $('#os').val();
-              var processtype = $('#processtype').val();
-             var processcore =   $('#pcore').val();
-             var ram = $('#ram').val();
-             var istorage = $('#istorage').val();
-             var estorage =   $('#estorage').val();
-             var displaysize = $('#dsize').val();
-             var resolution = $('#resolution').val();
-             var dcolors =   $('#dcolors').val();
-             var dim =   $('#dim').val();
-             var networktype = $('#ntype').val();
-             var supportednet = $('#snetworks').val();
-             var gprs =   $('#gprs').val();
-             var primarycam =   $('#cfeatures').val();
-             var secondarycam = $('#scfeatures').val();
-             var battery = $('#battcapac').val();
-             var simSize =   $('#simsize').val();
-             var dateFirstAvail =   $('#dtfirst').val();
-             var showUser = +$('#show_user')[0].checked;
-             var showInDb = +$('#show_backend')[0].checked;
-             
-            $.ajax({
-          url:"/Ecommerce/add-product",
-          type:"get",
-          data:{'product-name':productName,'product-desc':productDescription,'showuser':showUser,'showindb':showInDb
-          ,'sp':sp,'ap':ap,'weight':weight,'color':color,'inbox':inbox,'warranty':warranty,'os':os
-          ,'processType':processtype,'processCore':processcore,'ram':ram,'istorage':istorage,'estorage':estorage
-          ,'displaysize':displaysize,'resolution':resolution,'dcolors':dcolors,'dim':dim,'networktype':networktype
-          ,'supportednet':supportednet,'gprs':gprs,'primaryCam':primarycam,'secondaryCam':secondarycam
-          ,'battery':battery,'simSize':simSize,'dateFirstAvail':dateFirstAvail},
-          success: function (response) {
-          alert(response);  
-          $("#myModal").modal('show');
-        },
-        }) ;  
-        });
-        $('#check').click(function(){
-                window.location='/Ecommerce/view-add-products';
-        });
-        $('#nocheck').click(function(){
-                window.location='/Ecommerce/view-products';
-        });
-      });*/
-    </script>
     <!-- Menu Toggle Script -->
    
 

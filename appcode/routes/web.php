@@ -25,7 +25,7 @@
 	Route::get('/brand-category','ProductController@brandList');	
 	//Route::get('/mobile-phones','ProductController@productList');
 
-	Route::get('/product/{slug}','ProductController@productInfo');
+	Route::get('/products/{slug}','ProductController@productInfo');
 
 	Route::get('/view-products','ProductController@productFunctions');
 	Route::get('/view-add-products','ProductController@viewAddProducts');
@@ -34,6 +34,7 @@
 	Route::get('/admin','DashboardController@adminDashboard');
 	Route::get('/vendors','DashboardController@vendorDashboard');
 
+	Route::get('/delete-product','ProductController@deleteProduct');
 
 	Route::get('/getdetails','UpdateController@getDetails');
 
@@ -44,10 +45,11 @@
 	Route::post('/verification','LoginController@doLogin');
 
 
-	Route::get('/newUsers','PrivilegesController@index');
+	Route::get('/new-users','PrivilegesController@index');
 
 	Route::get('/addusertype','UpdateController@update');
- 
+	
+	Route::get('/update-product','ProductController@updateProduct');
 
 
  /* Route::get('/',function(){

@@ -1,0 +1,10 @@
+.jumbotron {
+    padding: 10px 5px 10px 5px;
+    background: none;
+}
+.jumbotron a, .jumbotron h1 {
+    display: inline-block;
+}
+.jumbotron a{
+    float: right;
+}

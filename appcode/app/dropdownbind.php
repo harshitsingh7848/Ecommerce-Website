@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class dropdownbind extends Model
 {
-    protected   $table    =   'user_type';
+    protected   $table    =   'roles';
       protected $primaryKey = 'id';
 
       protected $fillable = [
-        'user_type',
+        'role_name',
     ];
 
    

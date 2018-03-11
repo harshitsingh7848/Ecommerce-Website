@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\ecommerce;
 use App\dropdownbind;
+use DB;
 
 class UpdateController extends Controller
 {
@@ -19,7 +20,7 @@ class UpdateController extends Controller
             $usertype=$result[0];
             $email=$result[1];
 
-             $res    =  dropdownbind::where('user_type',$usertype)->get(['id']);
+             $res    =  DB::select('select empid from user_details where emp_email="'.$email.'"');
 
              print_r($res);
     }

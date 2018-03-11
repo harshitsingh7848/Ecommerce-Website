@@ -15,7 +15,9 @@ class DashboardController extends Controller
     function adminDashboard()
     {
         $name=Session::get('username');
-        return view('admindashboard',['name'=>$name]);
+        $role=Session::get('userRole');
+        
+         return view('admindashboard',['name'=>$name,'role'=>$role]); 
     }
 
     /* 

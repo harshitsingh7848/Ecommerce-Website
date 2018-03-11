@@ -44,7 +44,7 @@ class ProductController extends Controller
     {
         $brandList =DB::select('select DISTINCT(brand.brand_name) as brand_name,
          GROUP_CONCAT(products.product_name) as product_name from brand left join brand_product on brand.id = brand_product.brand_id LEFT JOIN products
-         on brand_product.product_id = products.id GROUP BY brand.brand_name');
+         on brand_product.product_id = products.id where products.show_users=1 and products.show_backend=1 GROUP BY brand.brand_name');
             for($i=0; $i<count($brandList); $i++) {
                 $brandList[$i]->product_name = explode(",", $brandList[$i]->product_name);
             }
@@ -61,7 +61,7 @@ class ProductController extends Controller
 
     public function productFunctions()
     {
-        $productDetails = json_decode(DB::table('products')->get());
+        $productDetails = json_decode(DB::table('products')->where('show_backend',1)->get());
 
         return view('viewproduct',['productDetails'=>$productDetails]);
 
@@ -73,39 +73,66 @@ class ProductController extends Controller
      */
      public function addProduct()
     {
-        $product_name = $_GET['product-name'];
-        $product_description = $_GET['product-desc'];
-        $showUser   = $_GET['showuser'];
-        $showInDB   = $_GET['showindb'];
-        $sellingPrice = $_GET['sp'];
-        $actualPrice = $_GET['ap'];
-        $weight   = $_GET['weight'];
-        $color   = $_GET['color'];
-        $inBox = $_GET['inbox'];
+        
+                
+          $product_name = $_GET['product_name'];
+        $product_description = $_GET['product_description'];   
+        if(isset($_GET['show_users'])){
+        $showUser   = $_GET['show_users'];
+        }
+        if(isset($_GET['show_backend'])){
+            $showInDB   = $_GET['show_backend'];
+            }
+        
+        $sellingPrice = $_GET['product_sprice'];
+        $actualPrice = $_GET['product_aprice'];
+        $weight   = $_GET['product_weight'];
+        $color   = $_GET['product_color'];
+      //  $inBox = $_GET['box'];
         $warranty = $_GET['warranty'];
         $os   = $_GET['os'];
-        $processType   = $_GET['processType'];
-        $processCore = $_GET['processCore'];
+        $processType   = $_GET['processtype'];
+        $processCore = $_GET['pcore'];
         $ram = $_GET['ram'];
         $iStorage   = $_GET['istorage'];
         $eStorage   = $_GET['estorage'];
-        $displaySize = $_GET['displaysize'];
+        $displaySize = $_GET['dsize'];
         $resolution = $_GET['resolution'];
         $dColors   = $_GET['dcolors'];
         $dim   = $_GET['dim'];
-        $networkType = $_GET['networktype'];
-        $supportedNet = $_GET['supportednet'];
+        $networkType = $_GET['ntype'];
+        $supportedNet = $_GET['snetworks'];
         $gprs   = $_GET['gprs'];
-        $primaryCamera   = $_GET['primaryCam'];
-        $secondaryCamera = $_GET['secondaryCam'];
-        $battery = $_GET['battery'];
-        $simSize   = $_GET['simSize'];
-        $dateFirstAvail   = $_GET['dateFirstAvail'];
+        $primaryCamera   = $_GET['cfeatures'];
+        $secondaryCamera = $_GET['scfeatures'];
+        $battery = $_GET['battcapac'];
+        $simSize   = $_GET['simsize']; 
+        //echo $product_description;
+
         
-        DB::select('insert into products(product_name,product_description,show_users,show_backend)
-        values("'.$product_name.'","'.$product_description.'","'.$showUser.'","'.$showInDB.'")'); 
+            $uploadedFile = '';
+            //echo $_FILES['file']['tmp_name'];
+             /* if(!empty($_FILES["file"]["type"])){
+            
+                $fileName = $product_name.'_'.$_FILES['file']['name']; #naming the image according to the first part of the email
+                //$valid_extensions = array("jpeg", "jpg", "png");
+                //$temporary = explode(".", $_FILES["file"]["name"]);
+                //$file_extension = end($temporary);
+               
+                    $sourcePath = $_FILES['file']['tmp_name']; 
+                    $targetPath = "assets/img/".$fileName; # giving the path where the image will be stored
+                    if(move_uploaded_file($sourcePath,$targetPath)){
+                        $uploadedFile = $fileName; # the location of the image
+                    
+                }
+            }  */
         
-         DB::select('insert into colour (color) values("'.$color.'")');
+         DB::select('insert into products(product_name,product_description,show_users,show_backend)
+        values("'.$product_name.'","'.$product_description.'","'.$showUser.'","'.$showInDB.'")');  
+        
+        //DB::select('insert into images(image_url) values("'.$uploadedFile.'")');    
+
+          DB::select('insert into colour (color) values("'.$color.'")');
         DB::select('insert into what_is_in_box (items_in_box) values("'.$inBox.'")');
         DB::select('insert into battery_features (battery_capacity) values("'.$battery.'")');
         DB::select('insert into dimensions (dimension) values("'.$dim.'")');
@@ -135,7 +162,7 @@ class ProductController extends Controller
      
       $colorId= DB::select('SELECT MAX(id) as `id` from colour ');
 
-      $inBoxId= DB::select('SELECT MAX(id) as `id` from  what_is_in_box');
+      //$inBoxId= DB::select('SELECT MAX(id) as `id` from  what_is_in_box');
 
       $batteryId= DB::select('SELECT MAX(id) as `id` from battery_features ');
 
@@ -155,11 +182,17 @@ class ProductController extends Controller
       $cameraId= DB::select('SELECT MAX(id) as `id` from  camera_features');
 
       $addId= DB::select('SELECT MAX(id) as `id` from additional_features');
+      
+     // $imageId= DB::select('SELECT MAX(id) as `id` from images');
+      
 
      
 
-    /* DB::select('insert into map_product_additional_features (product_id,additional_features_id)
+     DB::select('insert into map_product_additional_features (product_id,additional_features_id)
     values("'.$productId[0]->id.'","'.$addId[0]->id.'")');  
+
+    //DB::select('insert into map_product_image (product_id,image_id)
+    //values("'.$productId[0]->id.'","'.$imageId[0]->id.'")');  
 
     DB::select('insert into map_product_battery_features (product_id,battery_feature_id)
     values("'.$productId[0]->id.'","'.$batteryId[0]->id.'")');
@@ -188,17 +221,17 @@ class ProductController extends Controller
     DB::select('insert into map_product_warranty_features (product_id,warranty_feature_id)
     values("'.$productId[0]->id.'","'.$warrantyId[0]->id.'")');
 
-    DB::select('insert into map_product_whatisinbox (boxid,product_id)
-    values("'.$inBoxId[0]->id.'",'.$productId[0]->id.'")');
+   //  DB::select('insert into map_product_whatisinbox (boxid,product_id)
+    //values("'.$inBoxId[0]->id.'",'.$productId[0]->id.'")'); 
 
     DB::select('insert into product_price (product_id,actualprice,sellingprice)
     values("'.$productId[0]->id.'","'.$actualPrice.'","'.$sellingPrice.'")');
 
     DB::select('insert into product_weight (product_id,weight)
-    values("'.$productId[0]->id.'","'.$weight.'")'); */
+    values("'.$productId[0]->id.'","'.$weight.'")');  
 
         echo 'Successfully Added Product';
-
+        print_r($_FILES);        
     }
 
     /* 
@@ -209,5 +242,53 @@ class ProductController extends Controller
     {
         return view('addproduct');
     }
+
+    /* 
+     * function deleteProduct
+     * It deletes the product
+     */
+    public function deleteProduct()
+    {
+        $productId =    $_GET['id'];
+        DB::select('update products set show_backend=0 where id="'.$productId.'"');
+        echo "Product Deleted";
+    }
+
+    /* 
+     * function updateProduct
+     * It redirects to updateproduct page
+     */
+    function updateProduct()
+    {
+        $productId =    $_GET['productId'];
+       $productDetail = DB::select('SELECT * FROM products 
+LEFT JOIN map_product_display_features ON products.id=map_product_display_features.product_id
+LEFT JOIN display_features ON map_product_display_features.display_feature_id=display_features.id
+LEFT JOIN map_product_camera_features ON products.id=map_product_camera_features.product_id
+LEFT JOIN camera_features ON map_product_camera_features.camera_feature_id=camera_features.id
+LEFT JOIN product_price ON products.id =product_price.product_id
+LEFT JOIN product_weight ON products.id= product_weight.product_id
+LEFT JOIN map_product_additional_features ON products.id = map_product_additional_features.product_id
+LEFT JOIN additional_features ON map_product_additional_features.additional_features_id=additional_features.id
+LEFT JOIN map_product_battery_features ON products.id =map_product_battery_features.product_id
+LEFT JOIN battery_features ON battery_features.id=map_product_battery_features.battery_feature_id
+LEFT JOIN map_product_color_features ON products.id =map_product_color_features.product_id
+LEFT JOIN colour ON colour.id = map_product_color_features.color_id
+LEFT JOIN map_product_connectivity_features ON products.id = map_product_connectivity_features.product_id
+LEFT JOIN connectivity_features on connectivity_features.id=map_product_connectivity_features.connectivity_feature_id
+LEFT JOIN map_product_dimension_features ON products.id = map_product_dimension_features.product_id
+LEFT JOIN dimensions on dimensions.id = map_product_dimension_features.dimension_feature_id
+LEFT JOIN map_product_memory_features on products.id =map_product_memory_features.product_id
+LEFT JOIN memory_features on memory_features.id =map_product_memory_features.memory_feature_id
+LEFT JOIN map_product_os_features ON products.id = map_product_os_features.product_id
+LEFT JOIN os_features ON os_features.id=map_product_os_features.os_feature_id
+LEFT JOIN map_product_warranty_features on products.id=map_product_warranty_features.product_id
+LEFT JOIN warranty_features ON warranty_features.id=map_product_warranty_features.warranty_feature_id
+where products.id="'.$productId .'"');
+
+
+    return view('updateproduct',['productDetail'=>$productDetail]);
+}
+
 }
 

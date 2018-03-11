@@ -14,7 +14,11 @@
 <!-- </head>
 <body> -->
 
-@extends('admindashboard')
+@extends('layouts.app')
+
+@section('head')
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+@endsection
 
 @section('content')
   <h1> New User Details</h1>
@@ -26,6 +30,7 @@
           <th><i class="fa fa-user"></i> Name</th>
           <th><i class="fas fa-envelope"></i> Email</th>
           <th><i class=" fa fa-edit"></i> UserType</th>
+          <th><i class="fa fa-gears"></i>Modules
           <th><i class=" fa fa-gears"></i>Permissions</th>
         </tr>
       </thead>
@@ -38,14 +43,21 @@
           <td>
             <select class="usertype">
               @foreach($dropdown as $d)
-              <option value="{{ $d->user_type . "-" . $names->emp_email  }}"> {{ $d->user_type }}</option>
+              <option value="{{ $d->role_name . "-" . $names->emp_email  }}"> {{ $d->role_name }}</option>
+              @endforeach
+            </select> 
+          </td>
+          <td>
+          <select id="module" class="d-none modules">
+              @foreach($modules as $module)
+              <option value=""> {{ $module->module_name }}</option>
               @endforeach
             </select> 
           </td>
           <td >
-            <button class="btn  btn-xs"><i class="fas fa-eye"></i></button>
-            <button class="btn  btn-xs"><i class="fas fa-edit"></i></button>
-            <button class="btn  btn-xs"><i class="far fa-trash-alt"></i></button>
+            <button  class="btn  btn-xs d-none"><i class="fas fa-eye"></i></button>
+            <button class="btn  btn-xs d-none"><i class="fas fa-edit"></i></button>
+            <button class="btn  btn-xs d-none"><i class="far fa-trash-alt"></i></button>
           </td>
         </tr>
         @endforeach
@@ -72,6 +84,7 @@
               <input type="button" id="check" value="Yes" name="button"/>
               
                 <input type="button" id="nocheck" value="No" name="yes_no" />
+                
               </p>
           </div>    
         </div>
@@ -81,7 +94,12 @@
       </div>
 
     </div>
-
+    
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
@@ -91,6 +109,7 @@
 <script>
 
   $(document).ready(function(){
+        $('#example').DataTable();
     $(".usertype").change(function(){
       var concat = $(this).val();
        $(".modal-body #concatemailusertype").val( concat );
@@ -100,17 +119,22 @@
 
     $(document).ready(function(){
       $('#check').click(function() {
-        
-         var emailusertype = $('#concatemailusertype').val();
+        $("#module").removeClass("d-none");
+            $("#myModal").modal('toggle');
+         /* var emailusertype = $('#concatemailusertype').val();
           $.ajax({
           url:"addusertype",
           type:"get",
           data:{'concatemailusertype':emailusertype},
           success: function (response) {
-           $('.btn  btn-xs').show();
+            $("button").removeClass("d-none");
+            $("#myModal").modal('toggle');
            //alert(response);
         },
-        })   
+        })  */  
+});
+$(".modules").change(function(){
+  $("button").removeClass("d-none");
 });
     });
 

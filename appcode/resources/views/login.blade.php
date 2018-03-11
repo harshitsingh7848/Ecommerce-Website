@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.sample')
 
 	@section('tile','Login Page')	
 	@section('head')
