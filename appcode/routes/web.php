@@ -14,7 +14,8 @@
 */
 
 
-
+/* Route::get('/view-add-products','ProductController@viewAddProducts');
+Route::post('/add-product','ProductController@addProduct'); */
 	
 	Route::get('/', 'IndexController@index');
 	Route::get('/login', 'LoginController@index');
@@ -30,7 +31,7 @@
 	Route::get('/view-products','ProductController@productFunctions');
 	Route::get('/view-add-products','ProductController@viewAddProducts');
 	
-	Route::get('/add-product','ProductController@addProduct');
+	Route::post('/add-product','ProductController@addProduct');
 	Route::get('/admin','DashboardController@adminDashboard');
 	Route::get('/vendors','DashboardController@vendorDashboard');
 
@@ -51,6 +52,11 @@
 	
 	Route::get('/update-product','ProductController@updateProduct');
 
+	Route::get('/update-db','ProductController@updateDatabase');
+
+/* Route::get('/upload', 'testcontroller@uploadForm');
+Route::post('/upload', 'testcontroller@uploadSubmit'); */
+	
 
  /* Route::get('/',function(){
 	 return view('welcome');

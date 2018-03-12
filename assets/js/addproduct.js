@@ -135,6 +135,10 @@ $('document').ready(function()
                 required: "Please Enter Actual Price",
                 validprice: "Enter Valid Price",
                  },
+                 product_weight: {
+                required: "Please Enter product Weight",
+                validprice: "Enter Valid weight",
+                 },
     
      },
      errorPlacement : function(error, element) {
@@ -151,7 +155,7 @@ $('document').ready(function()
      submitHandler: function(form) {
                     form.submit();
      $("#product-form")[0].reset();
-     alert('Successfull Registration');
+     alert('Successfully Added Product');
                 }
      }); 
  })

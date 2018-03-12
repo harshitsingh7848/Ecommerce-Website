@@ -35,7 +35,8 @@
                     <h1 class="">Update Products</h1>
                     <hr class="my-4">
                 </div>
-              <form class=""  id="productForm" >
+              <form class=""  id="productForm" method="post" action="update-db">
+                <input type="hidden" value="{{ $productDetail[0]->id }}" id="product_id" name="product_id">
                 <div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="product_name" >Product Name</label>	
                   <input class="col-sm-10 form-control"  class="col-sm-10 form-control" value="{{ $productDetail[0]->product_name }}" type="text"name="product_name" id="product_name"  placeholder="Enter Product Name"  />

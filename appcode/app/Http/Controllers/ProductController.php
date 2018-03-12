@@ -3,12 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests;
 use Session;
 use DB;
 use Carbon\Carbon;
+use Illuminate\Http\File;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {   
+
+   
     /* 
      * function productInfo
      * It retrieves the single product details and redirects to its page
@@ -71,69 +76,58 @@ class ProductController extends Controller
      * function addProduct
      * It adds the product to the Database and returns back message to the user who added it
      */
-     public function addProduct()
+     public function addProduct(Request $request)
     {
-        
-                
-          $product_name = $_GET['product_name'];
-        $product_description = $_GET['product_description'];   
-        if(isset($_GET['show_users'])){
-        $showUser   = $_GET['show_users'];
+        $product_name = $_POST['product_name'];
+        $file = $request->file('image');
+        $image=$file->getClientOriginalName();
+        $fileName=$product_name.$image;
+        $sourcePath=$file->getRealPath();
+        $destinationPath = 'assets/img';
+      $file->move($destinationPath,$fileName);
+     
+          
+        $product_description = $_POST['product_description'];   
+        if(isset($_POST['show_users'])){
+        $showUser   = $_POST['show_users'];
         }
-        if(isset($_GET['show_backend'])){
-            $showInDB   = $_GET['show_backend'];
+        if(isset($_POST['show_backend'])){
+            $showInDB   = $_POST['show_backend'];
             }
         
-        $sellingPrice = $_GET['product_sprice'];
-        $actualPrice = $_GET['product_aprice'];
-        $weight   = $_GET['product_weight'];
-        $color   = $_GET['product_color'];
-      //  $inBox = $_GET['box'];
-        $warranty = $_GET['warranty'];
-        $os   = $_GET['os'];
-        $processType   = $_GET['processtype'];
-        $processCore = $_GET['pcore'];
-        $ram = $_GET['ram'];
-        $iStorage   = $_GET['istorage'];
-        $eStorage   = $_GET['estorage'];
-        $displaySize = $_GET['dsize'];
-        $resolution = $_GET['resolution'];
-        $dColors   = $_GET['dcolors'];
-        $dim   = $_GET['dim'];
-        $networkType = $_GET['ntype'];
-        $supportedNet = $_GET['snetworks'];
-        $gprs   = $_GET['gprs'];
-        $primaryCamera   = $_GET['cfeatures'];
-        $secondaryCamera = $_GET['scfeatures'];
-        $battery = $_GET['battcapac'];
-        $simSize   = $_GET['simsize']; 
-        //echo $product_description;
-
+        $sellingPrice = $_POST['product_sprice'];
+        $actualPrice = $_POST['product_aprice'];
+        $weight   = $_POST['product_weight'];
+        $color   = $_POST['product_color'];
+      
+        $warranty = $_POST['warranty'];
+        $os   = $_POST['os'];
+        $processType   = $_POST['processtype'];
+        $processCore = $_POST['pcore'];
+        $ram = $_POST['ram'];
+        $iStorage   = $_POST['istorage'];
+        $eStorage   = $_POST['estorage'];
+        $displaySize = $_POST['dsize'];
+        $resolution = $_POST['resolution'];
+        $dColors   = $_POST['dcolors'];
+        $dim   = $_POST['dim'];
+        $networkType = $_POST['ntype'];
+        $supportedNet = $_POST['snetworks'];
+        $gprs   = $_POST['gprs'];
+        $primaryCamera   = $_POST['cfeatures'];
+        $secondaryCamera = $_POST['scfeatures'];
+        $battery = $_POST['battcapac'];
+        $simSize   = $_POST['simsize']; 
         
-            $uploadedFile = '';
-            //echo $_FILES['file']['tmp_name'];
-             /* if(!empty($_FILES["file"]["type"])){
             
-                $fileName = $product_name.'_'.$_FILES['file']['name']; #naming the image according to the first part of the email
-                //$valid_extensions = array("jpeg", "jpg", "png");
-                //$temporary = explode(".", $_FILES["file"]["name"]);
-                //$file_extension = end($temporary);
-               
-                    $sourcePath = $_FILES['file']['tmp_name']; 
-                    $targetPath = "assets/img/".$fileName; # giving the path where the image will be stored
-                    if(move_uploaded_file($sourcePath,$targetPath)){
-                        $uploadedFile = $fileName; # the location of the image
-                    
-                }
-            }  */
         
          DB::select('insert into products(product_name,product_description,show_users,show_backend)
         values("'.$product_name.'","'.$product_description.'","'.$showUser.'","'.$showInDB.'")');  
         
-        //DB::select('insert into images(image_url) values("'.$uploadedFile.'")');    
+        DB::select('insert into images(image_url) values("'.$fileName.'")');    
 
           DB::select('insert into colour (color) values("'.$color.'")');
-        DB::select('insert into what_is_in_box (items_in_box) values("'.$inBox.'")');
+        
         DB::select('insert into battery_features (battery_capacity) values("'.$battery.'")');
         DB::select('insert into dimensions (dimension) values("'.$dim.'")');
         DB::select('insert into warranty_features (warranty_summary) values("'.$warranty.'")');
@@ -162,7 +156,7 @@ class ProductController extends Controller
      
       $colorId= DB::select('SELECT MAX(id) as `id` from colour ');
 
-      //$inBoxId= DB::select('SELECT MAX(id) as `id` from  what_is_in_box');
+      
 
       $batteryId= DB::select('SELECT MAX(id) as `id` from battery_features ');
 
@@ -183,7 +177,7 @@ class ProductController extends Controller
 
       $addId= DB::select('SELECT MAX(id) as `id` from additional_features');
       
-     // $imageId= DB::select('SELECT MAX(id) as `id` from images');
+      $imageId= DB::select('SELECT MAX(id) as `id` from images');
       
 
      
@@ -191,8 +185,8 @@ class ProductController extends Controller
      DB::select('insert into map_product_additional_features (product_id,additional_features_id)
     values("'.$productId[0]->id.'","'.$addId[0]->id.'")');  
 
-    //DB::select('insert into map_product_image (product_id,image_id)
-    //values("'.$productId[0]->id.'","'.$imageId[0]->id.'")');  
+    DB::select('insert into map_product_image (product_id,image_id)
+    values("'.$productId[0]->id.'","'.$imageId[0]->id.'")');  
 
     DB::select('insert into map_product_battery_features (product_id,battery_feature_id)
     values("'.$productId[0]->id.'","'.$batteryId[0]->id.'")');
@@ -221,17 +215,16 @@ class ProductController extends Controller
     DB::select('insert into map_product_warranty_features (product_id,warranty_feature_id)
     values("'.$productId[0]->id.'","'.$warrantyId[0]->id.'")');
 
-   //  DB::select('insert into map_product_whatisinbox (boxid,product_id)
-    //values("'.$inBoxId[0]->id.'",'.$productId[0]->id.'")'); 
+   
 
     DB::select('insert into product_price (product_id,actualprice,sellingprice)
     values("'.$productId[0]->id.'","'.$actualPrice.'","'.$sellingPrice.'")');
 
     DB::select('insert into product_weight (product_id,weight)
-    values("'.$productId[0]->id.'","'.$weight.'")');  
+    values("'.$productId[0]->id.'","'.$weight.'")');   
 
         echo 'Successfully Added Product';
-        print_r($_FILES);        
+           
     }
 
     /* 
@@ -289,6 +282,76 @@ where products.id="'.$productId .'"');
 
     return view('updateproduct',['productDetail'=>$productDetail]);
 }
+
+    /* 
+     * function updateDatabase
+     * It updates the data in database and redirects to viewproducts page
+     */
+    function updateDatabase()
+    {
+        $product_id=$_POST['product_id'];
+        $product_name = $_POST['product_name'];
+          //echo $product_name;
+        $product_description = $_POST['product_description'];   
+        if(isset($_POST['show_users'])){
+        $showUser   = $_POST['show_users'];
+        }
+        if(isset($_POST['show_backend'])){
+            $showInDB   = $_POST['show_backend'];
+            }
+        
+        $sellingPrice = $_POST['product_sprice'];
+        $actualPrice = $_POST['product_aprice'];
+        $weight   = $_POST['product_weight'];
+        $color   = $_POST['product_color'];
+        $warranty = $_POST['warranty'];
+        $os   = $_POST['os'];
+        $processType   = $_POST['processtype'];
+        $processCore = $_POST['pcore'];
+        $ram = $_POST['ram'];
+        $iStorage   = $_POST['istorage'];
+        $eStorage   = $_POST['estorage'];
+        $displaySize = $_POST['dsize'];
+        $resolution = $_POST['resolution'];
+        $dColors   = $_POST['dcolors'];
+        $dim   = $_POST['dim'];
+        $networkType = $_POST['ntype'];
+        $supportedNet = $_POST['snetworks'];
+        $gprs   = $_POST['gprs'];
+        $primaryCamera   = $_POST['cfeatures'];
+        $secondaryCamera = $_POST['scfeatures'];
+        $battery = $_POST['battcapac'];
+        $simSize   = $_POST['simsize']; 
+        //$imagePath= $_FILES['file']['tmp_name'];
+
+        DB::select('update table products set product_name= "'.$product_name.'"
+        ,product_description="'.$product_description.'",show_users="'.$showUser.'",
+        show_backend="'.$showInDB.'" where id="'.$product_id.'"');  
+        
+        DB::select('update table colour set color ="'.$color.'" where id="'.$product_id.'" ');
+        
+        DB::select('update table battery_features set battery_capacity="'.$battery.'"where id="'.$product_id.'"');
+        DB::select('update table dimensions set dimension="'.$dim.'"where id="'.$product_id.'"');
+        DB::select('update table warranty_features set warranty_summary="'.$warranty.'"where id="'.$product_id.'"');
+
+        DB::select('update table os_features set os="'.$os.'",processor_type="'.$processType.'",processor_core= "'.$processCore.'" where id="'.$product_id.'" ');        
+
+        DB::select('update table memory_features set internal_storage="'.$iStorage.'",RAM="'.$ram.'",
+        expandable_storage="'.$eStorage.'"  where id="'.$product_id.'"');
+
+         DB::select('update table display_features set display_size="'.$displaySize.'",
+         resolution="'.$resolution.'",display_colors="'.$dColors.'"  where id="'.$product_id.'" ');  
+        
+         DB::select('insert into connectivity_features(network_type,supported_networks,gprs)
+        values("'.$networkType.'","'.$supportedNet.'","'.$gprs.'") ');
+         
+         DB::select('insert into camera_features(primary_camera,secondary_camera)
+        values("'.$primaryCamera.'","'.$secondaryCamera.'")');  
+
+          DB::select('insert into additional_features(sim_size)
+        values("'.$simSize.'")');  
+
+    }
 
 }
 
