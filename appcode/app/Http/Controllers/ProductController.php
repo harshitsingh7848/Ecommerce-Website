@@ -12,6 +12,23 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {   
+    /* 
+     * function addBillingDetails
+     * It adds billing deatils to database
+     */
+    public function addBillingDetails()
+    {
+        $contact = $_POST['mobile'];
+        $pincode = $_POST['pin'];
+        $address = $_POST['address'];
+        $city = $_POST['city'];
+        $state = $_POST['state'];
+        $addType =$_POST['addType'];
+        $userId =$_POST['userId'];
+
+        DB::select('insert into store_address (address,address_type,user_id,Pincode,city,state)values("'.$address.'",
+        "'.$addType.'","'.$userId .'","'. $pincode.'","'.$city.'","'.$state.'")');
+    } 
 
     /* 
      * function category
@@ -450,7 +467,7 @@ where products.id="'.$productId .'"');
         $userId= Session::get('userid');
         $userAddress=DB::select('select * from store_address 
         where user_id="'.$userId.'" and address_type= "2"' );
-        $userDetail=DB::select('select empname,emp_mobile from user_details where
+        $userDetail=DB::select('select empid,empname,emp_mobile from user_details where
         empid="'.$userId.'"') ;  
         $productId=$_GET['productId'];
         $productDetails=DB::select('select * from products where id="'.$productId.'"');

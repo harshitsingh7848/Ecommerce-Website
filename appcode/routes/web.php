@@ -58,6 +58,8 @@ Route::post('/add-product','ProductController@addProduct'); */
 
 	Route::get('/buy','ProductController@buy');
 
+	Route::post('/add-billing-details','ProductController@addBillingDetails');
+
 
 
 /* Route::get('/upload', 'testcontroller@uploadForm');
