@@ -25,7 +25,7 @@ class IndexController extends Controller
      public function index()
     {
         /* result will hold the value 1 if root admin is present in database  */
-        $result =   Mapping::where('role_id',6)->get();
+        $result =   Mapping::where('role_id',1)->get();
   
         if($result->isEmpty()){
            

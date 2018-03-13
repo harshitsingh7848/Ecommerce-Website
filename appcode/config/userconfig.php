@@ -6,8 +6,8 @@ return[
       'mobile'=>'9936480473',
       'email'=>'hsingh@pipingrock.com',
       'pass'=>'1234',
-      'role'=>'6',
-      'module'=>'16',
-      'privilege'=>'10',
+      'role'=>'1',
+      'module'=>'8',
+      'privilege'=>'5',
 ],
 ];

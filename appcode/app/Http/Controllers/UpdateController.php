@@ -15,13 +15,6 @@ class UpdateController extends Controller
      */
     public function update()
     {
-            $concatEmailUserType = $_GET['concatemailusertype'];  
-            $result = explode('-',$concatEmailUserType);
-            $usertype=$result[0];
-            $email=$result[1];
-
-             $res    =  DB::select('select empid from user_details where emp_email="'.$email.'"');
-
              print_r($res);
     }
 

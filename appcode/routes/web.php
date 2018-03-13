@@ -26,7 +26,7 @@ Route::post('/add-product','ProductController@addProduct'); */
 	Route::get('/brand-category','ProductController@brandList');	
 	//Route::get('/mobile-phones','ProductController@productList');
 
-	Route::get('/products/{slug}','ProductController@productInfo');
+	Route::get('/product/{slug}','ProductController@productInfo');
 
 	Route::get('/view-products','ProductController@productFunctions');
 	Route::get('/view-add-products','ProductController@viewAddProducts');
@@ -53,6 +53,12 @@ Route::post('/add-product','ProductController@addProduct'); */
 	Route::get('/update-product','ProductController@updateProduct');
 
 	Route::get('/update-db','ProductController@updateDatabase');
+
+	Route::get('/category','ProductController@category');
+
+	Route::get('/buy','ProductController@buy');
+
+
 
 /* Route::get('/upload', 'testcontroller@uploadForm');
 Route::post('/upload', 'testcontroller@uploadSubmit'); */

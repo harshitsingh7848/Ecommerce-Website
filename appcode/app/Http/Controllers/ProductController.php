@@ -13,6 +13,14 @@ use Illuminate\Support\Facades\Storage;
 class ProductController extends Controller
 {   
 
+    /* 
+     * function category
+     * It redirects to category page where the different product categories are present
+     */
+    public function category()
+    {
+        return view('category');
+    }
    
     /* 
      * function productInfo
@@ -20,12 +28,42 @@ class ProductController extends Controller
     */
     function productInfo($slug)
     {       
-       $res = json_decode(DB::table('products')->where(['product_name'=>$slug ])->get(['product_name']));
-        if(empty($res))
-        {
-            abort(404);
-        }   
-       return view('single-product',['productName'=>$res[0]->product_name]);
+       $res = DB::select('SELECT products.id,products.product_name,products.product_description,products.model_name,product_price.sellingprice,
+       product_price.actualprice,product_weight.weight,colour.color,images.image_url,warranty_features.warranty_summary,
+       os_features.os,os_features.processor_type,os_features.processor_core,memory_features.RAM,memory_features.internal_storage,
+       memory_features.expandable_storage,display_features.display_size,display_features.resolution,display_features.display_colors,
+       dimensions.dimension,connectivity_features.network_type,connectivity_features.supported_networks,connectivity_features.gprs,
+       camera_features.primary_camera,camera_features.secondary_camera,battery_features.battery_capacity,
+       additional_features.sim_size FROM products 
+LEFT JOIN map_product_display_features ON products.id=map_product_display_features.product_id
+LEFT JOIN display_features ON map_product_display_features.display_feature_id=display_features.id
+LEFT JOIN map_product_camera_features ON products.id=map_product_camera_features.product_id
+LEFT JOIN camera_features ON map_product_camera_features.camera_feature_id=camera_features.id
+LEFT JOIN product_price ON products.id =product_price.product_id
+LEFT JOIN product_weight ON products.id= product_weight.product_id
+LEFT JOIN map_product_additional_features ON products.id = map_product_additional_features.product_id
+LEFT JOIN additional_features ON map_product_additional_features.additional_features_id=additional_features.id
+LEFT JOIN map_product_battery_features ON products.id =map_product_battery_features.product_id
+LEFT JOIN battery_features ON battery_features.id=map_product_battery_features.battery_feature_id
+LEFT JOIN map_product_color_features ON products.id =map_product_color_features.product_id
+LEFT JOIN colour ON colour.id = map_product_color_features.color_id
+LEFT JOIN map_product_connectivity_features ON products.id = map_product_connectivity_features.product_id
+LEFT JOIN connectivity_features on connectivity_features.id=map_product_connectivity_features.connectivity_feature_id
+LEFT JOIN map_product_dimension_features ON products.id = map_product_dimension_features.product_id
+LEFT JOIN dimensions on dimensions.id = map_product_dimension_features.dimension_feature_id
+LEFT JOIN map_product_memory_features on products.id =map_product_memory_features.product_id
+LEFT JOIN memory_features on memory_features.id =map_product_memory_features.memory_feature_id
+LEFT JOIN map_product_os_features ON products.id = map_product_os_features.product_id
+LEFT JOIN os_features ON os_features.id=map_product_os_features.os_feature_id
+LEFT JOIN map_product_warranty_features on products.id=map_product_warranty_features.product_id
+LEFT JOIN warranty_features ON warranty_features.id=map_product_warranty_features.warranty_feature_id
+LEFT JOIN map_product_image on products.id=map_product_image.product_id
+LEFT JOIN images ON images.id=map_product_image.image_id
+where products.product_name="'.$slug.'"');
+ 
+
+
+       return view('single-product',['productDetails'=>$res]);
     }
 
     /*
@@ -47,9 +85,11 @@ class ProductController extends Controller
 
      function brandList()
     {
+        
         $brandList =DB::select('select DISTINCT(brand.brand_name) as brand_name,
          GROUP_CONCAT(products.product_name) as product_name from brand left join brand_product on brand.id = brand_product.brand_id LEFT JOIN products
          on brand_product.product_id = products.id where products.show_users=1 and products.show_backend=1 GROUP BY brand.brand_name');
+
             for($i=0; $i<count($brandList); $i++) {
                 $brandList[$i]->product_name = explode(",", $brandList[$i]->product_name);
             }
@@ -322,35 +362,99 @@ where products.id="'.$productId .'"');
         $secondaryCamera = $_POST['scfeatures'];
         $battery = $_POST['battcapac'];
         $simSize   = $_POST['simsize']; 
-        //$imagePath= $_FILES['file']['tmp_name'];
+
+        $file = $request->file('image');
+        $image=$file->getClientOriginalName();
+        $fileName=$product_name.$image;
+        
+        
 
         DB::select('update table products set product_name= "'.$product_name.'"
         ,product_description="'.$product_description.'",show_users="'.$showUser.'",
         show_backend="'.$showInDB.'" where id="'.$product_id.'"');  
-        
-        DB::select('update table colour set color ="'.$color.'" where id="'.$product_id.'" ');
-        
-        DB::select('update table battery_features set battery_capacity="'.$battery.'"where id="'.$product_id.'"');
-        DB::select('update table dimensions set dimension="'.$dim.'"where id="'.$product_id.'"');
-        DB::select('update table warranty_features set warranty_summary="'.$warranty.'"where id="'.$product_id.'"');
 
-        DB::select('update table os_features set os="'.$os.'",processor_type="'.$processType.'",processor_core= "'.$processCore.'" where id="'.$product_id.'" ');        
+       $additionalId= DB::select('select additional_features_id from map_product_additional_features
+       where product_id="'.$product_id.'" ');  
+       $imgId= DB::select('select image_id from map_product_image
+       where product_id="'.$product_id.'" ');  
+       $battId= DB::select('select battery_feature_id from map_product_battery_features
+       where product_id="'.$product_id.'" ');  
+       $camId= DB::select('select camera_feature_id from map_product_camera_features
+       where product_id="'.$product_id.'" ');  
+        $colId= DB::select('select color_id from map_product_color_features
+       where product_id="'.$product_id.'" ');  
+
+       $connId= DB::select('select connectivity_feature_id from map_product_connectivity_features
+       where product_id="'.$product_id.'" ');  
+
+       $dimId= DB::select('select dimension_feature_id from map_product_dimension_features
+       where product_id="'.$product_id.'" ');  
+
+       $disId= DB::select('select display_feature_id from map_product_display_features
+       where product_id="'.$product_id.'" ');  
+
+       $memId= DB::select('select memory_feature_id from map_product_memory_features
+       where product_id="'.$product_id.'" ');  
+
+       $operatingId= DB::select('select os_feature_id from map_product_os_features
+       where product_id="'.$product_id.'" ');  
+
+       $warrId= DB::select('select warranty_feature_id from map_product_warranty_features
+       where product_id="'.$product_id.'" ');  
+
+                 
+        DB::select('update table colour set color ="'.$color.'" where id="'.$colId.'" ');
+        
+        DB::select('update table battery_features set battery_capacity="'.$battery.'"where id="'.$battId.'"');
+        DB::select('update table dimensions set dimension="'.$dim.'"where id="'.$dimId.'"');
+        DB::select('update table warranty_features set warranty_summary="'.$warranty.'"where id="'.$warrId.'"');
+
+        DB::select('update table os_features set os="'.$os.'",processor_type="'.$processType.'",processor_core= "'.$processCore.'" where id="'.$operatingId.'" ');        
 
         DB::select('update table memory_features set internal_storage="'.$iStorage.'",RAM="'.$ram.'",
-        expandable_storage="'.$eStorage.'"  where id="'.$product_id.'"');
+        expandable_storage="'.$eStorage.'"  where id="'.$memId.'"');
 
          DB::select('update table display_features set display_size="'.$displaySize.'",
-         resolution="'.$resolution.'",display_colors="'.$dColors.'"  where id="'.$product_id.'" ');  
+         resolution="'.$resolution.'",display_colors="'.$dColors.'"  where id="'.$disId.'" ');  
         
-         DB::select('insert into connectivity_features(network_type,supported_networks,gprs)
-        values("'.$networkType.'","'.$supportedNet.'","'.$gprs.'") ');
+         DB::select('update table connectivity_features set network_type="'.$networkType.'"
+         ,supported_networks="'.$supportedNet.'",gprs="'.$gprs.'"
+        where id="'.$connId.'" ');
          
-         DB::select('insert into camera_features(primary_camera,secondary_camera)
-        values("'.$primaryCamera.'","'.$secondaryCamera.'")');  
+         DB::select('update table camera_features set primary_camera="'.$primaryCamera.'"
+         ,secondary_camera="'.$secondaryCamera.'"  where id="'.$camId.'" ');  
 
-          DB::select('insert into additional_features(sim_size)
-        values("'.$simSize.'")');  
+          DB::select('update table additional_features set sim_size="'.$simSize.'"
+          where id="'.$additionalId.'"');  
 
+          DB::select('update table images set image_url="'.$fileName.'"
+          where id="'.$imgId.'"');  
+
+          $sourcePath=$file->getRealPath();
+        $destinationPath = 'assets/img';
+      $file->move($destinationPath,$fileName);
+
+      DB::select('update table product_price  set actualprice="'.$actualPrice.'",
+      sellingprice="'.$sellingPrice.'"where product_id="'.$product_id.'"');
+
+      DB::select('update table product_weight  set weight="'.$weight.'"
+      where product_id="'.$product_id.'"');
+    }
+
+    /* 
+     * function buy
+     * It redirects to buy products page
+     */
+    public function buy()
+    {
+        $userId= Session::get('userid');
+        $userAddress=DB::select('select * from store_address 
+        where user_id="'.$userId.'" and address_type= "2"' );
+        $userDetail=DB::select('select empname,emp_mobile from user_details where
+        empid="'.$userId.'"') ;  
+        $productId=$_GET['productId'];
+        $productDetails=DB::select('select * from products where id="'.$productId.'"');
+        return view('checkout',['userDetail'=>$userDetail,'userAddress'=>$userAddress,'productDetails'=>$productDetails]);
     }
 
 }

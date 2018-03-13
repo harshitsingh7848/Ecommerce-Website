@@ -29,20 +29,21 @@ class LoginController extends Controller
         $passfromDb= $res[0]->emp_pass;
 
        Session::put('username',$res[0]->empname);
-       Session::put('userRole',$user_role[0]->role_id);
+       Session::put('userid',$res[0]->empid);
+       //Session::put('userRole',$user_role[0]->role_id);
        
        if( Hash::check($password,$passfromDb) ){
             //$params['name']=$res[0]->empname;
-            if(empty($user_role[0]->role_id) || $user_role[0]->role_id==8){
+            if(empty($user_role[0]->role_id) || $user_role[0]->role_id==3){
                 return redirect('/');
             }
-            else if($user_role[0]->role_id==6 || $user_role[0]->role_id==7){
+            else if($user_role[0]->role_id==1 || $user_role[0]->role_id==2){
                 return redirect('/admin');
             }
-            else if($user_role[0]->role_id==9){
+            else if($user_role[0]->role_id==4){
                 return redirect('/vendor');
             }
-            else if($user_role->role_id==10){
+            else if($user_role->role_id==5){
                 return redirect('/employee');
             }
         
