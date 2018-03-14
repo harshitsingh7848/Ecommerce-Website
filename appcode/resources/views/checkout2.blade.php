@@ -122,168 +122,39 @@
 <div class="col-md-8">
 <div class="product-content-right">
 <div class="woocommerce">
+<h1>Your Addresses</h1>
+<a href="/Ecommerce/select-shipping-details?userId={{$userAddress[0]->user_id }}">Add new Address </a>
+@if(!empty($address))
+<div>
+<input type="checkbox" id="check" name="check" checked>
+  {{ $userAddress[0]->name}}
+  <br>
+  {{ $userAddress[0]->address}}
+  <br>
+  {{ $userAddress[0]->city}},{{$userAddress[0]->state}},{{$userAddress[0]->Pincode}}
+  <br>
+  Phone number : {{$userAddress[0]->mobile_number}}
+  <br>
+</div>
+@foreach($address as $a=>$d)
+<div>
+<input type="checkbox" id="check" value="check">
+  {{ $address[$a]->name}}
+  <br>
+  {{ $address[$a]->address}}
+  <br>
+  {{ $address[$a]->city}},{{$address[$a]->state}},{{$address[$a]->Pincode}}
+  <br>
+  Phone number : {{$address[$a]->mobile_number}}
+  <br>
+  <a href=""> Edit Address </a> | <a href="">Delete Address</a>
 
-<form class=""  id="buy_form1" >
-<span>Add a new Billing address</span>
-<div class="woocommerce-billing-fields">
-<h3>Billing  Address Details</h3>
-<input type="hidden" value="1" name="addType" id="addType">
-<input type="hidden" value="{{$userDetail[0]->empid }}" name="userId" id="userId">
-<div class="form-group">
-<label for="name" class="cols-sm-2 control-label">Your Name</label>
-<div class="cols-sm-10">
-<div class="input-group">
-<span class="input-group-addon "><i class="fa fa-user fa" aria-hidden="true"></i></span>
-<input type="text" class="form-control" name="name" id="name"  placeholder="Enter your Name" required/>
 </div>
-<span class="help-block" id="error"></span>
-</div>
-</div>
+@endforeach
 
-<div class="form-group">
-<label for="bmobile" class="cols-sm-2 control-label">Mobile Number</label>
-<div class="cols-sm-10">
-<div class="input-group">
-<span class="input-group-addon"><i class="fas fa-phone" aria-hidden="true"></i></span>
-<input type="text" class="form-control" name="bmobile" id="bmobile"  placeholder="Enter your Mobile Number" required/>
-</div>
-<span class="help-block" id="error"></span>
-</div>
-</div>
+@endif
 
-<div class="form-group">
-<label for="bpin" class="cols-sm-2 control-label">Pincode</label>
-<div class="cols-sm-10">
-<div class="input-group">
-<span class="input-group-addon"></span>
-<input type="text" class="form-control" name="bpin" id="bpin"  placeholder="Pincode"/>
-</div>
-<span class="help-block" id="error"></span>
-</div>
-</div>
-<div class="form-group row">
-<label class="col-sm-2 col-form-label" for="billingaddress" >Address</label>	
-<div class="cols-sm-10">
-<div class="input-group">
-<span class="input-group-addon"></span>
-<textarea placeholder="Area/Street" class="form-control" id="billingaddress" name="billingaddress" ></textarea> 
-</div>
-<span class="help-block" id="error"></span>                    
-</div>
-</div>
 
-<div class="form-group">
-<label for="bcity" class="cols-sm-2 control-label">City</label>
-<div class="cols-sm-10">
-<div class="input-group">
-<span class="input-group-addon"></span>
-<input type="text" class="form-control" name="bcity" id="bcity"  placeholder="City" required="required"/>
-</div>
-<span class="help-block" id="error"></span>
-</div>
-</div>
-
-<div class="form-group">
-<label for="bstate" class="cols-sm-2 control-label">State</label>
-<div class="cols-sm-10">
-<div class="input-group">
-<span class="input-group-addon"></span>
-<input type="text" class="form-control" name="bstate" id="bstate"  placeholder="State" required="required"/>
-</div>
-<span class="help-block" id="error"></span>
-</div>
-</div>
-<div class="form-group ">
-<input type="button" name="bbutton" id="bbutton" value="Save and Deliver Here" class="btn btn-primary btn-lg btn-block login-button"/>
-</div>
-<input type="hidden" value="{{ csrf_token() }}" name="_token">
-</form>    
-
-<input type="checkbox" id="check-address">
-<span>Check this box if Shipping Address and Billing Address are the same.</span>
-<a href="/Ecommerce/select-shipping-details?userId={{$userDetail[0]->empid }}">Add new Address </a>
-<form class=""  id="ship_form1" method="get" action="select-shipping-details" >    
-<div id="customer_details" class="col2-set">
-<div class="col-1">
-<div class="woocommerce-billing-fields">
-<h3>Shipping  Address Details</h3>
-<button type="submit" id="newBtn" name="newBtn">Shipping Address</button> 
-<input type="hidden" value="2" name="addType" id="addType">
-<input type="hidden" value="{{$userDetail[0]->empid }}" name="userId" id="userId">                         
-<div class="form-group">
-<label for="sname" class="cols-sm-2 control-label">Your Name</label>
-<div class="cols-sm-10">
-<div class="input-group">
-<span class="input-group-addon "><i class="fa fa-user fa" aria-hidden="true"></i></span>
-<input type="text" class="form-control" name="sname" id="sname"  placeholder="Enter your Name" />
-</div>
-<span class="help-block" id="error"></span>
-</div>
-</div>
-
-<div class="form-group">
-<label for="smobile" class="cols-sm-2 control-label">Mobile Number</label>
-<div class="cols-sm-10">
-<div class="input-group">
-<span class="input-group-addon"><i class="fas fa-phone" aria-hidden="true"></i></span>
-<input type="text" class="form-control" name="smobile" id="smobile"  placeholder="Enter your Mobile Number" />
-</div>
-<span class="help-block" id="error"></span>
-</div>
-</div>
-
-<div class="form-group">
-<label for="spin" class="cols-sm-2 control-label">Pincode</label>
-<div class="cols-sm-10">
-<div class="input-group">
-<span class="input-group-addon"></span>
-<input type="text" class="form-control" name="spin" id="spin"  placeholder="Pincode"/>
-</div>
-<span class="help-block" id="error"></span>
-</div>
-</div>
-<div class="form-group row">
-<label class="col-sm-2 col-form-label" for="shippingaddress" >Address</label>	
-<div class="cols-sm-10">
-<div class="input-group">
-<span class="input-group-addon"></span>
-<textarea placeholder="Area/Street" class="form-control" id="shippingaddress" name="shippingaddress" ></textarea> 
-</div>
-<span class="help-block" id="error"></span>                    
-</div>
-</div>
-
-<div class="form-group">
-<label for="scity" class="cols-sm-2 control-label">City</label>
-<div class="cols-sm-10">
-<div class="input-group">
-<span class="input-group-addon"></span>
-<input type="text" class="form-control" name="scity" id="scity"  placeholder="City" />
-</div>
-<span class="help-block" id="error"></span>
-</div>
-</div>
-
-<div class="form-group">
-<label for="shstate" class="cols-sm-2 control-label">State</label>
-<div class="cols-sm-10">
-<div class="input-group">
-<span class="input-group-addon"></span>
-<input type="text" class="form-control" name="shstate" id="shstate"  placeholder="State" />
-</div>
-<span class="help-block" id="error"></span>
-</div>
-</div>
-
-<div class="form-group ">
-<input type="submit" name="sbutton"  id="sbutton" value="Save and Deliver Here" class="btn btn-primary btn-lg btn-block login-button"/>
-</div>
-<input type="hidden" value="{{ csrf_token() }}" name="_token">
-</form>
-</div>
-</div>                         
-</div>
-</div>
 
 
 <h3 id="order_review_heading">Your order</h3>
@@ -447,10 +318,6 @@
 
 
 
-
-
-
-
 <!-- Latest jQuery form server -->
 <!-- <script src="https://code.jquery.com/jquery.min.js"></script> -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -469,56 +336,6 @@
 <script src="assets/js/main.js"></script>
 
 <script>
-$(document).ready(function(){
-$('#change').click(function(e){
-alert('scc');
-
-/*   e.preventDefault();
-$('#buy_form2').removeClass("d-none"); */
-});
-$('#bbutton').click(function(){
-var data=$('#bmobile').val();
-alert(data);
-$.ajax({
-url:'/Ecommerce/add-billing-details',
-method:'get',
-data: $('#buy_form1').serialize(),
-success: function (response) {
-alert(response);
-}
-}); 
-});
-
-$('input[type="checkbox"]').click(function(){
-if($(this).prop("checked") == true){
-fillDetails1();
-
-}
-});
-$('#newBtn').click(function(){
-var user_id = $('#userId').val();
-
-$.ajax({     
-url:'/Ecommerce/select-shipping-details',
-data:{'userId':user_id},
-method:'get', 
-success: function (response) {
-$('#displayAddresses').html(response);
-}
-});      
-});
-
-function fillDetails1()
-{
-$('#scity').val($('#bcity').val());
-$('#shstate').val($('#bstate').val());
-$('#spin').val($('#bpin').val());
-$('#shippingaddress').val($('#billingaddress').val());
-$('#smobile').val($('#bmobile').val());
-$('#sname').val($('#bname').val());               
-}
-
-});
 
 </script>
 </body>

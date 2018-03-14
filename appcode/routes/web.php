@@ -58,7 +58,9 @@ Route::post('/add-product','ProductController@addProduct'); */
 
 	Route::get('/buy','ProductController@buy');
 
-	Route::post('/add-billing-details','ProductController@addBillingDetails');
+	Route::get('/add-billing-details','ProductController@addBillingDetails');
+		Route::get('/add-shipping-details','ProductController@addShippingDetails');
+	Route::get('/select-shipping-details','ProductController@selectShippingDetails');
 
 
 

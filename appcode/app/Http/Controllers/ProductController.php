@@ -18,17 +18,50 @@ class ProductController extends Controller
      */
     public function addBillingDetails()
     {
-        $contact = $_POST['mobile'];
-        $pincode = $_POST['pin'];
-        $address = $_POST['address'];
-        $city = $_POST['city'];
-        $state = $_POST['state'];
-        $addType =$_POST['addType'];
-        $userId =$_POST['userId'];
+        $contact = $_GET['bmobile'];  
+        $pincode = $_GET['bpin'];
+        $address = $_GET['billingaddress'];
+        $city = $_GET['bcity'];
+        $state = $_GET['bstate'];
+        $addType =$_GET['addType'];
+        $userId =$_GET['userId'];
+        $name=$_GET['name'];
 
-        DB::select('insert into store_address (address,address_type,user_id,Pincode,city,state)values("'.$address.'",
-        "'.$addType.'","'.$userId .'","'. $pincode.'","'.$city.'","'.$state.'")');
-    } 
+        DB::select('insert into store_address (address,address_type,user_id,Pincode,city,state,mobile_number,name)
+        values("'.$address.'",
+        "'.$addType.'","'.$userId .'","'. $pincode.'","'.$city.'","'.$state.'","'.$contact.'","'.$name.'")');
+    }
+
+    /*
+     * function addShippingDetails
+     * It adds shipping details to the database 
+     */
+    public function addShippingDetails()
+    {
+        $contact = $_GET['smobile'];  
+        $pincode = $_GET['spin'];
+        $address = $_GET['shippingaddress'];
+        $city = $_GET['scity'];
+        $state = $_GET['shstate'];
+        $addType =$_GET['addType'];
+        $userId =$_GET['userId'];
+        $name=$_GET['sname'];
+
+        DB::select('insert into store_address (address,address_type,user_id,Pincode,city,state,mobile_number,name)
+        values("'.$address.'",
+        "'.$addType.'","'.$userId .'","'. $pincode.'","'.$city.'","'.$state.'","'.$contact.'","'.$name.'")');
+    }
+
+    /* 
+     * function selectShippingDetails
+     * It selects all the shipping address of the user
+     */
+    public function selectShippingDetails()
+    {
+        $userId = $_GET['userId'];
+         
+         return view('selectaddress',['userId'=>$userId]);
+    }
 
     /* 
      * function category
@@ -466,12 +499,27 @@ where products.id="'.$productId .'"');
     {
         $userId= Session::get('userid');
         $userAddress=DB::select('select * from store_address 
-        where user_id="'.$userId.'" and address_type= "2"' );
+        where user_id="'.$userId.'" and address_type= "1"' );
         $userDetail=DB::select('select empid,empname,emp_mobile from user_details where
         empid="'.$userId.'"') ;  
+        $shippingAddress = DB::select('select * from store_address where user_id=
+        "'.$userId.'" and address_type="2" and address<>"'.$userAddress[0]->address.'"');
         $productId=$_GET['productId'];
         $productDetails=DB::select('select * from products where id="'.$productId.'"');
+        
+        /* $checkAddress=DB::select('select * from store_address where user_id=2 and address=
+        "'.$userAddress[0]->address.'"'); */
+        /* ,'check'=>$checkAddress */
+        
+        if(empty($userAddress))
+        {
         return view('checkout',['userDetail'=>$userDetail,'userAddress'=>$userAddress,'productDetails'=>$productDetails]);
+        }
+        else
+        {
+        return view('checkout2',['userDetail'=>$userDetail,'userAddress'=>$userAddress,'productDetails'=>$productDetails,
+        'address'=>$shippingAddress]);
+        }
     }
 
 }
