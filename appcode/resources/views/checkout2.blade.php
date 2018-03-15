@@ -122,11 +122,16 @@
 <div class="col-md-8">
 <div class="product-content-right">
 <div class="woocommerce">
+<form id="submitaddress" action="show-payment" method="get" >
+<input type="hidden" value="{{$quantity}}" id="quantity" name="quantity">
+<input type="hidden" value="{{$productDetails[0]->id }}" name="productId" id="productId">
+<input type="hidden" name="shipId" id="shipId">
 <h1>Your Addresses</h1>
 <a href="/Ecommerce/select-shipping-details?userId={{$userAddress[0]->user_id }}">Add new Address </a>
 @if(!empty($address))
 <div>
-<input type="checkbox" id="check" name="check" checked>
+<input type="checkbox" id="{{$userAddress[0]->id}}" name="check" checked>
+  <p id="para{{$userAddress[0]->id}}">
   {{ $userAddress[0]->name}}
   <br>
   {{ $userAddress[0]->address}}
@@ -135,10 +140,12 @@
   <br>
   Phone number : {{$userAddress[0]->mobile_number}}
   <br>
+  </p>
 </div>
 @foreach($address as $a=>$d)
 <div>
-<input type="checkbox" id="check" value="check">
+<input type="checkbox" id="{{$address[0]->id}}" name="check">
+  <p id="para{{$address[0]->id}}">
   {{ $address[$a]->name}}
   <br>
   {{ $address[$a]->address}}
@@ -148,89 +155,15 @@
   Phone number : {{$address[$a]->mobile_number}}
   <br>
   <a href=""> Edit Address </a> | <a href="">Delete Address</a>
-
+  </p>
 </div>
 @endforeach
-
 @endif
-
-
-
-
-<h3 id="order_review_heading">Your order</h3>
-<div id="order_review" style="position: relative;">
-<table class="shop_table">
-<thead>
-<tr>
-<th class="product-name">Product</th>
-<th class="product-total">Total</th>
-</tr>
-</thead>
-<tbody>
-<tr class="cart_item">
-<td class="product-name">
-{{$productDetails [0]->product_name}}  <strong class="product-quantity">× </strong> </td>
-<td class="product-total">
-<span class="amount"></span> </td>
-</tr>
-</tbody>
-<tfoot>
-
-<tr class="shipping">
-<th>Shipping and Handling</th>
-<td>
-<input type="hidden" class="shipping_method" value="free_shipping" id="shipping_method_0" data-index="0" name="shipping_method[0]">
-</td>
-</tr>
-
-
-<tr class="order-total">
-<th>Order Total</th>
-<td><strong><span class="amount"></span></strong> </td>
-</tr>
-
-</tfoot>
-</table>
-
-
-<div id="payment">
-<ul class="payment_methods methods">
-<li class="payment_method_bacs">
-<input type="radio" data-order_button_text="" checked="checked" value="bacs" name="payment_method" class="input-radio" id="payment_method_bacs">
-<label for="payment_method_bacs">Direct Bank Transfer </label>
-<div class="payment_box payment_method_bacs">
-<p>Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order won’t be shipped until the funds have cleared in our account.</p>
-</div>
-</li>
-<li class="payment_method_cheque">
-<input type="radio" data-order_button_text="" value="cheque" name="payment_method" class="input-radio" id="payment_method_cheque">
-<label for="payment_method_cheque">Cheque Payment </label>
-<div style="display:none;" class="payment_box payment_method_cheque">
-<p>Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</p>
-</div>
-</li>
-<li class="payment_method_paypal">
-<input type="radio" data-order_button_text="Proceed to PayPal" value="paypal" name="payment_method" class="input-radio" id="payment_method_paypal">
-<label for="payment_method_paypal">PayPal <img alt="PayPal Acceptance Mark" src="https://www.paypalobjects.com/webstatic/mktg/Logo/AM_mc_vs_ms_ae_UK.png"><a title="What is PayPal?" onclick="javascript:window.open('https://www.paypal.com/gb/webapps/mpp/paypal-popup','WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;" class="about_paypal" href="https://www.paypal.com/gb/webapps/mpp/paypal-popup">What is PayPal?</a>
-</label>
-<div style="display:none;" class="payment_box payment_method_paypal">
-<p>Pay via PayPal; you can pay with your credit card if you don’t have a PayPal account.</p>
-</div>
-</li>
-</ul>
-
-<div class="form-row place-order">
-
-<input type="submit" data-value="Place order" value="Place order" id="place_order" name="woocommerce_checkout_place_order" class="button alt">
-
-
-</div>
-
-<div class="clear"></div>
-
-</div>
-</div>
+</br>
+  <button type="submit" id="btn" name="btn" > Confirm Address</button>
 </form>
+</div>
+
 
 </div>                       
 </div>                    
@@ -256,42 +189,6 @@
 </div>
 </div>
 
-<div class="col-md-3 col-sm-6">
-<div class="footer-menu">
-<h2 class="footer-wid-title">User Navigation </h2>
-<ul>
-<li><a href="">My account</a></li>
-<li><a href="">Order history</a></li>
-<li><a href="">Wishlist</a></li>
-<li><a href="">Vendor contact</a></li>
-<li><a href="">Front page</a></li>
-</ul>                        
-</div>
-</div>
-
-<div class="col-md-3 col-sm-6">
-<div class="footer-menu">
-<h2 class="footer-wid-title">Categories</h2>
-<ul>
-<li><a href="">Mobile Phone</a></li>
-<li><a href="">Home accesseries</a></li>
-<li><a href="">LED TV</a></li>
-<li><a href="">Computer</a></li>
-<li><a href="">Gadets</a></li>
-</ul>                        
-</div>
-</div>
-
-<div class="col-md-3 col-sm-6">
-<div class="footer-newsletter">
-<h2 class="footer-wid-title">Newsletter</h2>
-<p>Sign up to our newsletter and get exclusive deals you wont find anywhere else straight to your inbox!</p>
-<div class="newsletter-form">
-<input type="email" placeholder="Type your email">
-<input type="submit" value="Subscribe">
-</div>
-</div>
-</div>
 </div>
 </div>
 </div>
@@ -336,7 +233,22 @@
 <script src="assets/js/main.js"></script>
 
 <script>
-
+$(document).ready(function(){
+  
+  $('#btn').click(function(){
+    
+    var shippingAddress1="";
+     if($('#{{$address[0]->id}}').prop("checked") == true){
+      shippingAddress1= JSON.parse("{{$address[0]->id}}"); 
+     }
+     else{
+      shippingAddress1= JSON.parse("{{$userAddress[0]->id}}"); 
+     }
+    $('#shipId').val(shippingAddress1);
+     
+        
+  });
+});
 </script>
 </body>
 </html>

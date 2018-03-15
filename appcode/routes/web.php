@@ -56,11 +56,14 @@ Route::post('/add-product','ProductController@addProduct'); */
 
 	Route::get('/category','ProductController@category');
 
-	Route::get('/buy','ProductController@buy');
+	Route::post('/buy','ProductController@buy');
 
 	Route::get('/add-billing-details','ProductController@addBillingDetails');
 		Route::get('/add-shipping-details','ProductController@addShippingDetails');
 	Route::get('/select-shipping-details','ProductController@selectShippingDetails');
+	Route::get('/invoice','ProductController@invoice');
+	Route::get('/order-details','ProductController@orderDetails');
+	Route::get('/show-payment','ProductController@showPayment');
 
 
 

@@ -12,6 +12,47 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {   
+
+    /* 
+     * function invoice
+     * It redirects to invoice page     
+     */
+    public function invoice()
+    {
+       $userId= Session::get('userid');
+       $quantity=$_GET['quantity'];
+       $paymentMode=$_GET['payment_method'];
+       $productId=$_GET['productId'];
+       $shipId=$_GET['shipId'];
+        
+
+
+        DB::select('insert into orders (order_quantity,mode_of_payment) values
+       ("'.$quantity.'","'.$paymentMode.'")');
+       $order=DB::select('SELECT MAX(id) as `id` from orders');
+       $orderId=$order[0]->id;
+       DB::select('insert into map_product_order (order_id,product_id)values("'.$orderId.'",
+       "'.$productId.'")');
+    
+       $billing= DB::select('select * from store_address where address_type="1" and user_id="'.$userId.'"');
+       $shippingAddress=DB::select('select * from store_address 
+        where id="'.$shipId.'" ' ); 
+
+         $productDetails = DB::select('SELECT products.id,products.product_name,products.product_description,products.model_name,product_price.sellingprice,
+       product_price.actualprice,orders.order_quantity,orders.mode_of_payment,orders.order_date,orders.id
+        FROM products 
+LEFT JOIN product_price ON products.id =product_price.product_id
+LEFT JOIN map_product_order on products.id=map_product_order.product_id
+LEFT JOIN orders ON orders.id=map_product_order.order_id
+where products.id="'.$productId.'" and orders.id="'.$orderId.'"');
+
+
+
+        
+        return view('invoice',['billingAddress'=>$billing,'shippingAddress'=>$shippingAddress
+        ,'productDetails'=>$productDetails]); 
+    }
+
     /* 
      * function addBillingDetails
      * It adds billing deatils to database
@@ -498,13 +539,14 @@ where products.id="'.$productId .'"');
     public function buy()
     {
         $userId= Session::get('userid');
+        $quantity=$_POST['quantity'];
         $userAddress=DB::select('select * from store_address 
         where user_id="'.$userId.'" and address_type= "1"' );
         $userDetail=DB::select('select empid,empname,emp_mobile from user_details where
         empid="'.$userId.'"') ;  
         $shippingAddress = DB::select('select * from store_address where user_id=
         "'.$userId.'" and address_type="2" and address<>"'.$userAddress[0]->address.'"');
-        $productId=$_GET['productId'];
+        $productId=$_POST['productId'];
         $productDetails=DB::select('select * from products where id="'.$productId.'"');
         
         /* $checkAddress=DB::select('select * from store_address where user_id=2 and address=
@@ -513,13 +555,52 @@ where products.id="'.$productId .'"');
         
         if(empty($userAddress))
         {
-        return view('checkout',['userDetail'=>$userDetail,'userAddress'=>$userAddress,'productDetails'=>$productDetails]);
+        return view('checkout',['userDetail'=>$userDetail,'userAddress'=>$userAddress,'productDetails'=>$productDetails,
+        'quantity'=>$quantity]);
         }
         else
         {
         return view('checkout2',['userDetail'=>$userDetail,'userAddress'=>$userAddress,'productDetails'=>$productDetails,
-        'address'=>$shippingAddress]);
+        'address'=>$shippingAddress,'quantity'=>$quantity]);
         }
+    }
+
+    /* 
+        * function orderDetails
+        * It redirects to the orders page
+        */
+    public function orderDetails()
+    {
+        $productId=$_GET['productId'];
+        
+
+         $productDetails = DB::select('SELECT products.id,products.product_name,products.product_description,products.model_name,product_price.sellingprice,
+       product_price.actualprice,warranty_features.warranty_summary,
+       memory_features.RAM,memory_features.internal_storage,
+       memory_features.expandable_storage
+        FROM products 
+LEFT JOIN product_price ON products.id =product_price.product_id
+LEFT JOIN map_product_memory_features on products.id =map_product_memory_features.product_id
+LEFT JOIN memory_features on memory_features.id =map_product_memory_features.memory_feature_id
+LEFT JOIN map_product_warranty_features on products.id=map_product_warranty_features.product_id
+LEFT JOIN warranty_features ON warranty_features.id=map_product_warranty_features.warranty_feature_id
+
+where products.id="'.$productId.'"');
+        
+        return view('order',['productDetails'=>$productDetails]);
+    }
+    /* 
+     * function showPayment
+     * It redirects to the Payment Page
+     */
+    public function showPayment()
+    {
+        $shippingAddressId=$_GET['shipId'];
+        $productId=$_GET['productId'];
+        $quantity=$_GET['quantity'];
+
+        return view('payment',['quantity'=>$quantity,'shipId'=>$shippingAddressId,
+        'productId'=>$productId]);
     }
 
 }

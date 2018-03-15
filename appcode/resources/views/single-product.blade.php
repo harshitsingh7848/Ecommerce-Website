@@ -67,7 +67,7 @@
            <a href="{{ url('cart')}}" class="btn btn-info btn-lg">
           <span class="glyphicon glyphicon-shopping-cart"></span> ADD TO CART
         </a>
-           <a href="/Ecommerce/buy?productId={{$productDetails[0]->id }}" class="btn btn-info btn-lg">
+           <a href="/Ecommerce/order-details?productId={{$productDetails[0]->id }} " class="btn btn-info btn-lg">
           <span class="glyphicon glyphicon-shopping-cart"></span> BUY NOW
         </a>
            </div>
