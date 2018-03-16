@@ -9,21 +9,80 @@ use DB;
 use Carbon\Carbon;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
+use PDF;
 
 class ProductController extends Controller
 {   
 
     /* 
+     * function downloadInvoice
+     * It will download the invoice  
+     */
+    public function downloadInvoice()
+    {
+        
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->loadHtml('<h1>hi</h1>');
+        return $pdf->download('invoice.pdf');   
+    }
+
+    /*
+     * function showPurchasedProduct
+     * It redirects to Purchase Product page 
+     */
+    public function showPurchasedProduct()
+    {
+
+        $userId= Session::get('userid');
+       $quantity=$_POST['quantity'];
+       $productId=$_POST['productId'];
+       $shipId=$_POST['shipId'];
+       $name=Session::get('username');
+
+        $characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+        $invoiceNum = 'GM';
+        $max = strlen($characters) - 1;
+        for ($i = 0; $i < 10; $i++) {
+            $invoiceNum .= $characters[mt_rand(0, $max)];
+            
+        }
+        $invoiceNum .= $productId.$userId;
+        
+
+        DB::select('insert into invoice (invoice_number) values("'.$invoiceNum.'")');
+        $invoiceId=DB::select('select MAX(id) as id from invoice');
+        $invoice=DB::select('select invoice_number from invoice where id="'.$invoiceId[0]->id.'"');
+        $invoiceNumber=$invoice[0]->invoice_number;
+       $billing= DB::select('select * from store_address where address_type="1" and user_id="'.$userId.'"');
+       $shippingAddress=DB::select('select * from store_address 
+        where id="'.$shipId.'" ' ); 
+
+         $productDetails = DB::select('SELECT products.id,products.product_name,products.product_description,products.model_name,product_price.sellingprice,
+       product_price.actualprice FROM products 
+LEFT JOIN product_price ON products.id =product_price.product_id
+where products.id="'.$productId.'"');
+
+
+
+        
+        return view('purchaseproductdetails',['shippingAddress'=>$shippingAddress
+        ,'productDetails'=>$productDetails,'name'=>$name,'productId'=>$productId,'quantity'=>
+        $quantity,'invoiceNumber'=>$invoiceNumber]); 
+        
+    }
+
+    /* 
      * function invoice
      * It redirects to invoice page     
      */
-    public function invoice()
+    public function invoice(Request $request)
     {
        $userId= Session::get('userid');
-       $quantity=$_GET['quantity'];
-       $paymentMode=$_GET['payment_method'];
-       $productId=$_GET['productId'];
-       $shipId=$_GET['shipId'];
+       $quantity=$_POST['quantity'];
+       $paymentMode=$_POST['payment_method'];
+       $productId=$_POST['productId'];
+       $shipId=$_POST['shipId'];
+       $name=Session::get('username');
         
 
 
@@ -33,13 +92,20 @@ class ProductController extends Controller
        $orderId=$order[0]->id;
        DB::select('insert into map_product_order (order_id,product_id)values("'.$orderId.'",
        "'.$productId.'")');
+
+        $characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+        $orderNum = 'GMOR-';
+        
+        $orderNum .= $productId.$userId.$orderId;
+
+        DB::select('update orders set order_number="'.$orderNum.'" where id="'.$orderId.'"');
     
        $billing= DB::select('select * from store_address where address_type="1" and user_id="'.$userId.'"');
        $shippingAddress=DB::select('select * from store_address 
         where id="'.$shipId.'" ' ); 
 
          $productDetails = DB::select('SELECT products.id,products.product_name,products.product_description,products.model_name,product_price.sellingprice,
-       product_price.actualprice,orders.order_quantity,orders.mode_of_payment,orders.order_date,orders.id
+       product_price.actualprice,orders.order_quantity,orders.mode_of_payment,orders.order_date,orders.order_number
         FROM products 
 LEFT JOIN product_price ON products.id =product_price.product_id
 LEFT JOIN map_product_order on products.id=map_product_order.product_id
@@ -48,9 +114,15 @@ where products.id="'.$productId.'" and orders.id="'.$orderId.'"');
 
 
 
+/* $pdf = \App::make('dompdf.wrapper');
+$pdf->loadHtml('invoice');
+return $pdf->download('invoice.pdf'); */
+        
+           
+            
         
         return view('invoice',['billingAddress'=>$billing,'shippingAddress'=>$shippingAddress
-        ,'productDetails'=>$productDetails]); 
+        ,'productDetails'=>$productDetails,'name'=>$name]); 
     }
 
     /* 
@@ -152,9 +224,10 @@ LEFT JOIN map_product_image on products.id=map_product_image.product_id
 LEFT JOIN images ON images.id=map_product_image.image_id
 where products.product_name="'.$slug.'"');
  
+$name= Session::get('username');
 
 
-       return view('single-product',['productDetails'=>$res]);
+       return view('single-product',['productDetails'=>$res,'name'=>$name]);
     }
 
     /*
@@ -184,10 +257,11 @@ where products.product_name="'.$slug.'"');
             for($i=0; $i<count($brandList); $i++) {
                 $brandList[$i]->product_name = explode(",", $brandList[$i]->product_name);
             }
+              $name=Session::get('username');
             /* echo '<pre/>';
             print_r($brandList);
             exit; */
-        return view('brandlist',['brandlists'=>$brandList]);
+        return view('brandlist',['brandlists'=>$brandList,'name'=>$name]);
     }
 
     /* 
@@ -540,12 +614,14 @@ where products.id="'.$productId .'"');
     {
         $userId= Session::get('userid');
         $quantity=$_POST['quantity'];
+        $name=Session::get('username');
         $userAddress=DB::select('select * from store_address 
         where user_id="'.$userId.'" and address_type= "1"' );
+        
         $userDetail=DB::select('select empid,empname,emp_mobile from user_details where
-        empid="'.$userId.'"') ;  
-        $shippingAddress = DB::select('select * from store_address where user_id=
-        "'.$userId.'" and address_type="2" and address<>"'.$userAddress[0]->address.'"');
+        empid="'.$userId.'"') ; 
+        
+       
         $productId=$_POST['productId'];
         $productDetails=DB::select('select * from products where id="'.$productId.'"');
         
@@ -556,12 +632,14 @@ where products.id="'.$productId .'"');
         if(empty($userAddress))
         {
         return view('checkout',['userDetail'=>$userDetail,'userAddress'=>$userAddress,'productDetails'=>$productDetails,
-        'quantity'=>$quantity]);
+        'quantity'=>$quantity,'name'=>$name]);
         }
         else
         {
+             $shippingAddress = DB::select('select * from store_address where user_id=
+        "'.$userId.'" and address_type="2" and address<>"'.$userAddress[0]->address.'"');
         return view('checkout2',['userDetail'=>$userDetail,'userAddress'=>$userAddress,'productDetails'=>$productDetails,
-        'address'=>$shippingAddress,'quantity'=>$quantity]);
+        'address'=>$shippingAddress,'quantity'=>$quantity,'name'=>$name]);
         }
     }
 
@@ -586,8 +664,8 @@ LEFT JOIN map_product_warranty_features on products.id=map_product_warranty_feat
 LEFT JOIN warranty_features ON warranty_features.id=map_product_warranty_features.warranty_feature_id
 
 where products.id="'.$productId.'"');
-        
-        return view('order',['productDetails'=>$productDetails]);
+        $name= Session::get('username');
+        return view('order',['productDetails'=>$productDetails,'name'=>$name]);
     }
     /* 
      * function showPayment
@@ -595,12 +673,13 @@ where products.id="'.$productId.'"');
      */
     public function showPayment()
     {
-        $shippingAddressId=$_GET['shipId'];
-        $productId=$_GET['productId'];
-        $quantity=$_GET['quantity'];
+        $shippingAddressId=$_POST['shipId'];
+        $productId=$_POST['productId'];
+        $quantity=$_POST['quantity'];
+        $name=Session::get('username');
 
         return view('payment',['quantity'=>$quantity,'shipId'=>$shippingAddressId,
-        'productId'=>$productId]);
+        'productId'=>$productId,'name'=>$name]);
     }
 
 }

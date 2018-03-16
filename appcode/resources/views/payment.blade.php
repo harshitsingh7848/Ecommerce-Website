@@ -2,14 +2,14 @@
 
 @section('body')
 
-<form action="invoice" method="get">
+<form action="invoice" method="post">
 <input type="hidden" value="{{$quantity}}" id="quantity" name="quantity">
 <input type="hidden" value="{{$productId}}" name="productId" id="productId">
 <input type="hidden" name="shipId" id="shipId" value="{{$shipId}}">
 <input type="hidden" name="paymentMode" id="paymentMode">
 <div id="payment">
 <ul class="payment_methods methods">
-<h1> Choose your Payment Method</h1>
+<h3> Choose your Payment Method</h3>
 <li class="payment_method_cash">
 <input type="radio" data-order_button_text="" value="cash" name="payment_method" class="input-radio" id="payment_method_cash">
 <label for="payment_method_cash">Cash on Delivery </label>

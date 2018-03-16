@@ -61,10 +61,14 @@ Route::post('/add-product','ProductController@addProduct'); */
 	Route::get('/add-billing-details','ProductController@addBillingDetails');
 		Route::get('/add-shipping-details','ProductController@addShippingDetails');
 	Route::get('/select-shipping-details','ProductController@selectShippingDetails');
-	Route::get('/invoice','ProductController@invoice');
-	Route::get('/order-details','ProductController@orderDetails');
-	Route::get('/show-payment','ProductController@showPayment');
+	Route::post('/invoice','ProductController@invoice');
 
+	Route::get('/order-details','ProductController@orderDetails');
+	Route::post('/show-payment','ProductController@showPayment');
+
+	Route::get('/account','UserController@myAccount');
+	Route::post('/show-purchased-product','ProductController@showPurchasedProduct');
+	Route::post('/download','ProductController@downloadInvoice');
 
 
 /* Route::get('/upload', 'testcontroller@uploadForm');

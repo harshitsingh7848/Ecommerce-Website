@@ -1,25 +1,19 @@
 @extends('homepage')
 
 @section('body')
+<form action="show-payment" method="post" >
+<input type="hidden" value="{{$quantity}}" id="quantity" name="quantity">
+<input type="hidden" value="{{$productId}}" name="productId" id="productId">
+<input type="hidden" name="shipId" id="shipId" value="{{$shippingAddress[0]->id}}">
 <div class="container">
     <div class="row">
         <div class="col-xs-12">
-				<form method="POST" action="download">
     		<div class="invoice-title">
-    			<h2>Your Order</h2><h3 >Order # {{$productDetails[0]->order_number}} </h3>
+    			<h2>Product Details</h2><h3 class="pull-right">invoice # {{$invoiceNumber}} </h3>
     		</div>
     		<hr>
     		<div class="row">
-    			<div class="col-xs-6">
-    				<address>
-    				<strong>Billed To:</strong><br>
-    					{{$billingAddress[0]->name}}<br>
-    					{{$billingAddress[0]->address}},<br>
-    					{{$billingAddress[0]->city}},{{$billingAddress[0]->state}},
-              {{$billingAddress[0]->Pincode}}
-    					
-    				</address>
-    			</div>
+    		
     			<div class="col-xs-6 text-right">
     				<address>
         			<strong>Shipped To:</strong><br>
@@ -30,20 +24,7 @@
     				</address>
     			</div>
     		</div>
-    		<div class="row">
-    			<div class="col-xs-6">
-    				<address>
-    					<strong>Payment Method:</strong><br>
-    					{{ $productDetails[0]->mode_of_payment }}<br>
-    				</address>
-    			</div>
-    			<div class="col-xs-6 text-right">
-    				<address>
-    					<strong>Order Date:</strong><br>
-    					{{ $productDetails[0]->order_date }}<br><br>
-    				</address>
-    			</div>
-    		</div>
+    		
     	</div>
     </div>
     
@@ -69,7 +50,7 @@
     							<tr>
     								<td>{{ $productDetails[0]->product_name }}</td>
     								<td class="text-center" id="price">{{ $productDetails[0]->sellingprice }}</td>
-    								<td class="text-center" id="quantity">{{ $productDetails[0]->order_quantity }}</td>
+    								<td class="text-center" id="quantity1">{{ $quantity }}</td>
     								<td class="text-right" id="total" ></td>
     							</tr>
                                
@@ -92,38 +73,23 @@
     							</tr>
     						</tbody>
     					</table>
-              </div>
-							
+              
     				</div>
     			</div>
-				<div class="row align-items-end">
-				<div class="col-md-6">
-		
-				<p>Click on the Download button if you want to download the invoice as pdf:<p>
-				
-				<button type="submit" id="btn">Download Invoice</button>
-				
-				
-				
-				</div>
-				</form>	
-				<div class="col-md-6">
-				<p>Click the button to print the current page.<p>
-
-			<button onclick="myFunction()">Print this page</button>
-			</div>
-			</div>
+          <button type="submit" >Select Payment</button>
+    		</div>
     	</div>
     </div>
 </div>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+</form>
 
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <script>
 $(document).ready(function(){
   
      var price = $('#price').text();
- var quantity = $('#quantity').text();
+ var quantity = $('#quantity1').text();
  var total = price * quantity;
 $('#total').text(total);
 $('#subtotal').text(total);
@@ -132,25 +98,9 @@ $('#shippingcharge').text(shippingcharge);
 var totalamount = shippingcharge + total;
 $('#totalamount').text(totalamount);
 
-/* $('#btn').click(function(){
-	var message=""
-	$.ajax({
-		url:'/Ecommerce/download',
-		method:'POST',
-		data:{'html': $('#g').html()},
-		
-		success:function(response){
-			alert(response);
-		},
-	}); */
-});
+
  
 
 });
-</script>
-<script>
-function myFunction() {
-    window.print();
-}
 </script>
 @endsection

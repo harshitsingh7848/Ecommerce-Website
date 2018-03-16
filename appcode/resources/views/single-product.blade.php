@@ -1,59 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
 
-  <head>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+   @extends('homepage')
 
-    <title>Shop Item </title>
+    @section('title','Shop Item') 
 
+    @section('head')
     <!-- Bootstrap core CSS -->
     <!-- <link href="assets/css/bootstrap.min.css" rel="stylesheet"> -->
 
     <!-- Custom styles for this template -->
     <link href="/Ecommerce/assets/css/shop-item.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    
     <!-- font awesome icons CSS -->
-    <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+  <!--   <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet"> -->
 
 
-  </head>
+ @endsection
 
-  <body>
+  @section('body')
 
-    <!-- Navigation -->
-    <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-      <div class="container">
-        <a class="navbar-brand" href="#">Gadget Maniac</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Home
-                <span class="sr-only">(current)</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Services</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Contact</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav> -->
-
+   
     <!-- Page Content -->
     <div class="container">
 
@@ -288,20 +254,32 @@
       </div>
 
     </div>
+
+    <script src="https://code.jquery.com/jquery.min.js"></script>
+    
+    <!-- Bootstrap JS form CDN -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    
+    <!-- jQuery sticky menu -->
+    <script src="assets/js/owl.carousel.min.js"></script>
+    <script src="assets/js/jquery.sticky.js"></script>
+    
+    <!-- jQuery easing -->
+    <script src="assets/js/jquery.easing.1.3.min.js"></script>
+    
+    <!-- Main Script -->
+    <script src="assets/js/main.js"></script>
+    
+    <!-- Slider -->
+    <script type="text/javascript" src="assets/js/bxslider.min.js"></script>
+	<script type="text/javascript" src="assets/js/script.slider.js"></script>
+    
     <!-- /.container -->
 
     <!-- Footer -->
-    <footer class="py-5 bg-dark">
-      <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Gadget Maniac</p>
-      </div>
-      <!-- /.container -->
-    </footer>
-
+    
     <!-- Bootstrap core JavaScript -->
     <!-- <script src="assets/shop/jquery/jquery.min.js"></script>
     <script src="assets/shop/bootstrap/js/bootstrap.bundle.min.js"></script>
  -->
-  </body>
-
-</html>
+  @endsection
