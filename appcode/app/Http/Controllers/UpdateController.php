@@ -28,7 +28,22 @@ class UpdateController extends Controller
         header('Cache-Control: no-cache');
 
         $time = ecommerce::count();
-        echo "data:  {$time}\n\n";
+        echo "Number of Users:  {$time}\n\n";
+        flush();
+    }
+
+    /*
+     * function getOrderCount
+     * It passes details of Orders from database and passes it to webworker 
+     */
+    public function getOrderCount()
+    {
+        header('Content-Type: text/event-stream');
+        header('Cache-Control: no-cache');
+                
+        $result = DB::select('select count(id) as id from orders ');
+        $time = $result[0]->id;
+        echo "Number of Orders:  {$time}\n\n";
         flush();
     }
 }

@@ -101,21 +101,21 @@
       <tbody>
         @foreach($modules as $module)
         <input type="hidden" id="moduleId" value="{{ $module->id }}">
-        <tr>
+        <tr id="row-{{ $module->id}}">
           <td> {{ $module->module_name }} </td>         
-          <td>
+          <td >
             <label for="checkbox1">Create</label>
-            <input type="checkbox" name="checkbox1"id="{{ $module->id }}">
+            <input type="checkbox" name="checkbox[]"id="{{ $module->id."_". "1" }}" value="1">
             <label for="checkbox2">Edit</label>
-            <input type="checkbox" name="checkbox2"id="{{$module->id."_". "2"}}">
+            <input type="checkbox" name="checkbox[]"id="{{$module->id."_". "2"}}" value="2">
             <label for="checkbox3">View</label>
-            <input type="checkbox" name="checkbox3"id="{{$module->id."_". "3"}}">
+            <input type="checkbox" name="checkbox[]"id="{{$module->id."_". "3"}}" value="3">
             <label for="checkbox4">Delete</label>
-            <input type="checkbox" name="checkbox4"id="{{$module->id."_". "4"}}">
+            <input type="checkbox" name="checkbox[]"id="{{$module->id."_". "4"}}" value="4">
             
           </td>
           <td>
-            <button type="button" id="btn" name="btn" >Update</button>
+            <button type="button" class="btn" id="{{$module->id}}" name="btn" >Update</button>
           </td>
         </tr>
         @endforeach
@@ -162,23 +162,29 @@
     });
     $(document).ready(function(){
  
-$('#btn').click(function(){
-  var moduleId = $('#moduleId').val();
-  var createId = +$('#{{ $module->id  }}').is( ':checked' );
-  alert(createId);
-  var viewId =+$('#{{$module->id . "_" . "3"}}').is( ':checked' );
-  var editId =+$('#{{$module->id . "_" . "2"}}').is( ':checked' );
-  var deleteId =+$('#{{$module->id . "_" . "4"}}').is( ':checked' );
+$('.btn').click(function(){
+  var buttonId=$(this).attr('id');
+  var parentId=$(this).closest('td').parent().attr('id');
+  
+  var checked = '';
+ $("#"+parentId+" input[name='checkbox[]']:checked").each(function ()
+{
+    checked += parseInt($(this).val());
+    checked +=' ';
+    
+});
+
+  var moduleId = buttonId;
+  
   var concatUserRole =$('#concatemailusertype').val();
   $.ajax({
     url:'/Ecommerce/add-privileges',
     method:'POST',
-    data:{'createId':createId,'viewId':viewId,'editId':editId,
-      'deleteId':deleteId,'concatUserRole':concatUserRole,'moduleId':moduleId},
+    data:{'checkId':checked,'concatUserRole':concatUserRole,'moduleId':moduleId},
     success:function(response){
         alert(response);
     },
-  });
+  }); 
   
   
 });

@@ -28,9 +28,13 @@
 		<div class="container">
 			<div class="row main">
 				<div class="main-login main-center">
+				@if(!empty($name))
+				<form class=""  id="register-form" method="post" action="admin/register">
+				@else
 					<form class=""  id="register-form" method="post" action="register">
-						
+						@endif
 						<div class="form-group">
+						
 							<label for="name" class="cols-sm-2 control-label">Your Name</label>
 							<div class="cols-sm-10">
 								<div class="input-group">
@@ -48,6 +52,11 @@
 									<span class="input-group-addon"><i class="fas fa-phone" aria-hidden="true"></i></span>
 									<input type="text" class="form-control" name="mobile" id="mobile"  placeholder="Enter your Mobile Number" required/>
 								</div>
+								
+    					@if ($errors->has('mobile'))
+    						<div class="error">{{ $errors->first('mobile') }}</div>
+							@endif
+									
 								<span class="help-block" id="error"></span>
 							</div>
 						</div>
@@ -59,6 +68,11 @@
 									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
 									<input type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email"/>
 								</div>
+								
+    						@if ($errors->has('email'))
+    							<div class="error">{{ $errors->first('email') }}</div>
+								@endif
+									
 								<span class="help-block" id="error"></span>
 							</div>
 						</div>

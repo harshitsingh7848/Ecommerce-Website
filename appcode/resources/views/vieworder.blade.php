@@ -1,4 +1,4 @@
-    @extends('layouts.app')
+@extends('layouts.app')
             
     @section('title','Admin Dashboard')
 
@@ -19,50 +19,48 @@
         <link href="assets/css/style.css" rel="stylesheet">
         <link href="assets/css/jumbotron.css" rel="stylesheet">
 
-        
-        
         @endsection
 
-        
-        
-        @section('content')
-        
-            <!-- Page Content -->
-            <div id="page-content-wrapper">
+@section('content')
+
+
+ <div id="page-content-wrapper">
                <div class="jumbotron">
-                    <h1 class="">Products</h1>
-                    <a class="pull-right btn btn-success btn-lg" href="{{ url('view-add-products')}}" role="button">
-                        <i class="fa fa-plus"></i>
-                        Add new product</a>
+                    <h1 class="">Orders</h1>         
                     <hr class="my-4">
                 </div>
          
                 <table id="example" class="display"  >
                     <thead>
                         <tr>
-                            <th>Product ID</td>
-                            <th>Product Name</td>
-                            <th>Product Description</td> 
-                            <th>Edit / Delete</th>
+                            <th>Order Number</th>
+                            <th>Order Quantity</td>
+                            <th>Order Date</td> 
+                            <th>Mode of Payment</th>
+                            <th>Order Description</th>    
                         </tr>
                     </thead>
                     
                     <tbody>
-                    @if(!empty($productDetails))
-                    @foreach($productDetails as $productDetail)
+                    @if(!empty($orders))
+                    @foreach($orders as $order)
                         <tr>
                             <td>
-                            {{ $productDetail->id }}
+                            {{ $order->order_number }}
                             </td>
                             <td>
-                            {{ $productDetail->product_name}}
+                            {{ $order->order_quantity}}
                             </td>
                             <td>
-                            {{ $productDetail->product_description }}
+                            {{ $order->order_date }}
                             </td>
                             <td>
-								<a id="update" href="/Ecommerce/update-product?productId={{ $productDetail->id }}" >Edit</a> / <a id="delete" href="">Delete </a>
+                            {{ $order->mode_of_payment }}
                             </td>
+                            <td>
+                            
+                            </td>
+                            
                         </tr>
                     @endforeach
                     @endif
@@ -89,47 +87,14 @@
         <!-- Menu Toggle Script -->
         
 
-        <script>
+
+  
+    <script>
         $(document).ready(function(){
         $('#example').DataTable();
-        // Edit record
-        var table = $('#example').DataTable();    
-        $('#example tbody').on( 'click', '#delete', function () {
-        var data = table.row( $(this).parents('tr') ).data();
-        
-        $.ajax({
-            type: 'get',
-            url: '/Ecommerce/delete-product',
-            data: {'id':data[0]},
-            success:function(response){
-                alert(response);
-            },
         });
-    } );    
-
-  
-    });
-
- 
-  
     </script>
-        <!-- <script>
-         var table = $('#example').DataTable();   
-              $('#example tbody').on( 'click', '#update', function () {
-        var data = table.row( $(this).parents('tr') ).data();
-        alert(data[0]);
-        $.ajax({
-            type: 'get',
-            url: '/Ecommerce/update-product',
-            data: {'productId':data[0]},
-            success:function(response){
-                //alert(response);
-            },
-        });
-    } );    
-        </script>
-         -->
-        @endsection
+      
+       
 
-
-
+@endsection

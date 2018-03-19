@@ -56,6 +56,9 @@ class IndexController extends Controller
         $latestProductList = json_decode(DB::table('products')->where('created_date','>=',$currentDate->subMonth())->select('product_name')->get());
                
         $name=Session::get('username');
-        return view('index',['name'=>$name,'latestProductList'=>$latestProductList]);   
+        $role=Session::get('userRole');
+        
+        return view('index',['name'=>$name,'latestProductList'=>$latestProductList,'role'
+        => $role]);   
     }
 }

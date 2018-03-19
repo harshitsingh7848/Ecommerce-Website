@@ -8,6 +8,7 @@ $('document').ready(function()
    $.validator.addMethod("validname", function( value, element ) {
        return this.optional( element ) || nameregex.test( value );
    }); 
+    
    
    // valid email pattern
    var eregex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -34,7 +35,8 @@ $('document').ready(function()
     },
     email: {
      required: true,
-     validemail: true
+     validemail: true,
+     duplicate:true
     },
     mobile: {
         required: true,
@@ -90,8 +92,9 @@ $('document').ready(function()
      
      submitHandler: function(form) {
                     form.submit();
+                    ignoreTitle: true
      $("#register-form")[0].reset();
-     alert('Successfull Registration');
+     
                 }
      }); 
  })

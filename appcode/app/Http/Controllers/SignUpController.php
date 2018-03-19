@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Config;
+use Session;
 
 class SignUpController extends Controller
 {
@@ -14,6 +15,9 @@ class SignUpController extends Controller
 
     public function signup()
     {
-         return  view('signup');
+        $name=Session::get('username');
+        
+      
+         return  view('signup',['name'=>$name]);
     }
 }

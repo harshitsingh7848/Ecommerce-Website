@@ -53,11 +53,17 @@
                             <!-- <li><a href="{{ url('cart') }}"><i class="fa fa-user"></i> My Cart</a></li> -->
                            <!--  <li><a href="{{ url('checkout') }}"><i class="fa fa-user"></i> Checkout</a></li> -->
                             <li><a href="{{ url('/brand-category') }}">Category</a></li>
+                            
+                            @if($role===3)
+                                   <li><a href="{{ url('/my-orders') }}">My Orders</a></li>  
+                            @endif
+                            
                             @if (!empty($name))
                            Hello {{  $name }}
                              <li><a href="{{ url('/logout') }}"><i class="fa fa-user"></i>Logout</a></li>
                             @else
-                             <li><a href="{{ url('login') }}"><i class="fa fa-user"></i>LogIn</a></li>
+                             <li><a href="{{ url('login') }}"><i class="fa fa-user"></i>LogIn</a></li>or
+                             <li><a href="{{ url('signup') }}"><i class="fa fa-user"></i>Signup</a></li>
                            @endif
                           
                         </ul>

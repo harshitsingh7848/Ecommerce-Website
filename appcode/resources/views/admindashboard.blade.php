@@ -17,9 +17,9 @@
                 </li>
 
                 <li>
-                    <a href="#">Orders</a>
+                    <a href="{{url('view-orders')}}">Orders</a>
                 </li>
-
+                @if($role===1 || $role===2)
                 <li>
                     <a href="#">Users</a>
                         
@@ -27,6 +27,7 @@
                     <ul>
                    
                    <li><a href="new-users">New Users</a></li>
+                   <li><a href="list-of-users">List of Users</a></li>
                   
                </ul>
                @endif
@@ -35,6 +36,7 @@
                 <li>
                     <a href="#">Roles</a>
                 </li> 
+                @endif
             </ul>
         </div>
         <!-- /#sidebar-wrapper -->
@@ -67,7 +69,7 @@
                             <div class="card-header">Products</div>
                             <div class="card-body">
                                 <h5 class="card-title">New Products added</h5>
-                                <p class="card-text">335 <i class="fas fa-arrow-down"></i></p>
+                                <p class="card-text" >335 <i class="fas fa-arrow-down"></i></p>
                             </div>
                         </div>
                     </div>
@@ -76,7 +78,7 @@
                             <div class="card-header">Orders</div>
                             <div class="card-body">
                                 <h5 class="card-title">Primary card title</h5>
-                                <p class="card-text">2000 <i class="fas fa-arrow-down"></i></p>
+                                <p class="card-text" id="orders"> <i class="fas fa-arrow-down"></i></p>
                                 
                             </div>
                         </div>
@@ -130,6 +132,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>  
     <script src="assets/js/morris_chart.js"></script>  
     <script src="assets/js/brand-list.js"></script>
+    <script src="assets/js/orders.js"></script>
     
     <!-- Menu Toggle Script -->
     <script>
@@ -147,16 +150,15 @@
 
 
 <script>
-if(typeof(EventSource) !== "undefined") {
+/* if(typeof(EventSource) !== "undefined") {
     var source = new EventSource("/Ecommerce/getdetails");
     source.onmessage = function(event) {
         document.getElementById("result").innerHTML = event.data ;
-    };
-} else {
+     };
+} */
     timedCount();
     
-   
-}
+
 function timedCount() {
   var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {

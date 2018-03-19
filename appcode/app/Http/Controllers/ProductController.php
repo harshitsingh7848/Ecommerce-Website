@@ -16,6 +16,26 @@ class ProductController extends Controller
 {   
 
     /* 
+     * function myOrders
+     * It will display all the Orders given by user 
+     */
+    public function myOrders()
+    {
+        $empId= Session::get('userid');
+       
+
+       $orderDetail=DB::select('select orders.order_number,orders.mode_of_payment,orders.order_quantity,
+       orders.order_date,products.product_name,products.product_description from
+       orders left join map_product_order on orders.id=map_product_order.order_id
+       left join products on products.id= map_product_order.product_id 
+       orders left join map_user_order on orders.id=map_user_order.order_id
+       left join user_details on user_details.empid= map_user_order.user_id
+       where user_details.id="'.$empId.'"
+       ');     
+        return view('myorders',['orderDetail'=>$orderDetail]);
+    }
+
+    /* 
      * function downloadInvoice
      * It will download the invoice  
      */
@@ -94,6 +114,8 @@ where products.id="'.$productId.'"');
        $orderId=$order[0]->id;
        DB::select('insert into map_product_order (order_id,product_id)values("'.$orderId.'",
        "'.$productId.'")');
+       DB::select('insert into map_user_order (order_id,user_id)values("'.$orderId.'",
+       "'.$userId.'")');
 
         $characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
         $orderNum = 'GMOR-';
@@ -696,6 +718,18 @@ where products.id="'.$productId.'"');
 
         return view('payment',['quantity'=>$quantity,'shipId'=>$shippingAddressId,
         'productId'=>$productId,'name'=>$name]);
+    }
+
+    /* 
+     * function viewOrders
+     * It shows the list of all the orders that have been placed
+     */
+    public function viewOrders()
+    {
+        $orders = DB::select('select * from orders');
+
+        
+        return view('vieworder',['orders'=>$orders]);
     }
 
 }

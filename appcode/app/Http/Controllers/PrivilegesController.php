@@ -24,7 +24,8 @@ class PrivilegesController extends Controller
         ->wherenull('user_privilege_module_role.role_id')
         ->get(); 
         
-        $usertype = dropdownbind::get(['role_name']);
+        $usertype = dropdownbind::where('id','<>','3')->get(['role_name']);
+        
         $modules = DB::table('modules')->get();
 
         //print_r($usertype);
@@ -37,19 +38,32 @@ class PrivilegesController extends Controller
      */
     public function addPrivileges()
     {
-        $createId = $_POST['createId']; 
-        $editId = $_POST['editId'];
-        $viewId = $_POST['viewId'];
-        $deleteId = $_POST['deleteId'];
-        $concatUserRole=$_POST['concatUserRole'];
+        
+        $checkId = trim($_POST['checkId']);
+        
+         $privilege=explode(" ",$checkId); 
+        
+         $concatUserRole=$_POST['concatUserRole'];
            $result= explode("-",$concatUserRole);
           $role=$result[0];
-          $empId=$result[1];
-          $moduleId=$_POST['moduleId'];
+          $roles = DB::select('select id from roles where role_name = "'.$role.'"');
 
-          /* DB::select('insert into user_privilege_module_role (emp_id,module_id,privilege_id,role_id) 
-          values("'.$empId.'","'.$moduleId.'","'.$privilegeId.'","'.$role.'")'); */
-        
-        echo $editId; 
+          $roleId=$roles[0]->id;
+          
+
+          $empId=$result[1];
+          $moduleId=$_POST['moduleId']; 
+
+          $str="";
+
+           foreach($privilege as $p=>$v)
+           {     
+            $str.='("'.$empId.'", "'.$moduleId.'", "'.$privilege[$p].'", "'.$roleId.'") ,';
+           }
+           
+            DB::select('insert into user_privilege_module_role (emp_id,module_id,privilege_id,role_id) 
+          values '.rtrim( $str, ' , '));
+          echo 'Privilege Saved Successfully';exit;
+         
     }
 }

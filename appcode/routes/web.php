@@ -33,7 +33,7 @@ Route::post('/add-product','ProductController@addProduct'); */
 	
 	Route::post('/add-product','ProductController@addProduct');
 	Route::get('/admin','DashboardController@adminDashboard');
-	Route::get('/vendors','DashboardController@vendorDashboard');
+	Route::get('/vendor','DashboardController@adminDashboard');
 
 	Route::get('/delete-product','ProductController@deleteProduct');
 
@@ -42,12 +42,14 @@ Route::post('/add-product','ProductController@addProduct'); */
 	 Route::get('/signup','SignUpController@signup');
 
 	Route::post('/register','AddUserController@addUserToDB');
+	Route::post('/admin/register','AddUserController@addUserToDB');
 
 	Route::post('/verification','LoginController@doLogin');
 
 	
 	Route::post('/add-privileges','PrivilegesController@addPrivileges');		
-	Route::get('/new-users','PrivilegesController@index');
+	Route::get('/list-of-users','PrivilegesController@index');
+	Route::get('/new-users','SignUpController@signup');
 
 	Route::get('/addusertype','UpdateController@update');
 	
@@ -70,6 +72,11 @@ Route::post('/add-product','ProductController@addProduct'); */
 	Route::get('/account','UserController@myAccount');
 	Route::post('/show-purchased-product','ProductController@showPurchasedProduct');
 	Route::post('/download','ProductController@downloadInvoice');
+	
+	Route::get('/getorders','UpdateController@getOrderCount');
+	Route::get('/view-orders','ProductController@viewOrders');
+
+	Route::get('/my-orders','ProductController@myOrders');
 
 
 /* Route::get('/upload', 'testcontroller@uploadForm');
