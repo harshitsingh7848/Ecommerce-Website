@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 use PDF;
+use Dompdf\Dompdf;
 
 class ProductController extends Controller
 {   
@@ -21,9 +22,10 @@ class ProductController extends Controller
     public function downloadInvoice()
     {
         
-        $pdf = \App::make('dompdf.wrapper');
+        /* $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHtml('<h1>hi</h1>');
-        return $pdf->download('invoice.pdf');   
+        return $pdf->download('invoice.pdf');   */ 
+        
     }
 
     /*
@@ -118,11 +120,16 @@ where products.id="'.$productId.'" and orders.id="'.$orderId.'"');
 $pdf->loadHtml('invoice');
 return $pdf->download('invoice.pdf'); */
         
-           
+$dompdf = new Dompdf();        
+        
+        
+$dompdf->loadHtml(view('invoice',['billingAddress'=>$billing,'shippingAddress'=>$shippingAddress
+,'productDetails'=>$productDetails,'name'=>$name]));
+$dompdf->render();
             
         
-        return view('invoice',['billingAddress'=>$billing,'shippingAddress'=>$shippingAddress
-        ,'productDetails'=>$productDetails,'name'=>$name]); 
+        /* return view('invoice',['billingAddress'=>$billing,'shippingAddress'=>$shippingAddress
+        ,'productDetails'=>$productDetails,'name'=>$name]);  */
     }
 
     /* 
@@ -290,6 +297,15 @@ $name= Session::get('username');
         $sourcePath=$file->getRealPath();
         $destinationPath = 'assets/img';
       $file->move($destinationPath,$fileName);
+
+      $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      $productNum = '';
+      $max = strlen($characters) - 1;
+      for ($i = 0; $i < 10; $i++) {
+          $invoiceNum .= $characters[mt_rand(0, $max)];
+          
+      }
+      $productNum .= $productId;
      
           
         $product_description = $_POST['product_description'];   
@@ -326,8 +342,8 @@ $name= Session::get('username');
         
             
         
-         DB::select('insert into products(product_name,product_description,show_users,show_backend)
-        values("'.$product_name.'","'.$product_description.'","'.$showUser.'","'.$showInDB.'")');  
+         DB::select('insert into products(product_name,product_id,product_description,show_users,show_backend)
+        values("'.$product_name.'","'.$productNum.'","'.$product_description.'","'.$showUser.'","'.$showInDB.'")');  
         
         DB::select('insert into images(image_url) values("'.$fileName.'")');    
 

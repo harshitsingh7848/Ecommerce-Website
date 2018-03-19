@@ -30,7 +30,9 @@ class LoginController extends Controller
 
        Session::put('username',$res[0]->empname);
        Session::put('userid',$res[0]->empid);
-       //Session::put('userRole',$user_role[0]->role_id);
+       if(!empty($user_role))
+       Session::put('userRole',$user_role[0]->role_id);
+      
        
        if( Hash::check($password,$passfromDb) ){
             //$params['name']=$res[0]->empname;

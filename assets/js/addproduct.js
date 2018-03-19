@@ -33,7 +33,7 @@ $('document').ready(function()
     {
     product_name: {
      required: true,
-     validname: true,
+     validprocessor: true,
     },
     product_description:{
         required: true,

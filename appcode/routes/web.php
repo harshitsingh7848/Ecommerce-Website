@@ -45,7 +45,8 @@ Route::post('/add-product','ProductController@addProduct'); */
 
 	Route::post('/verification','LoginController@doLogin');
 
-
+	
+	Route::post('/add-privileges','PrivilegesController@addPrivileges');		
 	Route::get('/new-users','PrivilegesController@index');
 
 	Route::get('/addusertype','UpdateController@update');

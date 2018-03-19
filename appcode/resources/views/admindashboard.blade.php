@@ -22,8 +22,8 @@
 
                 <li>
                     <a href="#">Users</a>
-                
-                    @if($role==6)
+                        
+                    @if($role===1)
                     <ul>
                    
                    <li><a href="new-users">New Users</a></li>

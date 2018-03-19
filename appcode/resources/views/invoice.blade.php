@@ -132,17 +132,17 @@ $('#shippingcharge').text(shippingcharge);
 var totalamount = shippingcharge + total;
 $('#totalamount').text(totalamount);
 
-/* $('#btn').click(function(){
-	var message=""
+$('#btn').click(function(){
+	var message=$('#g').html();
 	$.ajax({
 		url:'/Ecommerce/download',
 		method:'POST',
-		data:{'html': $('#g').html()},
+		data:{'html': },
 		
 		success:function(response){
 			alert(response);
 		},
-	}); */
+	}); 
 });
  
 

@@ -30,8 +30,7 @@
           <th><i class="fa fa-user"></i> Name</th>
           <th><i class="fas fa-envelope"></i> Email</th>
           <th><i class=" fa fa-edit"></i> UserType</th>
-          <th><i class="fa fa-gears"></i>Modules
-          <th><i class=" fa fa-gears"></i>Permissions</th>
+          
         </tr>
       </thead>
       <tbody>
@@ -43,22 +42,11 @@
           <td>
             <select class="usertype">
               @foreach($dropdown as $d)
-              <option value="{{ $d->role_name . "-" . $names->emp_email  }}"> {{ $d->role_name }}</option>
+              <option value="{{ $d->role_name . "-" . $names->empid  }}"> {{ $d->role_name }}</option>
               @endforeach
             </select> 
           </td>
-          <td>
-          <select id="module" class="d-none modules">
-              @foreach($modules as $module)
-              <option value=""> {{ $module->module_name }}</option>
-              @endforeach
-            </select> 
-          </td>
-          <td >
-            <button  class="btn  btn-xs d-none"><i class="fas fa-eye"></i></button>
-            <button class="btn  btn-xs d-none"><i class="fas fa-edit"></i></button>
-            <button class="btn  btn-xs d-none"><i class="far fa-trash-alt"></i></button>
-          </td>
+          
         </tr>
         @endforeach
       </tbody>
@@ -92,7 +80,54 @@
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div> -->
       </div>
+      </div>
+    </div>
 
+    <div id="myModal2" class="modal fade" role="dialog" >
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        
+        <div class="modal-body">
+          <div id="wrapper">
+          <table class="table table-striped table-advance table-hover">
+      <thead>
+        <tr> 
+          <th><i class="fa fa-gears"></i>Modules
+          <th><i class=" fa fa-gears"></i>Permissions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach($modules as $module)
+        <input type="hidden" id="moduleId" value="{{ $module->id }}">
+        <tr>
+          <td> {{ $module->module_name }} </td>         
+          <td>
+            <label for="checkbox1">Create</label>
+            <input type="checkbox" name="checkbox1"id="{{ $module->id }}">
+            <label for="checkbox2">Edit</label>
+            <input type="checkbox" name="checkbox2"id="{{$module->id."_". "2"}}">
+            <label for="checkbox3">View</label>
+            <input type="checkbox" name="checkbox3"id="{{$module->id."_". "3"}}">
+            <label for="checkbox4">Delete</label>
+            <input type="checkbox" name="checkbox4"id="{{$module->id."_". "4"}}">
+            
+          </td>
+          <td>
+            <button type="button" id="btn" name="btn" >Update</button>
+          </td>
+        </tr>
+        @endforeach
+      </tbody>
+    </table>   
+                
+              
+          </div>    
+        </div>
+        
+      </div>
+    </div>
     </div>
     
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -119,22 +154,33 @@
 
     $(document).ready(function(){
       $('#check').click(function() {
-        $("#module").removeClass("d-none");
-            $("#myModal").modal('toggle');
-         /* var emailusertype = $('#concatemailusertype').val();
-          $.ajax({
-          url:"addusertype",
-          type:"get",
-          data:{'concatemailusertype':emailusertype},
-          success: function (response) {
-            $("button").removeClass("d-none");
-            $("#myModal").modal('toggle');
-           //alert(response);
-        },
-        })  */  
+        $("#myModal2").modal();
+         
 });
-$(".modules").change(function(){
-  $("button").removeClass("d-none");
+
+
+    });
+    $(document).ready(function(){
+ 
+$('#btn').click(function(){
+  var moduleId = $('#moduleId').val();
+  var createId = +$('#{{ $module->id  }}').is( ':checked' );
+  alert(createId);
+  var viewId =+$('#{{$module->id . "_" . "3"}}').is( ':checked' );
+  var editId =+$('#{{$module->id . "_" . "2"}}').is( ':checked' );
+  var deleteId =+$('#{{$module->id . "_" . "4"}}').is( ':checked' );
+  var concatUserRole =$('#concatemailusertype').val();
+  $.ajax({
+    url:'/Ecommerce/add-privileges',
+    method:'POST',
+    data:{'createId':createId,'viewId':viewId,'editId':editId,
+      'deleteId':deleteId,'concatUserRole':concatUserRole,'moduleId':moduleId},
+    success:function(response){
+        alert(response);
+    },
+  });
+  
+  
 });
     });
 
