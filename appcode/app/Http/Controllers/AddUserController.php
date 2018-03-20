@@ -20,6 +20,7 @@ class AddUserController extends Controller
       $email=DB::select('select emp_email from user_details where emp_email ="'. $_POST['email'].'"');
       $mobile=DB::select('select emp_mobile from user_details where emp_mobile ="'. $_POST['mobile'].'"');
         $errors=[];
+        if(!empty($email) || !empty($mobile)){
         if(!empty($email) ){
           $errors['email']="Duplicate Email";
           
@@ -32,7 +33,7 @@ class AddUserController extends Controller
          return redirect()->back()
             ->withErrors($errors); 
         
-      
+  }
        $res = new ecommerce;
       $res->empname    =   $_POST['name'];
       $res->emp_mobile    =   $_POST['mobile'];
@@ -46,11 +47,14 @@ class AddUserController extends Controller
           return redirect('/admin');
       }
 
-      Session::put('name', $_POST['name']); 
-     $userId= DB::select('select id from user_details where emp_email ="'.$res->emp_email .'"');
+      Session::put('username', $_POST['name']);
+      $empId=DB::select('select Max(id) as id from user_details');
+      Session::put('userRole',"3"); 
+       Session::put('userid',$empId[0]->id);
+     $userId= DB::select('select empid from user_details where emp_email ="'.$res->emp_email .'"');
       
       DB::select('insert into user_privilege_module_role (emp_id,module_id,privilege_id,role_id)
-      values("'.$userId.'","1","3","3"),("'.$userId.'","2","5","3"),("'.$userId.'","5","5","3")');
+      values("'.$userId[0]->empid.'","1","3","3"),("'.$userId[0]->empid.'","2","5","3"),("'.$userId[0]->empid.'","5","5","3")');
 
       return redirect('/');      
         

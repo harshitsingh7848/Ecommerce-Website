@@ -62,7 +62,7 @@ Route::post('/add-product','ProductController@addProduct'); */
 	Route::post('/buy','ProductController@buy');
 
 	Route::get('/add-billing-details','ProductController@addBillingDetails');
-		Route::get('/add-shipping-details','ProductController@addShippingDetails');
+		Route::post('/add-shipping-details','ProductController@addShippingDetails');
 	Route::get('/select-shipping-details','ProductController@selectShippingDetails');
 	Route::post('/invoice','ProductController@invoice');
 
@@ -77,6 +77,8 @@ Route::post('/add-product','ProductController@addProduct'); */
 	Route::get('/view-orders','ProductController@viewOrders');
 
 	Route::get('/my-orders','ProductController@myOrders');
+	
+	Route::get('/specific-order-details','ProductController@specificOrderDetails');
 
 
 /* Route::get('/upload', 'testcontroller@uploadForm');

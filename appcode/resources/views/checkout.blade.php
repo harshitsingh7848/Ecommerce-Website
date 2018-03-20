@@ -31,10 +31,12 @@
 <div class="product-content-right">
 <div class="woocommerce">
 
-<form class=""  id="buy_form1" >
+<form class=""  id="buy_form1"  method="post" action="show-purchased-product" >
 <span>Add a new Billing address</span>
 <div class="woocommerce-billing-fields">
 <h3>Billing  Address Details</h3>
+<input type="hidden" value="{{$quantity}}" id="quantity" name="quantity">
+<input type="hidden" value="{{$productDetails[0]->id }}" name="productId" id="productId">
 <input type="hidden" value="1" name="addType" id="addType">
 <input type="hidden" value="{{$userDetail[0]->empid }}" name="userId" id="userId">
 <div class="form-group">
@@ -101,23 +103,21 @@
 <span class="help-block" id="error"></span>
 </div>
 </div>
-<div class="form-group ">
-<input type="button" name="bbutton" id="bbutton" value="Save and Deliver Here" class="btn btn-primary btn-lg btn-block login-button"/>
-</div>
+
 <input type="hidden" value="{{ csrf_token() }}" name="_token">
-</form>    
+    
 
 <input type="checkbox" id="check-address">
 <span>Check this box if Shipping Address and Billing Address are the same.</span>
 <a href="/Ecommerce/select-shipping-details?userId={{$userDetail[0]->empid }}">Add new Address </a>
 
 
-<form class=""  id="ship_form1" method="get" action="select-shipping-details" >    
+    
 <div class="woocommerce-billing-fields">
 
 <h3>Shipping  Address Details</h3>
-<button type="submit" id="newBtn" name="newBtn">Shipping Address</button> 
-<input type="hidden" value="2" name="addType" id="addType">
+ 
+<input type="hidden" value="2" name="addType2" id="addType2">
 <input type="hidden" value="{{$userDetail[0]->empid }}" name="userId" id="userId">                         
 <div class="form-group">
 <label for="sname" class="cols-sm-2 control-label">Your Name</label>
@@ -187,28 +187,10 @@
 </div>
 
 <div class="form-group ">
-<input type="submit" name="sbutton"  id="sbutton" value="Save and Deliver Here" class="btn btn-primary btn-lg btn-block login-button"/>
+<input type="submit" name="sbutton" onclick="redirect()" id="sbutton" value="Save and Deliver Here" class="btn btn-primary btn-lg btn-block login-button"/>
 </div>
-<input type="hidden" value="{{ csrf_token() }}" name="_token">
+
 </form>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </div>                       
 </div>                    
 </div>
@@ -242,24 +224,9 @@
 
 <script>
 $(document).ready(function(){
-$('#change').click(function(e){
-alert('scc');
 
-/*   e.preventDefault();
-$('#buy_form2').removeClass("d-none"); */
-});
-$('#bbutton').click(function(){
-var data=$('#bmobile').val();
-alert(data);
-$.ajax({
-url:'/Ecommerce/add-billing-details',
-method:'get',
-data: $('#buy_form1').serialize(),
-success: function (response) {
-alert(response);
-}
-}); 
-});
+
+ 
 
 $('input[type="checkbox"]').click(function(){
 if($(this).prop("checked") == true){
@@ -267,18 +234,7 @@ fillDetails1();
 
 }
 });
-$('#newBtn').click(function(){
-var user_id = $('#userId').val();
 
-$.ajax({     
-url:'/Ecommerce/select-shipping-details',
-data:{'userId':user_id},
-method:'get', 
-success: function (response) {
-$('#displayAddresses').html(response);
-}
-});      
-});
 
 function fillDetails1()
 {
@@ -287,7 +243,7 @@ $('#shstate').val($('#bstate').val());
 $('#spin').val($('#bpin').val());
 $('#shippingaddress').val($('#billingaddress').val());
 $('#smobile').val($('#bmobile').val());
-$('#sname').val($('#bname').val());               
+$('#sname').val($('#name').val());               
 }
 
 });

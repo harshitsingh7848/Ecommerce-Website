@@ -37,7 +37,9 @@
                             <th>Order Quantity</td>
                             <th>Order Date</td> 
                             <th>Mode of Payment</th>
-                            <th>Order Description</th>    
+                            <th>Order Description</th>
+                            <th> Order Status</th>
+                            <th> Order Details</th>    
                         </tr>
                     </thead>
                     
@@ -58,7 +60,15 @@
                             {{ $order->mode_of_payment }}
                             </td>
                             <td>
-                            
+                            Product Name : {{$order->product_name}}<br>
+                            Product Quantity : {{$order->order_quantity}}
+                            </td>
+                            <td>
+                            {{$order->order_status}}
+                            </td>
+                            <td>
+                               <a href="/Ecommerce/specific-order-details?orderNumber={{$order->order_number}}">
+                               View Order Details </a> 
                             </td>
                             
                         </tr>

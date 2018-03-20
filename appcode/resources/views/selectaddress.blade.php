@@ -10,14 +10,16 @@
 
 <h1> Add a new Address</h1>
 
-<form id="addForm"  >    
+<form id="addForm" method="post" action="add-shipping-details" >    
   
     
         <h3>Shipping  Address Details</h3>
           
         <input type="hidden" value="2" name="addType" id="addType">
         <input type="hidden" value="{{$userId}}" name="userId" id="userId">
-                                  
+        <input type="hidden" value="{{$quantity}}" id="quantity" name="quantity">
+        <input type="hidden" value="{{$productId }}" name="productId" id="productId">
+                          
         <div class="form-group">
           <label for="sname" class="cols-sm-2 control-label">Your Name</label>
           <div class="cols-sm-10">
@@ -84,7 +86,7 @@
             </div>
 
             <div class="form-group ">
-                    <input type="button" name="sbutton"  id="sbutton" value="Save and Deliver Here" class="btn btn-primary btn-lg btn-block login-button"/>
+                    <input type="submit" name="sbutton"  id="sbutton" value="Save and Deliver Here" class="btn btn-primary btn-lg btn-block login-button"/>
             </div>
             <input type="hidden" value="{{ csrf_token() }}" name="_token">
         </form>
@@ -102,7 +104,7 @@
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 
 <script>
-$(document).ready(function(){
+/* $(document).ready(function(){
   $('#sbutton').click(function(){
 
 alert(data);
@@ -115,7 +117,7 @@ alert(response);
 }
 }); 
 });
-});
+}); */
 </script>
 
 @endsection
