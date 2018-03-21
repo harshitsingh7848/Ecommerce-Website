@@ -34,9 +34,14 @@ class LoginController extends Controller
        Session::put('userRole',$user_role[0]->role_id);
       
        
-       if( Hash::check($password,$passfromDb) ){
-            //$params['name']=$res[0]->empname;
-            if( $user_role[0]->role_id==3){
+       if( (Hash::check($password,$passfromDb)) && $username== $userfromDb ){
+            
+             $orderId= $_POST['order'];
+            if($orderId==1){
+                
+                return redirect('/buy');
+            } 
+            else if( $user_role[0]->role_id==3){
                 return redirect('/');
             }
             else if($user_role[0]->role_id==1 || $user_role[0]->role_id==2){
@@ -67,7 +72,13 @@ class LoginController extends Controller
 
     public function index()
     {
-        return view('login');
+        $order="";
+        if(!empty(Session::get('order'))){
+            $order=Session::get('order');
+        }
+        
+       
+        return view('login',['order'=>$order]);
     }
 
     

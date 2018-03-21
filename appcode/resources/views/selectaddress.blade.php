@@ -19,8 +19,7 @@
         @if(!empty($userId))
         <input type="hidden" value="{{$userId}}" name="userId" id="userId">
         @endif
-        <input type="hidden" value="{{$quantity}}" id="quantity" name="quantity">
-        <input type="hidden" value="{{$productId }}" name="productId" id="productId">
+        
                           
         <div class="form-group">
           <label for="sname" class="cols-sm-2 control-label">Your Name</label>

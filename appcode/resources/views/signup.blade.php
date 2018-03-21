@@ -33,6 +33,7 @@
 				@else
 					<form class=""  id="register-form" method="post" action="register">
 						@endif
+						<input type="hidden" value={{$selectId}} id="selectId" name="selectId">
 						<div class="form-group">
 						
 							<label for="name" class="cols-sm-2 control-label">Your Name</label>

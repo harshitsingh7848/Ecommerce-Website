@@ -4,10 +4,10 @@
 <div class="card mt-4">
             <div class="card-body">
             <h1> Order Details</h1>
-            <form id="orderform" action="buy" method="POST">
+            <form id="orderform" action="get-quantity" method="POST">
             <input type="hidden" id="price" value="{{$productDetails[0]->sellingprice}}">
-            <input type="hidden" value="{{$productDetails[0]->id }}" name="productId" 
-            id="productId">
+             
+            <input type="hidden" value="1" id="order" name="order"> 
               <h3 class="card-title">{{ $productDetails[0]->product_name}}</h3>
               <h4 >Price : {{$productDetails[0]->sellingprice }} </h4>
               <table>
@@ -58,7 +58,7 @@
                 
               </table>
               </br>
-              <button type="submit" id="btn" name="btn" > Confirm Order</button>
+              <button type="submit" id="btn"  > Confirm Order</button>
               
               </form>
              

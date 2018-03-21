@@ -17,7 +17,7 @@
             <div class="account-wall">
                 
                 <form class="form-signin" method="post" action="verification" >
-									
+								<input type="hidden" value={{$order}} id="order" name="order">	
 								<img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120" alt="">
                 <input type="text" class="form-control" name="username" placeholder="Username" required >
                 <input type="password" class="form-control" name="pass" placeholder="Password" required>
@@ -31,7 +31,11 @@
 								<input type="hidden" value="{{ csrf_token() }}" name="_token">	
 							  </form>
             </div>
-            <a href="{{ url('signup') }}" class="text-center new-account">Create an account </a>
+            @if($order==1)
+            <a href="/Ecommerce/signup?selectId={{$order }}" class="text-center new-account">Create an account </a>
+            @else
+             <a href="/Ecommerce/signup" class="text-center new-account">Create an account </a>
+            @endif
         </div>
     </div>
 </div>

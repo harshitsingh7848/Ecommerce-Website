@@ -31,13 +31,11 @@
 <div class="product-content-right">
 <div class="woocommerce">
 
-<form class=""  id="buy_form1"  method="post" action="show-purchased-product" >
+<form class=""  id="buy_form1"  method="post" action="billing-details" >
 <span>Add a new Billing address</span>
 <div class="woocommerce-billing-fields">
 <h3>Billing  Address Details</h3>
-<input type="hidden" value="{{$quantity}}" id="quantity" name="quantity">
-<input type="hidden" value="{{$productDetails[0]->id }}" name="productId" id="productId">
-<input type="hidden" value="1" name="addType" id="addType">
+
 @if(!empty($userDetail))
 <input type="hidden" value="{{$userDetail[0]->empid }}" name="userId" id="userId">
 @endif
@@ -210,6 +208,8 @@
 <!-- Latest jQuery form server -->
 <!-- <script src="https://code.jquery.com/jquery.min.js"></script> -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="assets/js/jquery-1.11.2.min.js"></script>
+<script src="assets/js/jquery.validate.min.js"></script>
 
 <!-- Bootstrap JS form CDN -->
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -221,8 +221,10 @@
 <!-- jQuery easing -->
 <script src="assets/js/jquery.easing.1.3.min.js"></script>
 
+	 
 <!-- Main Script -->
 <script src="assets/js/main.js"></script>
+<script src="assets/js/checkout.js"></script>
 
 <script>
 $(document).ready(function(){

@@ -55,7 +55,13 @@ class AddUserController extends Controller
       
       DB::select('insert into user_privilege_module_role (emp_id,module_id,privilege_id,role_id)
       values("'.$userId[0]->empid.'","1","3","3"),("'.$userId[0]->empid.'","2","5","3"),("'.$userId[0]->empid.'","5","5","3")');
-
+      
+      $selectId= Session::get('selectId');
+      echo $selectId;exit;
+            if($selectId==1){
+                
+                return redirect('/buy');
+            } 
       return redirect('/');      
         
   }   

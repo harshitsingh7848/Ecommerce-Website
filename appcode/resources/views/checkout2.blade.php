@@ -29,9 +29,8 @@
 <div class="col-md-8">
 <div class="product-content-right">
 <div class="woocommerce">
-<form id="submitaddress" action="show-purchased-product" method="post" >
-<input type="hidden" value="{{$quantity}}" id="quantity" name="quantity">
-<input type="hidden" value="{{$productDetails[0]->id }}" name="productId" id="productId">
+<form id="submitaddress" action="select-product" method="post" >
+
 <input type="hidden" name="shipId" id="shipId">
 <h1>Your Addresses</h1>
 <a href="/Ecommerce/select-shipping-details?userId={{$userAddress[0]->user_id }}">Add new Address </a>

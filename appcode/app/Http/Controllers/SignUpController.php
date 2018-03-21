@@ -16,8 +16,9 @@ class SignUpController extends Controller
     public function signup()
     {
         $name=Session::get('username');
-        
+        $selectId=Session::get('selectId');
+        echo $selectId;exit;
       
-         return  view('signup',['name'=>$name]);
+         return  view('signup',['name'=>$name,'selectId'=>$selectId]);
     }
 }

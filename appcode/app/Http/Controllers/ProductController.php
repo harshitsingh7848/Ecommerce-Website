@@ -15,6 +15,38 @@ use Dompdf\Dompdf;
 class ProductController extends Controller
 {   
 
+    /* 
+     * function getQuantity
+     * It gets quantity and redirects to checkout page
+     */
+    public function getQuantity()
+    {
+        $userId= Session::get('userid');
+        if(isset($_POST['quantity'])){
+            $quantity=$_POST['quantity'];
+            Session::put('quantity',$quantity);
+        }
+             
+        
+        if(isset($_POST['order']))
+         $orderSelect = $_POST['order']; 
+         
+         
+        if(empty($userId)){
+            return redirect('/login')->with(['order'=> $orderSelect]);
+        }    
+        return redirect('/buy');
+    }
+    /* 
+     * function selectProduct
+     * It will get Shipping Id of the product and redirect to purchase product page
+     */
+    public function selectProduct()
+    {
+        $shipId=$_POST['shipId'];
+        
+        return redirect('/show-purchased-product')->with(['shipId'=>$shipId]);
+    }
     
 
     /* 
@@ -71,54 +103,12 @@ class ProductController extends Controller
     public function showPurchasedProduct()
     {
          $userId= Session::get('userid'); 
-       if(isset($_POST['bmobile'])){
-        $contact = $_POST['bmobile'];  
-        $pincode = $_POST['bpin'];
-        $address = $_POST['billingaddress'];
-        $city = $_POST['bcity'];
-        $state = $_POST['bstate'];
-        $addType =$_POST['addType'];
-        $shipAdd="";
-        $name=$_POST['name'];
-        $billAdd=DB::select('select * from store_address where address_type=1 and user_id="'.$userId.'"');
-          
-        if(!($billAdd[0]->address ==$address && $billAdd[0]->city==$city && $billAdd[0]->state
-        == $state && $billAdd[0]->Pincode==$pincode && $billAdd[0]->name==$name)  ){  
-        DB::select('insert into store_address (address,address_type,user_id,Pincode,city,state,mobile_number,name)
-        values("'.$address.'",
-        "'.$addType.'","'.$userId .'","'. $pincode.'","'.$city.'","'.$state.'","'.$contact.'","'.$name.'")');
-        $ship=DB::select('select Max(id) as id from store_address');
-        $shipAdd=$ship[0]->id;
-        }
-       }
-       if(!empty($_POST['quantity'])){
-      $quantity=$_POST['quantity'];
-       $productId=$_POST['productId'];
-       }
-       else
-       {
-           $quantity=Session::get('quantity');
-       $productId=Session::get('productId');
-       }
-       if(empty($_POST['sname']))
-       {
-           if(empty(Session::get('name')))
-           {
-           return redirect('/select-shipping-details')->with(['quantity'=>$quantity,
-           'productId'=>$productId]);
-           }
-       }
-        
-        
-        
-       
-       if(isset($_POST['shipId']))
-       $shipId=$_POST['shipId'];
-       
-       $shipId=$shipAdd;
-
+        $quantity=Session::get('quantity');
+        $productId=Session::get('productId');
        $name=Session::get('username');
        $role=Session::get('userRole');
+       $shipId=Session::get('shipId');
+       
 
         $characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
         $invoiceNum = 'GM';
@@ -225,18 +215,43 @@ $dompdf->render(); */
      */
     public function addBillingDetails()
     {
-        $contact = $_GET['bmobile'];  
-        $pincode = $_GET['bpin'];
-        $address = $_GET['billingaddress'];
-        $city = $_GET['bcity'];
-        $state = $_GET['bstate'];
-        $addType =$_GET['addType'];
-        $userId =$_GET['userId'];
-        $name=$_GET['name'];
+        $userId=Session::get('userid');
+        if(isset($_POST['bmobile']))
+         $mobile=DB::select('select mobile_number from store_address where mobile_number ="'. $_POST['bmobile'].'"');
+        
+        if( !empty($mobile)){          
+          $errors['mobile']="Duplicate Mobile Number";
+         return redirect()->back()
+            ->withErrors($errors);       
+        }
 
+       if(isset($_POST['bmobile'])){
+        $contact = $_POST['bmobile'];  
+        $pincode = $_POST['bpin'];
+        $address = $_POST['billingaddress'];
+        $city = $_POST['bcity'];
+        $state = $_POST['bstate'];
+       /*  $addType =$_POST['addType']; */
+        $shipAdd="";
+        $name=$_POST['name'];
+        $billAdd=DB::select('select * from store_address where address_type=1 and user_id="'.$userId.'"');
+          echo '<pre/>';
+          
+          
+        if(empty($billAdd))  {  
         DB::select('insert into store_address (address,address_type,user_id,Pincode,city,state,mobile_number,name)
         values("'.$address.'",
-        "'.$addType.'","'.$userId .'","'. $pincode.'","'.$city.'","'.$state.'","'.$contact.'","'.$name.'")');
+        "1","'.$userId .'","'. $pincode.'","'.$city.'","'.$state.'","'.$contact.'","'.$name.'")');
+        $ship=DB::select('select Max(id) as id from store_address');
+        $shipAdd=$ship[0]->id;
+        }
+       }
+       if(isset($_POST['sname']))
+       {
+           return redirect('/select-shipping-details');
+           }
+           $shipId=$shipAdd;
+           return redirect('/show-purchased-product')->with(['shipId'=>$shipId]);
     }
 
     /*
@@ -253,23 +268,24 @@ $dompdf->render(); */
         $addType =$_POST['addType'];
         $userId =Session::get('userid');
         $name=$_POST['sname'];
-        $productId =$_POST['productId'];
-        $quantity=$_POST['quantity'];
+        $productId =Session::get('productId');
+        $quantity=Session::get('quantity');
+
+        
+        
         
         $shipAdd=DB::select('select * from store_address where address_type=2 and user_id="'.$userId.'"');
-        if(!($shipAdd[0]->address ==$address && $shipAdd[0]->city==$city && $shipAdd[0]->state
+        
+        if(empty($shipAdd)||!($shipAdd[0]->address ==$address && $shipAdd[0]->city==$city && $shipAdd[0]->state
         == $state && $shipAdd[0]->Pincode==$pincode && $shipAdd[0]->name=$name)){
             DB::select('insert into store_address (address,address_type,user_id,Pincode,city,state,mobile_number,name)
         values("'.$address.'",
         "'.$addType.'","'.$userId .'","'. $pincode.'","'.$city.'","'.$state.'","'.$contact.'","'.$name.'")');
         }
+        $shipAdd=DB::select('select Max(id) as id from store_address ');
+         $shipId=$shipAdd[0]->id;
+         return redirect('/show-purchased-product')->with(['shipId'=>$shipId]);
         
-        /* return redirect('/show-purchased-product')->with(['productId'=>$productId,
-        'quantity'=>$quantity,'name'=>$name]); */
-        return redirect()->action(
-            'ProductController@showPurchasedProduct', ['productId'=>$productId,
-            'quantity'=>$quantity,'name'=>$name]
-        );
         
     }
 
@@ -736,8 +752,11 @@ where products.id="'.$productId .'"');
      */
     public function buy()
     {
+
         $userId= Session::get('userid');
-        $quantity=$_POST['quantity'];
+        
+        
+        $quantity=Session::get('quantity');
         $name=Session::get('username');
         $role=Session::get('userRole');
         $userAddress=DB::select('select * from store_address 
@@ -748,8 +767,10 @@ where products.id="'.$productId .'"');
         
         
         
+      
+        $productId=Session::get('productId');
        
-        $productId=$_POST['productId'];
+       
         $productDetails=DB::select('select * from products where id="'.$productId.'"');
         
         /* $checkAddress=DB::select('select * from store_address where user_id=2 and address=
@@ -759,14 +780,14 @@ where products.id="'.$productId .'"');
         if(empty($userAddress))
         {
         return view('checkout',['userDetail'=>$userDetail,'userAddress'=>$userAddress,'productDetails'=>$productDetails,
-        'quantity'=>$quantity,'name'=>$name,'role'=>$role]);
+        'name'=>$name,'role'=>$role,'quantity'=>$quantity]);
         }
         else
         {
              $shippingAddress = DB::select('select * from store_address where user_id=
         "'.$userId.'" and address_type="2" and address<>"'.$userAddress[0]->address.'"');
         return view('checkout2',['userDetail'=>$userDetail,'userAddress'=>$userAddress,'productDetails'=>$productDetails,
-        'address'=>$shippingAddress,'quantity'=>$quantity,'name'=>$name,'role'=>$role]);
+        'address'=>$shippingAddress,'name'=>$name,'role'=>$role,'quantity'=>$quantity]);
         }
     }
 
@@ -778,6 +799,7 @@ where products.id="'.$productId .'"');
     {
         $productId=$_GET['productId'];
         $role=Session::get('userRole');
+        Session::put('productId',$productId);
         
 
          $productDetails = DB::select('SELECT products.id,products.product_name,products.product_description,products.model_name,product_price.sellingprice,

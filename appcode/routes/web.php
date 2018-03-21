@@ -59,9 +59,9 @@ Route::post('/add-product','ProductController@addProduct'); */
 
 	Route::get('/category','ProductController@category');
 
-	Route::post('/buy','ProductController@buy');
-
-	Route::get('/add-billing-details','ProductController@addBillingDetails');
+	Route::get('/buy','ProductController@buy');
+	Route::post('/get-quantity','ProductController@getQuantity');
+	
 		Route::post('/add-shipping-details','ProductController@addShippingDetails');
 	Route::get('/select-shipping-details','ProductController@selectShippingDetails');
 	Route::post('/invoice','ProductController@invoice');
@@ -70,7 +70,9 @@ Route::post('/add-product','ProductController@addProduct'); */
 	Route::post('/show-payment','ProductController@showPayment');
 
 	Route::get('/account','UserController@myAccount');
-	Route::post('/show-purchased-product','ProductController@showPurchasedProduct');
+	Route::post('/billing-details','ProductController@addBillingDetails');
+	Route::get('/show-purchased-product','ProductController@showPurchasedProduct');
+		
 	Route::post('/download','ProductController@downloadInvoice');
 	
 	Route::get('/getorders','UpdateController@getOrderCount');
@@ -79,6 +81,8 @@ Route::post('/add-product','ProductController@addProduct'); */
 	Route::get('/my-orders','ProductController@myOrders');
 	
 	Route::get('/specific-order-details','ProductController@specificOrderDetails');
+
+	Route::post('/select-product','ProductController@selectProduct');
 
 
 /* Route::get('/upload', 'testcontroller@uploadForm');
