@@ -16,7 +16,9 @@
         <h3>Shipping  Address Details</h3>
           
         <input type="hidden" value="2" name="addType" id="addType">
+        @if(!empty($userId))
         <input type="hidden" value="{{$userId}}" name="userId" id="userId">
+        @endif
         <input type="hidden" value="{{$quantity}}" id="quantity" name="quantity">
         <input type="hidden" value="{{$productId }}" name="productId" id="productId">
                           

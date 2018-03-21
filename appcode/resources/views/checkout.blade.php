@@ -38,7 +38,9 @@
 <input type="hidden" value="{{$quantity}}" id="quantity" name="quantity">
 <input type="hidden" value="{{$productDetails[0]->id }}" name="productId" id="productId">
 <input type="hidden" value="1" name="addType" id="addType">
+@if(!empty($userDetail))
 <input type="hidden" value="{{$userDetail[0]->empid }}" name="userId" id="userId">
+@endif
 <div class="form-group">
 <label for="name" class="cols-sm-2 control-label">Your Name</label>
 <div class="cols-sm-10">
@@ -109,7 +111,7 @@
 
 <input type="checkbox" id="check-address">
 <span>Check this box if Shipping Address and Billing Address are the same.</span>
-<a href="/Ecommerce/select-shipping-details?userId={{$userDetail[0]->empid }}">Add new Address </a>
+
 
 
     
@@ -118,7 +120,7 @@
 <h3>Shipping  Address Details</h3>
  
 <input type="hidden" value="2" name="addType2" id="addType2">
-<input type="hidden" value="{{$userDetail[0]->empid }}" name="userId" id="userId">                         
+                        
 <div class="form-group">
 <label for="sname" class="cols-sm-2 control-label">Your Name</label>
 <div class="cols-sm-10">

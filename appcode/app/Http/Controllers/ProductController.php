@@ -80,7 +80,7 @@ class ProductController extends Controller
         $addType =$_POST['addType'];
         $shipAdd="";
         $name=$_POST['name'];
-        $billAdd=DB::select('select * from store_address where address_type=1');
+        $billAdd=DB::select('select * from store_address where address_type=1 and user_id="'.$userId.'"');
           
         if(!($billAdd[0]->address ==$address && $billAdd[0]->city==$city && $billAdd[0]->state
         == $state && $billAdd[0]->Pincode==$pincode && $billAdd[0]->name==$name)  ){  
@@ -256,18 +256,20 @@ $dompdf->render(); */
         $productId =$_POST['productId'];
         $quantity=$_POST['quantity'];
         
-        $shipAdd=DB::select('select * from store_address where address_type=2');
-        if(($shipAdd[0]->address ==$address && $shipAdd[0]->city==$city && $shipAdd[0]->state
-        == $state && $shipAdd[0]->Pincode==$pincode && $shipAdd[0]->name=$name)  ){
+        $shipAdd=DB::select('select * from store_address where address_type=2 and user_id="'.$userId.'"');
+        if(!($shipAdd[0]->address ==$address && $shipAdd[0]->city==$city && $shipAdd[0]->state
+        == $state && $shipAdd[0]->Pincode==$pincode && $shipAdd[0]->name=$name)){
             DB::select('insert into store_address (address,address_type,user_id,Pincode,city,state,mobile_number,name)
         values("'.$address.'",
         "'.$addType.'","'.$userId .'","'. $pincode.'","'.$city.'","'.$state.'","'.$contact.'","'.$name.'")');
         }
         
-        
-        
-        return redirect('/show-purchased-product')->with(['productId'=>$productId,
-        'quantity'=>$quantity,'name'=>$name]);
+        /* return redirect('/show-purchased-product')->with(['productId'=>$productId,
+        'quantity'=>$quantity,'name'=>$name]); */
+        return redirect()->action(
+            'ProductController@showPurchasedProduct', ['productId'=>$productId,
+            'quantity'=>$quantity,'name'=>$name]
+        );
         
     }
 
