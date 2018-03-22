@@ -104,6 +104,17 @@
 </div>
 </div>
 
+<div class="form-group">
+<label for="bcountry" class="cols-sm-2 control-label">Country</label>
+<div class="cols-sm-10">
+<div class="input-group">
+<span class="input-group-addon"></span>
+<input type="text" class="form-control" name="bcountry" id="bcountry"  placeholder="Country" required="required"/>
+</div>
+<span class="help-block" id="error"></span>
+</div>
+</div>
+
 <input type="hidden" value="{{ csrf_token() }}" name="_token">
     
 
@@ -186,8 +197,21 @@
 </div>
 </div>
 
+<div class="form-group">
+<label for="scountry" class="cols-sm-2 control-label">Country</label>
+<div class="cols-sm-10">
+<div class="input-group">
+<span class="input-group-addon"></span>
+<input type="text" class="form-control" name="scountry" id="scountry"  placeholder="Country" />
+</div>
+<span class="help-block" id="error"></span>
+</div>
+</div>
+
+
+
 <div class="form-group ">
-<input type="submit" name="sbutton" onclick="redirect()" id="sbutton" value="Save and Deliver Here" class="btn btn-primary btn-lg btn-block login-button"/>
+<input type="submit" name="sbutton"  id="sbutton" value="Save and Deliver Here" class="btn btn-primary btn-lg btn-block login-button"/>
 </div>
 
 </form>
@@ -247,7 +271,8 @@ $('#shstate').val($('#bstate').val());
 $('#spin').val($('#bpin').val());
 $('#shippingaddress').val($('#billingaddress').val());
 $('#smobile').val($('#bmobile').val());
-$('#sname').val($('#name').val());               
+$('#sname').val($('#name').val());   
+$('#scountry').val($('#bcountry').val());               
 }
 
 });

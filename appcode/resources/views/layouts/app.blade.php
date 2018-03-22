@@ -50,11 +50,11 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="{{url('admin')}}">Home <span class="sr-only">(current)</span></a>
                 </li>
-                 <li><a class="nav-link" href="{{ url('/logout') }}">Logout<span class="sr-only">(current)</span></a></li>
+                 
               
                 @if (!empty($name))
                     
-                    <li><a class="nav-link" href="{{ url('/logout') }}">Logout</a></li>      
+                    <li><a class="nav-link" href="{{ url('/logout') }}">Logout<span class="sr-only">(current)</span></a></li>      
                 @endif
             </ul>
             <!-- form class="form-inline my-2 my-lg-0">

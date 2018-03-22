@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col-xs-12">
     		<div class="invoice-title">
-    			<h2>Product Details</h2><h3 class="pull-right">invoice # {{$invoiceNumber}} </h3>
+    			<h2>Purchase Details</h2><h3 class="pull-right">invoice # {{$invoiceNumber}} </h3>
     		</div>
     		<hr>
     		<div class="row">

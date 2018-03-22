@@ -26,16 +26,26 @@
                     @if($role===1)
                     <ul>
                    
-                   <li><a href="new-users">New Users</a></li>
+                   <li><a href="new-users">Add New Users</a></li>
                    <li><a href="list-of-users">List of Users</a></li>
+                   
                   
                </ul>
                @endif
                 </li>
-
+                <li>
+                    <a href="#">Vendors</a>
+                    @if($role===1)
+                    <ul>
+                        <li><a href="vendor">Add Vendors</a> </li>
+                        <li><a href="list-of-vendors">View Vendors</a> </li>      
+                    </ul>    
+                </li>    
+                @endif
                 <li>
                     <a href="#">Roles</a>
                 </li> 
+                
                 @endif
             </ul>
         </div>

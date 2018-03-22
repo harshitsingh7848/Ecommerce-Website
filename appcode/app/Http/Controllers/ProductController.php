@@ -45,7 +45,7 @@ class ProductController extends Controller
     {
         $shipId=$_POST['shipId'];
         
-        return redirect('/show-purchased-product')->with(['shipId'=>$shipId]);
+        return redirect('/purchased')->with(['shipId'=>$shipId]);
     }
     
 
@@ -231,6 +231,7 @@ $dompdf->render(); */
         $address = $_POST['billingaddress'];
         $city = $_POST['bcity'];
         $state = $_POST['bstate'];
+        $country=$_POST['bcountry'];
        /*  $addType =$_POST['addType']; */
         $shipAdd="";
         $name=$_POST['name'];
@@ -239,9 +240,9 @@ $dompdf->render(); */
           
           
         if(empty($billAdd))  {  
-        DB::select('insert into store_address (address,address_type,user_id,Pincode,city,state,mobile_number,name)
+        DB::select('insert into store_address (address,address_type,user_id,Pincode,city,state,mobile_number,name,country)
         values("'.$address.'",
-        "1","'.$userId .'","'. $pincode.'","'.$city.'","'.$state.'","'.$contact.'","'.$name.'")');
+        "1","'.$userId .'","'. $pincode.'","'.$city.'","'.$state.'","'.$contact.'","'.$name.'","'.$country.'")');
         $ship=DB::select('select Max(id) as id from store_address');
         $shipAdd=$ship[0]->id;
         }
@@ -251,7 +252,7 @@ $dompdf->render(); */
            return redirect('/select-shipping-details');
            }
            $shipId=$shipAdd;
-           return redirect('/show-purchased-product')->with(['shipId'=>$shipId]);
+           return redirect('/purchased')->with(['shipId'=>$shipId]);
     }
 
     /*
@@ -268,6 +269,7 @@ $dompdf->render(); */
         $addType =$_POST['addType'];
         $userId =Session::get('userid');
         $name=$_POST['sname'];
+        $country=$_POST['scountry'];
         $productId =Session::get('productId');
         $quantity=Session::get('quantity');
 
@@ -278,13 +280,13 @@ $dompdf->render(); */
         
         if(empty($shipAdd)||!($shipAdd[0]->address ==$address && $shipAdd[0]->city==$city && $shipAdd[0]->state
         == $state && $shipAdd[0]->Pincode==$pincode && $shipAdd[0]->name=$name)){
-            DB::select('insert into store_address (address,address_type,user_id,Pincode,city,state,mobile_number,name)
+            DB::select('insert into store_address (address,address_type,user_id,Pincode,city,state,mobile_number,name,country)
         values("'.$address.'",
-        "'.$addType.'","'.$userId .'","'. $pincode.'","'.$city.'","'.$state.'","'.$contact.'","'.$name.'")');
+        "'.$addType.'","'.$userId .'","'. $pincode.'","'.$city.'","'.$state.'","'.$contact.'","'.$name.'","'.$country.'")');
         }
         $shipAdd=DB::select('select Max(id) as id from store_address ');
          $shipId=$shipAdd[0]->id;
-         return redirect('/show-purchased-product')->with(['shipId'=>$shipId]);
+         return redirect('/purchased')->with(['shipId'=>$shipId]);
         
         
     }
@@ -839,8 +841,6 @@ where products.id="'.$productId.'"');
      */
     public function viewOrders()
     {
-        
-
         $orders=DB::select('select orders.order_number,orders.mode_of_payment,orders.order_quantity,
        orders.order_date,products.product_name,products.product_description,orders.id,
        order_status.order_status from
@@ -848,9 +848,10 @@ where products.id="'.$productId.'"');
        left join products on products.id= map_product_order.product_id   
        join map_order_status on orders.id = map_order_status.order_id
        join order_status on order_status.id= map_order_status.status_id 
-       '); 
+       ');
+       $name=Session::get('username'); 
         
-        return view('vieworder',['orders'=>$orders]);
+        return view('vieworder',['orders'=>$orders,'name'=>$name]);
     }
     /*
      * function specificOrderDetails
@@ -860,8 +861,9 @@ where products.id="'.$productId.'"');
     {
         $orderNumber=$_GET['orderNumber'];
         $orderDetail=DB::select('select orders.order_number,orders.mode_of_payment,orders.order_quantity,
-       orders.order_date,products.product_name,products.product_description,products.id,
-       store_address.address,store_address.Pincode,store_address.city,store_address.state
+       orders.order_date,products.product_name,products.product_description,store_address.id,
+       store_address.address,store_address.Pincode,store_address.city,store_address.state,
+       store_address.name
        ,product_price.sellingprice,images.image_url,order_status.order_status from
        orders left join map_product_order on orders.id=map_product_order.order_id
        left join products on products.id= map_product_order.product_id 
@@ -875,7 +877,9 @@ where products.id="'.$productId.'"');
         LEFT JOIN images ON images.id=map_product_image.image_id
         LEFT JOIN product_price ON products.id =product_price.product_id
        where orders.order_number="'.$orderNumber.'"');
-       return view('specificorder',['orderDetail'=>$orderDetail]);
+       $name=Session::get('username');
+        $billingDetails=DB::select('select * from store_address where address_type="1" and id="'.$orderDetail[0]->id.'"');
+       return view('specificorder',['orderDetail'=>$orderDetail,'billingDetails'=>$billingDetails,'name'=>$name]);
     }
 
 }

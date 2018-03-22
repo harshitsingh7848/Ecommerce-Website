@@ -86,6 +86,17 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                <label for="scountry" class="cols-sm-2 control-label">Country</label>
+                <div class="cols-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"></span>
+                        <input type="text" class="form-control" name="scountry" id="scountry"  placeholder="State" />
+                    </div>
+                    <span class="help-block" id="error"></span>
+                </div>
+            </div>
+
             <div class="form-group ">
                     <input type="submit" name="sbutton"  id="sbutton" value="Save and Deliver Here" class="btn btn-primary btn-lg btn-block login-button"/>
             </div>

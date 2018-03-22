@@ -18,6 +18,7 @@
 
 @section('head')
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="assets/css/userlist.css">
 @endsection
 
 @section('content')
@@ -61,37 +62,41 @@
 
       <!-- Modal content-->
       <div class="modal-content">
-        <!-- <div class="modal-header">
+        <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div> -->
+        </div>
+        
         <div class="modal-body">
           <div id="wrapper">
-            <label for="yes_no_radio">Do you want to update Employee type ?</label>
-            <input type="text" id="concatemailusertype" />
+            <div class="tab">
+              <button class="tablinks" id="initial" >Assign Role</button>
+              <button class="tablinks" id="vendor" >Vendors Name</button>
+              <button class="tablinks" id="privilege">Privileges</button>
+            </div>
+            <div id="label">
+            <label for="yes_no_radio">Do you want to update Employee Role ?</label>
+            <input type="hidden" id="concatemailusertype" />
              <p>
               <input type="button" id="check" value="Yes" name="button"/>
               
                 <input type="button" id="nocheck" value="No" name="yes_no" />
                 
               </p>
-          </div>    
-        </div>
-        <!-- <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div> -->
-      </div>
-      </div>
-    </div>
-
-    <div id="myModal2" class="modal fade" role="dialog" >
-    <div class="modal-dialog">
-
-      <!-- Modal content-->
-      <div class="modal-content">
-        
-        <div class="modal-body">
-          <div id="wrapper">
-          <table class="table table-striped table-advance table-hover">
+              </div>
+              <div id="vendorNames">
+                <select class="vname">
+              @foreach($vendors as $vendor)
+              <option > {{ $vendor->vendor_name }}</option>
+              @endforeach
+            </select> 
+            <input type="hidden" id="inputVendor">
+                <div>
+                  <button id="previousbtn">&laquo; Previous</button>
+                  <button class="float-right" id="nextbtn">Next &raquo;</button>
+                </div>
+                </div>
+                <div id="myTable">
+                <table class="table table-striped table-advance table-hover">
       <thead>
         <tr> 
           <th><i class="fa fa-gears"></i>Modules
@@ -120,15 +125,18 @@
         </tr>
         @endforeach
       </tbody>
-    </table>   
-                
-              
+    </table>  
+    </div> 
           </div>    
         </div>
-        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
       </div>
     </div>
-    </div>
+
+   
     
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -145,18 +153,52 @@
 
   $(document).ready(function(){
         $('#example').DataTable();
-    $(".usertype").change(function(){
+      var vendorName="";
+        $('#vendor').prop('disabled',true);
+        $('#vendorNames').hide();
+        $('#myTable').hide();
+        $('#privilege').prop('disabled',true);
+     $(".usertype").change(function(){
       var concat = $(this).val();
+      
        $(".modal-body #concatemailusertype").val( concat );
         $("#myModal").modal();  
+    });  
+    $('#initial').click(function(){
+      $('#label').show();
     });
   });
 
     $(document).ready(function(){
       $('#check').click(function() {
-        $("#myModal2").modal();
-         
+       var result= $('#concatemailusertype').val();
+        var checkArray=result.split("-");
+      if(checkArray[0]=="Vendor"){
+        $('#vendor').prop('disabled',false);
+        
+      } 
+      else{
+        $('#privilege').prop('disabled',false);
+        $('#vendorNames').hide();
+        $('#myTable').show();
+      }
 });
+    $('#nextbtn').click(function(){
+      
+      $(".vname").change(function(){
+        
+         vendorName = $(this).val();
+         alert(vendorName);
+        $('#inputVendor').val(vendorName);
+         $('#privilege').prop('disabled',false);
+        $('#vendorNames').hide();
+        $('#myTable').show();
+      });
+    });
+$('#vendor').click(function(){
+          $('#label').hide();
+          $('#vendorNames').show();
+        });
 
 
     });
@@ -180,7 +222,7 @@ $('.btn').click(function(){
   $.ajax({
     url:'/Ecommerce/add-privileges',
     method:'POST',
-    data:{'checkId':checked,'concatUserRole':concatUserRole,'moduleId':moduleId},
+    data:{'checkId':checked,'concatUserRole':concatUserRole,'moduleId':moduleId,'vendorName':vendorName},
     success:function(response){
         alert(response);
     },
@@ -196,5 +238,6 @@ $('.btn').click(function(){
      })
    });
 </script>
+
 
 @endsection

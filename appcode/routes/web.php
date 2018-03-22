@@ -71,7 +71,10 @@ Route::post('/add-product','ProductController@addProduct'); */
 
 	Route::get('/account','UserController@myAccount');
 	Route::post('/billing-details','ProductController@addBillingDetails');
-	Route::get('/show-purchased-product','ProductController@showPurchasedProduct');
+	Route::get('/purchased','ProductController@showPurchasedProduct');
+	Route::get('/vendor','PrivilegesController@addVendor');
+	Route::post('/add-vendor','PrivilegesController@addVendorToDB');
+	Route::get('/list-of-vendors','PrivilegesController@listOfVendors');
 		
 	Route::post('/download','ProductController@downloadInvoice');
 	
