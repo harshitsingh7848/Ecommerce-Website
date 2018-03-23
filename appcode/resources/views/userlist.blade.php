@@ -22,7 +22,7 @@
 @endsection
 
 @section('content')
-  <h1> New User Details</h1>
+  <h1> User Details</h1>
   <div>
     <table id="example" class="table table-striped table-advance table-hover">
       <thead>
@@ -30,7 +30,7 @@
           <th><i class="fas fa-id-card"></i> EmployeeId</th>
           <th><i class="fa fa-user"></i> Name</th>
           <th><i class="fas fa-envelope"></i> Email</th>
-          <th><i class=" fa fa-edit"></i> UserType</th>
+          
           
         </tr>
       </thead>
@@ -40,13 +40,7 @@
           <td> {{ $names->empid }} </td>
           <td> {{ $names->empname }} </td>
           <td> {{ $names->emp_email }} </td>
-          <td>
-            <select class="usertype">
-              @foreach($dropdown as $d)
-              <option value="{{ $d->role_name . "-" . $names->empid  }}"> {{ $d->role_name }}</option>
-              @endforeach
-            </select> 
-          </td>
+          
           
         </tr>
         @endforeach
@@ -89,6 +83,11 @@
               <option > {{ $vendor->vendor_name }}</option>
               @endforeach
             </select> 
+            <select class="vrole">
+            @foreach($vendorRoles as $vrole)
+              <option > {{ $vrole->vendor_role_name }}</option>
+              @endforeach
+            </select> 
             <input type="hidden" id="inputVendor">
                 <div>
                   <button id="previousbtn">&laquo; Previous</button>
@@ -117,7 +116,8 @@
             <input type="checkbox" name="checkbox[]"id="{{$module->id."_". "3"}}" value="3">
             <label for="checkbox4">Delete</label>
             <input type="checkbox" name="checkbox[]"id="{{$module->id."_". "4"}}" value="4">
-            
+            <label for="checkbox5">All</label>
+            <input type="checkbox" name="checkbox[]"id="{{$module->id."_". "5"}}" value="5">
           </td>
           <td>
             <button type="button" class="btn" id="{{$module->id}}" name="btn" >Update</button>
@@ -154,6 +154,7 @@
   $(document).ready(function(){
         $('#example').DataTable();
       var vendorName="";
+      var vendorRole="";
         $('#vendor').prop('disabled',true);
         $('#vendorNames').hide();
         $('#myTable').hide();
@@ -183,22 +184,29 @@
         $('#myTable').show();
       }
 });
-    $('#nextbtn').click(function(){
-      
+    $('#vendor').click(function(){
+      $('#label').hide();
+      $('#vendorNames').show();
       $(".vname").change(function(){
         
          vendorName = $(this).val();
-         alert(vendorName);
         $('#inputVendor').val(vendorName);
-         $('#privilege').prop('disabled',false);
-        $('#vendorNames').hide();
-        $('#myTable').show();
+        
+         
+      });
+      $(".vrole").change(function(){
+        
+         vendorRole = $(this).val();
+        
+         
       });
     });
-$('#vendor').click(function(){
-          $('#label').hide();
-          $('#vendorNames').show();
-        });
+    $('#nextbtn').click(function(){
+      $('#privilege').prop('disabled',false);
+        $('#vendorNames').hide();
+        $('#myTable').show();
+    });
+
 
 
     });
@@ -222,7 +230,8 @@ $('.btn').click(function(){
   $.ajax({
     url:'/Ecommerce/add-privileges',
     method:'POST',
-    data:{'checkId':checked,'concatUserRole':concatUserRole,'moduleId':moduleId,'vendorName':vendorName},
+    data:{'checkId':checked,'concatUserRole':concatUserRole,'moduleId':moduleId,'vendorName':vendorName,
+    'vendorRole':vendorRole},
     success:function(response){
         alert(response);
     },

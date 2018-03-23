@@ -48,7 +48,7 @@ class LoginController extends Controller
                 return redirect('/admin');
             }
             else if($user_role[0]->role_id==4){
-                return redirect('/vendor');
+                return redirect('/vendors');
             }
             else if($user_role->role_id==5){
                 return redirect('/employee');
@@ -57,8 +57,11 @@ class LoginController extends Controller
            
        }
        else{
-           echo "Wrong Username or Password";
-           return view('login');
+           $errors=['error'=>'Wrong Username or Password'];
+           return redirect()->back()
+            ->withErrors($errors); 
+           /* echo "Wrong Username or Password";
+           return view('login'); */
        }
 
        

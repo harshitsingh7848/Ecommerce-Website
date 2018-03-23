@@ -9,7 +9,7 @@
         <div id="sidebar-wrapper" >
              <ul class="sidebar-nav" id="tree1">
                 <li>
-                    <a href="#">Dashboard</a>
+                    <a href="{{url('/')}}">Gadget Maniac</a>
                 </li>
 
                 <li>
@@ -19,29 +19,34 @@
                 <li>
                     <a href="{{url('view-orders')}}">Orders</a>
                 </li>
-                @if($role===1 || $role===2)
+                
                 <li>
                     <a href="#">Users</a>
                         
-                    @if($role===1)
+                    
                     <ul>
-                   
+                   @if($role===1 || $role===4)
                    <li><a href="new-users">Add New Users</a></li>
-                   <li><a href="list-of-users">List of Users</a></li>
                    
+                   @endif
+                   
+                   <li><a href="employees">List of Employees</a></li>
+                   <li><a href="users">List of Users</a></li>
                   
                </ul>
-               @endif
+               
                 </li>
+                @if($role===1)
                 <li>
                     <a href="#">Vendors</a>
-                    @if($role===1)
+                    
                     <ul>
                         <li><a href="vendor">Add Vendors</a> </li>
                         <li><a href="list-of-vendors">View Vendors</a> </li>      
                     </ul>    
                 </li>    
                 @endif
+                @if($role===1 || $role===2 )
                 <li>
                     <a href="#">Roles</a>
                 </li> 

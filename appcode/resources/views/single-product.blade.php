@@ -92,7 +92,7 @@
                 <tr>
                   <td>  Model Number :
                   </td>
-                  <td> {{$productDetails[0]->id }}  </td>
+                  <td> {{$productDetails[0]->product_id }}  </td>
                 </tr>
                 <tr>
                   <td>  Model Name:

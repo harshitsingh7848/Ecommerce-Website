@@ -404,8 +404,16 @@ $role = Session::get('userRole');
 
     public function productFunctions()
     {
+        $roleId= Session::get('userRole');
+        $userId=Session::get('userid');
+        if($roleId==1 || $roleId==2)
+        {
         $productDetails = json_decode(DB::table('products')->where('show_backend',1)->get());
-
+        }
+        else
+        {
+           $productDetails= DB::select('select * from products where added_by="'.$userId.'"'); 
+        }
         return view('viewproduct',['productDetails'=>$productDetails]);
 
     }
@@ -417,6 +425,10 @@ $role = Session::get('userRole');
      public function addProduct(Request $request)
     {
         $product_name = $_POST['product_name'];
+        $model=explode(' ',$product_name);
+        for($i=1;$i<sizeof($model);$i++){
+            $modelName .= $model[$i]." ";
+        }
         $file = $request->file('image');
         $image=$file->getClientOriginalName();
         $fileName=$product_name.$image;
@@ -466,10 +478,11 @@ $role = Session::get('userRole');
         $battery = $_POST['battcapac'];
         $simSize   = $_POST['simsize']; 
         
-            
+        $userId=Session::get('userid');    
         
-         DB::select('insert into products(product_name,product_id,product_description,show_users,show_backend)
-        values("'.$product_name.'","'.$productNum.'","'.$product_description.'","'.$showUser.'","'.$showInDB.'")');  
+         DB::select('insert into products(product_name,product_id,product_description,show_users,show_backend,model_name,added_by)
+        values("'.$product_name.'","'.$productNum.'","'.$product_description.'","'.$showUser.'","'.$showInDB.'",
+        "'.$modelName.'","'.$userId.'")');  
         
         DB::select('insert into images(image_url) values("'.$fileName.'")');    
 
@@ -841,6 +854,10 @@ where products.id="'.$productId.'"');
      */
     public function viewOrders()
     {
+        $userRole = Session::get('userRole');
+        $userId=Session::get('userid');
+        if($userRole==1 || $userRole==2)
+        {
         $orders=DB::select('select orders.order_number,orders.mode_of_payment,orders.order_quantity,
        orders.order_date,products.product_name,products.product_description,orders.id,
        order_status.order_status from
@@ -849,6 +866,19 @@ where products.id="'.$productId.'"');
        join map_order_status on orders.id = map_order_status.order_id
        join order_status on order_status.id= map_order_status.status_id 
        ');
+        }
+        else
+        {
+            $orders=DB::select('select orders.order_number,orders.mode_of_payment,orders.order_quantity,
+       orders.order_date,products.product_name,products.product_description,orders.id,
+       order_status.order_status from
+       orders left join map_product_order on orders.id=map_product_order.order_id
+       left join products on products.id= map_product_order.product_id   
+       join map_order_status on orders.id = map_order_status.order_id
+       join order_status on order_status.id= map_order_status.status_id 
+       where products.added_by="'.$userId.'"
+       '); 
+        }
        $name=Session::get('username'); 
         
         return view('vieworder',['orders'=>$orders,'name'=>$name]);

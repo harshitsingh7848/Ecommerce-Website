@@ -17,19 +17,19 @@
             <div class="account-wall">
                 
                 <form class="form-signin" method="post" action="verification" >
-								<input type="hidden" value={{$order}} id="order" name="order">	
-								<img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120" alt="">
-                <input type="text" class="form-control" name="username" placeholder="Username" required >
-                <input type="password" class="form-control" name="pass" placeholder="Password" required>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">
-                    Sign in</button>
-                <!-- <label class="checkbox pull-left">
-                    <input type="checkbox" value="remember-me">
-                    Remember me
-                </label> -->
-                <a href="#" class="pull-right need-help">Forgot Password? </a><span class="clearfix"></span>
-								<input type="hidden" value="{{ csrf_token() }}" name="_token">	
-							  </form>
+                    <input type="hidden" value={{$order}} id="order" name="order">	
+                    <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120" alt="">
+                    <input type="text" class="form-control" name="username" placeholder="Username" required >
+                    <input type="password" class="form-control" name="pass" placeholder="Password" required>
+                    @if ($errors->has('error'))
+    			        <div class="error">{{ $errors->first('error') }}</div>
+				    @endif
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">
+                        Sign in</button>
+                
+                    <a href="#" class="pull-right need-help">Forgot Password? </a><span class="clearfix"></span>
+					    <input type="hidden" value="{{ csrf_token() }}" name="_token">	
+				</form>
             </div>
             @if($order==1)
             <a href="/Ecommerce/signup?selectId={{$order }}" class="text-center new-account">Create an account </a>
