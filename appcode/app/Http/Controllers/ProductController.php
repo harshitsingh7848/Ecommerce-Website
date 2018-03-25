@@ -324,7 +324,7 @@ $dompdf->render(); */
     */
     function productInfo($slug)
     {       
-       $res = DB::select('SELECT products.id,products.product_name,products.product_description,products.model_name,product_price.sellingprice,
+       $res = DB::select('SELECT products.id,products.product_id,products.product_name,products.product_description,products.model_name,product_price.sellingprice,
        product_price.actualprice,product_weight.weight,colour.color,images.image_url,warranty_features.warranty_summary,
        os_features.os,os_features.processor_type,os_features.processor_core,memory_features.RAM,memory_features.internal_storage,
        memory_features.expandable_storage,display_features.display_size,display_features.resolution,display_features.display_colors,

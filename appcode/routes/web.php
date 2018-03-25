@@ -23,10 +23,10 @@ Route::post('/add-product','ProductController@addProduct'); */
 	Route::get('/logout','LogoutController@index')->middleware('guest');
 	Route::post('/verification','LoginController@doLogin');
 
-	Route::get('/brand-category','ProductController@brandList')->middleware('guest');	
+	Route::get('/brand-category','ProductController@brandList');
 	//Route::get('/mobile-phones','ProductController@productList');
 
-	Route::get('/product/{slug}','ProductController@productInfo')->middleware('guest');
+	Route::get('/product/{slug}','ProductController@productInfo');
 
 	Route::get('/view-products','ProductController@productFunctions')->middleware('guest');
 	Route::get('/view-add-products','ProductController@viewAddProducts')->middleware('guest');
@@ -43,7 +43,7 @@ Route::post('/add-product','ProductController@addProduct'); */
 
 	 Route::get('/signup','SignUpController@signup');
 
-	Route::post('/register','AddUserController@addUserToDB')->middleware('guest');
+	Route::post('/register','AddUserController@addUserToDB');
 	Route::post('/admin/register','AddUserController@addUserToDB')->middleware('guest');
 
 	
@@ -60,16 +60,16 @@ Route::post('/add-product','ProductController@addProduct'); */
 
 	Route::get('/update-db','ProductController@updateDatabase')->middleware('guest');
 
-	Route::get('/category','ProductController@category')->middleware('guest');
+	Route::get('/category','ProductController@category');
 
-	Route::get('/buy','ProductController@buy')->middleware('guest');
-	Route::post('/get-quantity','ProductController@getQuantity')->middleware('guest');
+	Route::get('/buy','ProductController@buy');
+	Route::post('/get-quantity','ProductController@getQuantity');
 	
 		Route::post('/add-shipping-details','ProductController@addShippingDetails')->middleware('guest');
 	Route::get('/select-shipping-details','ProductController@selectShippingDetails')->middleware('guest');
 	Route::post('/invoice','ProductController@invoice')->middleware('guest');
 
-	Route::get('/order-details','ProductController@orderDetails')->middleware('guest');
+	Route::get('/order-details','ProductController@orderDetails');
 	Route::post('/show-payment','ProductController@showPayment')->middleware('guest');
 
 	Route::get('/account','UserController@myAccount')->middleware('guest');
