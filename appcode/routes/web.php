@@ -17,11 +17,11 @@
 /* Route::get('/view-add-products','ProductController@viewAddProducts');
 Route::post('/add-product','ProductController@addProduct'); */
 	
-	Route::get('/', 'IndexController@index')->middleware('guest');
-	Route::get('/login', 'LoginController@index')->middleware('guest');
+	Route::get('/', 'IndexController@index');
+	Route::get('/login', 'LoginController@index');
 
 	Route::get('/logout','LogoutController@index')->middleware('guest');
-	Route::post('/verification','LoginController@doLogin')->middleware('guest');
+	Route::post('/verification','LoginController@doLogin');
 
 	Route::get('/brand-category','ProductController@brandList')->middleware('guest');	
 	//Route::get('/mobile-phones','ProductController@productList');
@@ -34,21 +34,23 @@ Route::post('/add-product','ProductController@addProduct'); */
 	Route::post('/add-product','ProductController@addProduct')->middleware('guest');
 	Route::get('/admin','DashboardController@adminDashboard')->middleware('guest');
 	Route::get('/vendors','DashboardController@adminDashboard')->middleware('guest');
-
+	Route::get('/cart',function(){
+		return view('cart');
+	});
 	Route::get('/delete-product','ProductController@deleteProduct')->middleware('guest');
 
 	Route::get('/getdetails','UpdateController@getDetails')->middleware('guest');
 
-	 Route::get('/signup','SignUpController@signup')->middleware('guest');
+	 Route::get('/signup','SignUpController@signup');
 
 	Route::post('/register','AddUserController@addUserToDB')->middleware('guest');
 	Route::post('/admin/register','AddUserController@addUserToDB')->middleware('guest');
 
-	Route::post('/verification','LoginController@doLogin')->middleware('guest');
+	
 
 	
 	Route::post('/add-privileges','PrivilegesController@addPrivileges')->middleware('guest');		
-	Route::get('/users','PrivilegesController@index')->middleware('guest');
+	Route::get('/users','PrivilegesController@userList')->middleware('guest');
 	Route::get('/employees','PrivilegesController@index')->middleware('guest');
 	Route::get('/new-users','SignUpController@signup')->middleware('guest');
 

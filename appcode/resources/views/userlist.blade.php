@@ -27,9 +27,9 @@
     <table id="example" class="table table-striped table-advance table-hover">
       <thead>
         <tr>
-          <th><i class="fas fa-id-card"></i> EmployeeId</th>
-          <th><i class="fa fa-user"></i> Name</th>
-          <th><i class="fas fa-envelope"></i> Email</th>
+          <th><i class="fas fa-id-card"></i> Employee Name</th>
+          <th><i class="fa fa-user"></i> Email</th>
+          <th><i class="fas fa-envelope"></i> Contact</th>
           
           
         </tr>
@@ -37,9 +37,9 @@
       <tbody>
         @foreach($name as $names)
         <tr>
-          <td> {{ $names->empid }} </td>
           <td> {{ $names->empname }} </td>
           <td> {{ $names->emp_email }} </td>
+          <td> {{ $names->emp_mobile }} </td>
           
           
         </tr>

@@ -20,6 +20,7 @@ class PrivilegesController extends Controller
     {
          $userRole = Session::get('userRole');
         $userId=Session::get('userid');
+        $privilegeDetails=DB::select('select * from user_privilege_module_role where emp_id ="'.$userId.'"');
         if($userRole==1 || $userRole==2)
         { 
         $res    = DB::table('user_details')
@@ -29,11 +30,18 @@ class PrivilegesController extends Controller
         ->get(); 
         }
         else{
-           $res    = DB::table('user_details')
-        ->leftjoin('user_privilege_module_role', 'user_details.empid', '=', 'user_privilege_module_role.emp_id')
-        ->leftjoin('roles', 'user_privilege_module_role.role_id', '=', 'roles.id')
-        ->wherenull('user_privilege_module_role.role_id')
-        ->get(); 
+            $vendor=DB::select('select vendor_names.id,vendor_names.vendor_name from vendor_names join map_vendor_user on vendor_names.id=
+            map_vendor_user.vendor_id left join user_details on map_vendor_user.user_id=user_details.empid
+            where user_details.empid="'.$userId.'"');
+            $vendorId= $vendor[0]->id;
+           $res= DB::select('select DISTINCT (user_details.empid),user_details.empname,user_details.emp_mobile,vendor_names.vendor_name,
+            vendor_roles.vendor_role_name,user_details.emp_email from user_details 
+            left join map_vendor_user on user_details.empid=map_vendor_user.user_id
+            left join vendor_names on vendor_names.id=map_vendor_user.vendor_id
+            left join user_privilege_module_role on user_details.empid = user_privilege_module_role.emp_id 
+            left join vendor_roles on user_privilege_module_role.vendor_role_id= vendor_roles.id 
+            where vendor_names.id="'.$vendorId.'" and user_details.empid<>"'.$userId.'"');
+        
         }
         
     
@@ -46,7 +54,7 @@ class PrivilegesController extends Controller
 
         //print_r($usertype);
         return view('userlist',['name'=>$res,'dropdown'=>$usertype,'modules'=>$modules,
-        'vendors'=>$vendors,'vendorRoles'=>$vendorRoles]);
+        'vendors'=>$vendors,'vendorRoles'=>$vendorRoles,'role'=>$userRole,'privilegeDetails'=>$privilegeDetails]);
     }
 
     /* 
@@ -152,6 +160,39 @@ left join vendor_roles on vendor_roles.id=user_privilege_module_role.vendor_role
 where user_privilege_module_role.role_id=4 ');
 
         return view('viewvendors',['vendorDetails'=>$vendorDetails]);
+    }
+    /* 
+     * function userList
+     * It gives the list of the users on our Ecommerce Website
+     */
+    public function userList()
+    {
+        $userRole = Session::get('userRole');
+        $userId=Session::get('userid');
+        
+        $privilegeDetails=DB::select('select * from user_privilege_module_role where emp_id ="'.$userId.'"'); 
+        if($userRole===1 || $userRole===2)
+        {
+            $userList=DB::select('select DISTINCT(user_details.empid), user_details.empname,user_details.emp_mobile,
+            user_details.emp_email,store_address.address,store_address.Pincode,
+            store_address.city,store_address.state from user_details left join 
+            store_address on user_details.empid=store_address.user_id
+            left join user_privilege_module_role on user_details.empid =user_privilege_module_role.emp_id
+            left join roles on user_privilege_module_role.role_id=roles.id where roles.id="3" and
+             (store_address.address_type=1 ||isnull( store_address.address_type))');
+             
+        }
+        else{
+            $userList=DB::select('select DISTINCT(user_details.empid), user_details.empname,user_details.emp_mobile,
+            user_details.emp_email,store_address.address,store_address.Pincode,
+            store_address.city,store_address.state from user_details left join 
+            store_address on user_details.empid=store_address.user_id
+            left join user_privilege_module_role on user_details.empid =user_privilege_module_role.emp_id
+            left join roles on user_privilege_module_role.role_id=roles.id where roles.id="3" and
+             (store_address.address_type=1 ||isnull( store_address.address_type))');
+
+        }
+        return view('users',['userList'=>$userList,'role'=>$userRole,'privilegeDetails'=>$privilegeDetails]);
     }
 
 }

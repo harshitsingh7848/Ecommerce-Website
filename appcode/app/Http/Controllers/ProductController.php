@@ -406,6 +406,8 @@ $role = Session::get('userRole');
     {
         $roleId= Session::get('userRole');
         $userId=Session::get('userid');
+        $privilegeDetails=DB::select('select * from user_privilege_module_role where emp_id ="'.$userId.'"');
+
         if($roleId==1 || $roleId==2)
         {
         $productDetails = json_decode(DB::table('products')->where('show_backend',1)->get());
@@ -414,7 +416,7 @@ $role = Session::get('userRole');
         {
            $productDetails= DB::select('select * from products where added_by="'.$userId.'"'); 
         }
-        return view('viewproduct',['productDetails'=>$productDetails]);
+        return view('viewproduct',['productDetails'=>$productDetails,'role'=>$roleId,'privilegeDetails'=>$privilegeDetails]);
 
     }
 
@@ -593,7 +595,10 @@ $role = Session::get('userRole');
      */
      public function viewAddProducts()
     {
-        return view('addproduct');
+        $role=Session::get('userRole');
+        $userId=Session::get('userId');
+        $privilegeDetails=DB::select('select * from user_privilege_module_role where emp_id ="'.$userId.'"');
+        return view('addproduct',['role'=>$role,'privilegeDetails'=>$privilegeDetails]);
     }
 
     /* 
@@ -856,6 +861,7 @@ where products.id="'.$productId.'"');
     {
         $userRole = Session::get('userRole');
         $userId=Session::get('userid');
+        $privilegeDetails=DB::select('select * from user_privilege_module_role where emp_id ="'.$userId.'"');
         if($userRole==1 || $userRole==2)
         {
         $orders=DB::select('select orders.order_number,orders.mode_of_payment,orders.order_quantity,
@@ -881,7 +887,7 @@ where products.id="'.$productId.'"');
         }
        $name=Session::get('username'); 
         
-        return view('vieworder',['orders'=>$orders,'name'=>$name]);
+        return view('vieworder',['orders'=>$orders,'name'=>$name,'role'=>$userRole,'privilegeDetails'=>$privilegeDetails]);
     }
     /*
      * function specificOrderDetails

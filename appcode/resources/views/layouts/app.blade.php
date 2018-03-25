@@ -34,9 +34,59 @@
   <body>
 
 
-      @section('body')
+     <div id="wrapper" class="toggled">
 
-      @show
+<!-- Sidebar -->
+<div id="sidebar-wrapper" >
+     <ul class="sidebar-nav" id="tree1">
+        <li>
+            <a href="{{url('/')}}">Gadget Maniac</a>
+        </li>
+
+        <li>
+            <a href="{{url('view-products') }}">Products</a>
+        </li>
+
+        <li>
+            <a href="{{url('view-orders')}}">Orders</a>
+        </li>
+        
+        <li>
+            <a href="#">Users</a>
+                
+            
+            <ul>
+            
+           @if($role===1 || (!empty($privilegeDetails) && $privilegeDetails[0]->vendor_role_id===1) )
+           <li><a href="new-users">Add New Users</a></li>
+           
+           
+           
+           <li><a href="employees">List of Employees</a></li>
+           @endif
+           <li><a href="users">List of Users</a></li>
+          
+       </ul>
+       
+        </li>
+        @if($role===1)
+        <li>
+            <a href="#">Vendors</a>
+            
+            <ul>
+                <li><a href="vendor">Add Vendors</a> </li>
+                <li><a href="list-of-vendors">View Vendors</a> </li>      
+            </ul>    
+        </li>    
+        @endif
+        @if($role===1 || $role===2 )
+        <li>
+            <a href="#">Roles</a>
+        </li> 
+        
+        @endif
+    </ul>
+</div>
 
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" id="menu-toggle"> <i class="fas fa-bars"></i> Gadget Maniac</a>
@@ -66,6 +116,13 @@
     @section('content')
 
     @show
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
   </body>
+
 
   </html>
