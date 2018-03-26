@@ -40,7 +40,7 @@
 <div id="sidebar-wrapper" >
      <ul class="sidebar-nav" id="tree1">
         <li>
-            <a href="{{url('/')}}">Gadget Maniac</a>
+            <a href="{{url('/')}}"><img src="/Ecommerce/assets/img/gm.png"  width="80%"></a>
         </li>
 
         <li>
@@ -53,8 +53,6 @@
         
         <li>
             <a href="#">Users</a>
-                
-            
             <ul>
             
            @if($role===1 || (!empty($privilegeDetails) && $privilegeDetails[0]->vendor_role_id===1) )
@@ -80,9 +78,9 @@
         </li>    
         @endif
         @if($role===1 || $role===2 )
-        <li>
+       <!--  <li>
             <a href="#">Roles</a>
-        </li> 
+        </li>  -->
         
         @endif
     </ul>
@@ -100,13 +98,13 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="{{url('admin')}}">Home <span class="sr-only">(current)</span></a>
                 </li>
-                 
+                
+                 </ul>
               
-                @if (!empty($name))
-                    
-                    <li><a class="nav-link" href="{{ url('/logout') }}">Logout<span class="sr-only">(current)</span></a></li>      
+                @if (!empty($name))    
+                <a class=" nav-link float-right" href="{{ url('/logout') }}">Logout</a>
                 @endif
-            </ul>
+            
             <!-- form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>

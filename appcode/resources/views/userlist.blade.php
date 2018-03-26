@@ -22,25 +22,41 @@
 @endsection
 
 @section('content')
-  <h1> User Details</h1>
+  <h1> Employee Details</h1>
   <div>
     <table id="example" class="table table-striped table-advance table-hover">
       <thead>
         <tr>
-          <th><i class="fas fa-id-card"></i> Employee Name</th>
-          <th><i class="fa fa-user"></i> Email</th>
-          <th><i class="fas fa-envelope"></i> Contact</th>
+          <th><i class="fas fa-id-card"></i> Name</th>
+          <th><i class="fa fa-envelope"></i> Email</th>
+          <th><i class="fas fa-mobile"></i> Contact</th>
+          <th><i class=" fa fa-edit"></i>Role</th>
           
           
         </tr>
       </thead>
       <tbody>
-        @foreach($name as $names)
+        @foreach($result as $results)
         <tr>
-          <td> {{ $names->empname }} </td>
-          <td> {{ $names->emp_email }} </td>
-          <td> {{ $names->emp_mobile }} </td>
-          
+          <td> {{ $results->empname }} </td>
+          <td> {{ $results->emp_email }} </td>
+          <td> {{ $results->emp_mobile }} </td>
+          <td>
+          @if(empty($results->role_name))
+            <select class="usertype">
+            <option>Employee Role </option>
+              @foreach($dropdown as $d)
+              <option value="{{ $d->role_name . "-" . $results->empid  }}"> {{ $d->role_name }}</option>
+              @endforeach
+            </select>
+            @else
+            @if($results->role_name==="Vendor")
+            {{ $results->vendor_role_name }}
+            @else
+             {{ $results->role_name }}
+             @endif
+            @endif
+          </td>
           
         </tr>
         @endforeach
@@ -77,17 +93,27 @@
                 
               </p>
               </div>
+              <div id="divbtn">
+              <button class="float-right" id="nextbtn2">Next &raquo;</button>
+              </div>
               <div id="vendorNames">
+              
                 <select class="vname">
+                <option>Vendor Names</option>
               @foreach($vendors as $vendor)
               <option > {{ $vendor->vendor_name }}</option>
               @endforeach
             </select> 
+            
+            
             <select class="vrole">
+            <option>User Roles</option>
             @foreach($vendorRoles as $vrole)
               <option > {{ $vrole->vendor_role_name }}</option>
               @endforeach
             </select> 
+            </div>
+            <div id="buttons">
             <input type="hidden" id="inputVendor">
                 <div>
                   <button id="previousbtn">&laquo; Previous</button>
@@ -95,6 +121,7 @@
                 </div>
                 </div>
                 <div id="myTable">
+                <button id="previousbtn2">&laquo; Previous</button>
                 <table class="table table-striped table-advance table-hover">
       <thead>
         <tr> 
@@ -153,64 +180,142 @@
 
   $(document).ready(function(){
         $('#example').DataTable();
+
       var vendorName="";
       var vendorRole="";
         $('#vendor').prop('disabled',true);
         $('#vendorNames').hide();
+        $('#buttons').hide();
+        $('#divbtn').hide();
         $('#myTable').hide();
         $('#privilege').prop('disabled',true);
      $(".usertype").change(function(){
       var concat = $(this).val();
       
        $(".modal-body #concatemailusertype").val( concat );
+       
+       /* $(".tab").tabs({ active: 1 }); */
         $("#myModal").modal();  
     });  
     $('#initial').click(function(){
       $('#label').show();
     });
-  });
+  
 
-    $(document).ready(function(){
+    
       $('#check').click(function() {
        var result= $('#concatemailusertype').val();
         var checkArray=result.split("-");
       if(checkArray[0]=="Vendor"){
         $('#vendor').prop('disabled',false);
+      
         
       } 
       else{
         $('#privilege').prop('disabled',false);
-        $('#vendorNames').hide();
-        $('#myTable').show();
+        
+        
       }
 });
+$('#privilege').click(function(){
+$('#myTable').show();
+$('#vendorNames').hide();
+        $('#label').hide();
+});
+
     $('#vendor').click(function(){
       $('#label').hide();
       $('#vendorNames').show();
+      $('#divbtn').hide();
       $(".vname").change(function(){
         
          vendorName = $(this).val();
         $('#inputVendor').val(vendorName);
+       
+        
         
          
       });
+
       $(".vrole").change(function(){
         
          vendorRole = $(this).val();
+         
+         if(vendorRole=="Admin"){
+          $.ajax({
+          url:"/Ecommerce/check-vendor-admin",
+          method:"POST",
+          data:{'vendorName':vendorName},
+          success:function(response){
+            if(response==1){
+            alert('Admin already exists ');
+            }
+            else{
+              $('#buttons').show();
+            }
+            
+          },
+          });
+          }
+          else{
+            $('#buttons').show();
+          }
         
          
       });
     });
-    $('#nextbtn').click(function(){
-      $('#privilege').prop('disabled',false);
+    $('#previousbtn').click(function(){
         $('#vendorNames').hide();
+        $('#buttons').hide();
+        $('#divbtn').show();
+        
+    });
+    $('#previousbtn2').click(function(){
+      if(vendorName=="")
+      {
+        $('#vendorNames').hide();
+        $('#buttons').hide();
+        $('#divbtn').show();
+        $('#vendor').prop('disabled',true);
+        $('#privilege').prop('disabled',true);
+        $('#myTable').hide();
+      }
+      else{
+        $('#privilege').prop('disabled',true);
+        $('#myTable').hide();
+        $('#vendorNames').show();
+        $('#buttons').show();
+      }
+    });
+    $('#nextbtn').click(function(){
+      
+       $('#privilege').prop('disabled',false);
+        $('#vendorNames').hide();
+        $('#label').hide();
         $('#myTable').show();
+        $('#buttons').hide();
+    });
+    $('#nextbtn2').click(function(){
+      if(vendorName==""){
+        $('#label').hide();
+        $('#divbtn').hide();
+        $('#privilege').prop('disabled',false);
+        $('#myTable').show();
+      }
+      else{
+        $('#vendorNames').show();
+        $('#label').hide();
+        $('#divbtn').hide();
+        $('#buttons').show();
+      }
+        
     });
 
 
 
-    });
-    $(document).ready(function(){
+
+    
+    
  
 $('.btn').click(function(){
   var buttonId=$(this).attr('id');
@@ -239,6 +344,8 @@ $('.btn').click(function(){
   
   
 });
+
+
     });
 
    $(document).ready(function(){

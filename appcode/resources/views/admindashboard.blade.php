@@ -8,6 +8,7 @@
         <div id="page-content-wrapper">
             <div class="container-fluid">
                 <h1>Dashboard</h1>
+                <input type="hidden" value="{{$privilegeDetails[0]->vendor_role_id}}" id="vendorId">
                 <p>
                 @if(!empty($name))
                     Hello {{$name}}
@@ -30,7 +31,7 @@
                             <div class="card-header">Products</div>
                             <div class="card-body">
                                 <h5 class="card-title">New Products added</h5>
-                                <p class="card-text" >335 <i class="fas fa-arrow-down"></i></p>
+                                <p class="card-text" id="products" > <i class="fas fa-arrow-down"></i></p>
                             </div>
                         </div>
                     </div>
@@ -94,6 +95,7 @@
     <script src="assets/js/morris_chart.js"></script>  
     <script src="assets/js/brand-list.js"></script>
     <script src="assets/js/orders.js"></script>
+    <script src="assets/js/getproduct.js"></script>
     
     <!-- Menu Toggle Script -->
     <script>
@@ -111,6 +113,8 @@
 
 
 <script>
+/* var vendorId=document.getElementById('vendorId').value; */
+
 /* if(typeof(EventSource) !== "undefined") {
     var source = new EventSource("/Ecommerce/getdetails");
     source.onmessage = function(event) {

@@ -5,20 +5,24 @@
 
 @endsection
 @section('content')
-<h1>Vendor Details</h1>
+<h2>Employee Details of {{$vendorDetails[0]->vendor_name}}</h2>
   <div>
     <table id="example" class="table table-striped table-advance table-hover">
       <thead>
         <tr>
-          <th><i class="fas fa-id-card"></i>Vendor Name</th>
-          <th> Details</th>
+          <th>Employee Name</th>
+          <th> Employee Email  </th>
+          <th> Employee Contact</th>
+          <th> Employee Role </th>
         </tr>
       </thead>
       <tbody>
         @foreach($vendorDetails as $vendorDetail)
         <tr>
-          <td> {{ $vendorDetail->vendor_name }} </td>
-          <td> <a href="/Ecommerce/vendor-details?vendorId={{$vendorDetail->id}}">Details </a> </td>
+          <td> {{ $vendorDetail->empname }} </td>
+          <td> {{$vendorDetail->emp_email }}</td>
+          <td> {{$vendorDetail->emp_mobile }}</td>
+          <td>{{$vendorDetail->vendor_role_name }}</td>
         </tr>
         @endforeach
       </tbody>

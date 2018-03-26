@@ -61,6 +61,9 @@
                             @if (!empty($name))
                            Hello {{  $name }}
                              <li><a href="{{ url('/logout') }}"><i class="fa fa-user"></i>Logout</a></li>
+                             @if($role!==3)
+                             <li><a href="{{ url('/admin') }}"><i class="fa fa-user"></i>My Dashboard</a></li>
+                             @endif   
                             @else
                              <li><a href="{{ url('login') }}"><i class="fa fa-user"></i>LogIn</a></li>or
                              <li><a href="{{ url('signup') }}"><i class="fa fa-user"></i>Signup</a></li>

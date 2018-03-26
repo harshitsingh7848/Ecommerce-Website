@@ -619,6 +619,10 @@ $role = Session::get('userRole');
     function updateProduct()
     {
         $productId =    $_GET['productId'];
+        $userRole = Session::get('userRole');
+        $userId=Session::get('userid');
+        $name=Session::get('username');
+        $privilegeDetails=DB::select('select * from user_privilege_module_role where emp_id ="'.$userId.'"'); 
        $productDetail = DB::select('SELECT * FROM products 
 LEFT JOIN map_product_display_features ON products.id=map_product_display_features.product_id
 LEFT JOIN display_features ON map_product_display_features.display_feature_id=display_features.id
@@ -645,7 +649,8 @@ LEFT JOIN warranty_features ON warranty_features.id=map_product_warranty_feature
 where products.id="'.$productId .'"');
 
 
-    return view('updateproduct',['productDetail'=>$productDetail]);
+    return view('updateproduct',['productDetail'=>$productDetail,'role'=>$userRole,
+    'privilegeDetails'=>$privilegeDetails,'name'=>$name]);
 }
 
     /* 

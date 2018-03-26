@@ -34,9 +34,9 @@ Route::post('/add-product','ProductController@addProduct'); */
 	Route::post('/add-product','ProductController@addProduct')->middleware('guest');
 	Route::get('/admin','DashboardController@adminDashboard')->middleware('guest');
 	Route::get('/vendors','DashboardController@adminDashboard')->middleware('guest');
-	Route::get('/cart',function(){
-		return view('cart');
-	});
+	/* Route::get('/cart','')
+		
+	}); */
 	Route::get('/delete-product','ProductController@deleteProduct')->middleware('guest');
 
 	Route::get('/getdetails','UpdateController@getDetails')->middleware('guest');
@@ -46,13 +46,11 @@ Route::post('/add-product','ProductController@addProduct'); */
 	Route::post('/register','AddUserController@addUserToDB');
 	Route::post('/admin/register','AddUserController@addUserToDB')->middleware('guest');
 
-	
-
-	
+		
 	Route::post('/add-privileges','PrivilegesController@addPrivileges')->middleware('guest');		
 	Route::get('/users','PrivilegesController@userList')->middleware('guest');
 	Route::get('/employees','PrivilegesController@index')->middleware('guest');
-	Route::get('/new-users','SignUpController@signup')->middleware('guest');
+	Route::get('/new-users','PrivilegesController@newUsers')->middleware('guest');
 
 	Route::get('/addusertype','UpdateController@update')->middleware('guest');
 	
@@ -78,10 +76,13 @@ Route::post('/add-product','ProductController@addProduct'); */
 	Route::get('/vendor','PrivilegesController@addVendor')->middleware('guest');
 	Route::post('/add-vendor','PrivilegesController@addVendorToDB')->middleware('guest');
 	Route::get('/list-of-vendors','PrivilegesController@listOfVendors')->middleware('guest');
-		
+	Route::get('/vendor-details','PrivilegesController@vendorDetails')->middleware('guest');
+	Route::post('/check-vendor-admin','PrivilegesController@checkVendorAdmin')->middleware('guest');
+
 	Route::post('/download','ProductController@downloadInvoice')->middleware('guest');
 	
 	Route::get('/getorders','UpdateController@getOrderCount')->middleware('guest');
+	Route::get('/getproducts','UpdateController@getProductsCount')->middleware('guest');
 	Route::get('/view-orders','ProductController@viewOrders')->middleware('guest');
 
 	Route::get('/my-orders','ProductController@myOrders')->middleware('guest');

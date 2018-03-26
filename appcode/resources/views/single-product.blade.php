@@ -76,8 +76,8 @@
                   <td> Cash on Delivery </td>
                 </tr>
               </table>
-              <span class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</span>
-              4.0 stars
+              <!-- <span class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</span>
+              4.0 stars -->
             </div>
           </div>
           <!-- /.card -->

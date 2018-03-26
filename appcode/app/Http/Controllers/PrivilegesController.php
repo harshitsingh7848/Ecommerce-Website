@@ -20,14 +20,25 @@ class PrivilegesController extends Controller
     {
          $userRole = Session::get('userRole');
         $userId=Session::get('userid');
+        $name=Session::get('username');
+        
         $privilegeDetails=DB::select('select * from user_privilege_module_role where emp_id ="'.$userId.'"');
         if($userRole==1 || $userRole==2)
         { 
-        $res    = DB::table('user_details')
+        /* $res    = DB::table('user_details')
         ->leftjoin('user_privilege_module_role', 'user_details.empid', '=', 'user_privilege_module_role.emp_id')
         ->leftjoin('roles', 'user_privilege_module_role.role_id', '=', 'roles.id')
         ->wherenull('user_privilege_module_role.role_id')
-        ->get(); 
+        ->get();  */
+        $res= DB::select('select DISTINCT (user_details.empid),user_details.empname,user_details.emp_mobile,vendor_names.vendor_name,
+            vendor_roles.vendor_role_name,user_details.emp_email,roles.role_name,vendor_roles.vendor_role_name from user_details 
+            left join map_vendor_user on user_details.empid=map_vendor_user.user_id
+            left join vendor_names on vendor_names.id=map_vendor_user.vendor_id
+            left join user_privilege_module_role on user_details.empid = user_privilege_module_role.emp_id 
+            left join roles on roles.id=user_privilege_module_role.role_id
+            left join vendor_roles on user_privilege_module_role.vendor_role_id= vendor_roles.id 
+            where (isNull(user_privilege_module_role.role_id) || roles.id<>3) && (user_details.empid<>
+            "'.$userId.'") ');
         }
         else{
             $vendor=DB::select('select vendor_names.id,vendor_names.vendor_name from vendor_names join map_vendor_user on vendor_names.id=
@@ -35,26 +46,30 @@ class PrivilegesController extends Controller
             where user_details.empid="'.$userId.'"');
             $vendorId= $vendor[0]->id;
            $res= DB::select('select DISTINCT (user_details.empid),user_details.empname,user_details.emp_mobile,vendor_names.vendor_name,
-            vendor_roles.vendor_role_name,user_details.emp_email from user_details 
+            vendor_roles.vendor_role_name,user_details.emp_email,roles.role_name,vendor_roles.vendor_role_name from user_details 
             left join map_vendor_user on user_details.empid=map_vendor_user.user_id
             left join vendor_names on vendor_names.id=map_vendor_user.vendor_id
             left join user_privilege_module_role on user_details.empid = user_privilege_module_role.emp_id 
+            left join roles on roles.id=user_privilege_module_role.role_id
             left join vendor_roles on user_privilege_module_role.vendor_role_id= vendor_roles.id 
             where vendor_names.id="'.$vendorId.'" and user_details.empid<>"'.$userId.'"');
         
         }
+        /* echo '<pre/>';
+        print_r($res);exit;
+     */
         
-    
+        $usertype = DB::select('select role_name from roles where id<>3');
         
-        $usertype = dropdownbind::where('id','<>','3')->get(['role_name']);
         $vendors = DB::select('select * from vendor_names');
         
         $modules = DB::table('modules')->get();
         $vendorRoles=DB::select('select * from vendor_roles');
 
-        //print_r($usertype);
-        return view('userlist',['name'=>$res,'dropdown'=>$usertype,'modules'=>$modules,
-        'vendors'=>$vendors,'vendorRoles'=>$vendorRoles,'role'=>$userRole,'privilegeDetails'=>$privilegeDetails]);
+        
+        return view('userlist',['result'=>$res,'dropdown'=>$usertype,'modules'=>$modules,
+        'vendors'=>$vendors,'vendorRoles'=>$vendorRoles,'role'=>$userRole,'privilegeDetails'=>$privilegeDetails
+        ,'name'=>$name]);
     }
 
     /* 
@@ -66,10 +81,11 @@ class PrivilegesController extends Controller
         $vendorRoleId="";
         if(isset($_POST['vendorName'])){
             $vendorName=$_POST['vendorName'];
+            
             $vendor=DB::select('select id from vendor_names where vendor_name="'.$vendorName.'"');
             $vendorId=$vendor[0]->id;
         }  
-
+        
         $checkId = trim($_POST['checkId']);
         
          $privilege=explode(" ",$checkId); 
@@ -87,6 +103,7 @@ class PrivilegesController extends Controller
             $vendorRoleId=$vendorRoles[0]->id;
           } 
           
+          
           $empId=$result[1];
           $moduleId=$_POST['moduleId']; 
 
@@ -97,6 +114,7 @@ class PrivilegesController extends Controller
            {     
             $str.='("'.$empId.'", "'.$moduleId.'", "'.$privilege[$p].'", "'.$roleId.'","'.$vendorRoleId.'") ,';
            }
+           
            
             DB::select('insert into user_privilege_module_role (emp_id,module_id,privilege_id,role_id,
             vendor_role_id) 
@@ -130,7 +148,13 @@ class PrivilegesController extends Controller
      */
     public function addVendor()
     {
-        return view('addvendor');
+         $userRole = Session::get('userRole');
+        $userId=Session::get('userid');
+        $name=Session::get('username');
+        
+        $privilegeDetails=DB::select('select * from user_privilege_module_role where emp_id ="'.$userId.'"'); 
+        return view('addvendor',['role'=>$userRole,'privilegeDetails'
+        =>$privilegeDetails,'name'=>$name]);
     }
 
     /* 
@@ -150,16 +174,16 @@ class PrivilegesController extends Controller
      */
     public function listOfVendors()
     {
-        $vendorDetails=DB::select('select distinct (user_details.empid),(user_details.empname),vendor_names.vendor_name,
-        vendor_roles.vendor_role_name from user_details
-left join user_privilege_module_role on user_details.empid=user_privilege_module_role.emp_id
-left join roles on roles.id=user_privilege_module_role.role_id
-left join map_vendor_user on user_details.empid=map_vendor_user.user_id
-left join vendor_names on vendor_names.id=map_vendor_user.vendor_id
-left join vendor_roles on vendor_roles.id=user_privilege_module_role.vendor_role_id
-where user_privilege_module_role.role_id=4 ');
+        $userRole = Session::get('userRole');
+        $userId=Session::get('userid');
+        $name=Session::get('username');
+        $privilegeDetails=DB::select('select * from user_privilege_module_role where emp_id ="'.$userId.'"'); 
+        $vendorDetails=DB::select('select distinct (vendor_names.id),vendor_names.vendor_name
+         from  vendor_names 
+');
 
-        return view('viewvendors',['vendorDetails'=>$vendorDetails]);
+        return view('viewvendors',['vendorDetails'=>$vendorDetails,'role'=>$userRole,'privilegeDetails'
+        =>$privilegeDetails,'name'=>$name]);
     }
     /* 
      * function userList
@@ -169,7 +193,8 @@ where user_privilege_module_role.role_id=4 ');
     {
         $userRole = Session::get('userRole');
         $userId=Session::get('userid');
-        
+        $userList="";
+        $name=Session::get('username');
         $privilegeDetails=DB::select('select * from user_privilege_module_role where emp_id ="'.$userId.'"'); 
         if($userRole===1 || $userRole===2)
         {
@@ -183,16 +208,107 @@ where user_privilege_module_role.role_id=4 ');
              
         }
         else{
-            $userList=DB::select('select DISTINCT(user_details.empid), user_details.empname,user_details.emp_mobile,
-            user_details.emp_email,store_address.address,store_address.Pincode,
+             $productId=DB::select('select id from products where added_by="'.$userId.'"');
+            $orderId="";
+            if(!empty($productId)){
+            $orderId=DB::select('select order_id from map_product_order where product_id=
+            "'.$productId[0]->id.'"');
+            }
+            if(!empty($orderId)){
+            for($i=0;$i<sizeof($orderId);$i++){
+            $empId=DB::select('select user_id from map_user_order where order_id ="'.$orderId
+            [$i]->order_id.'"');
+            }
+            
+            
+            $userList=DB::select('select DISTINCT(user_details.empid),user_details.empname,user_details.emp_email 
+            ,store_address.address,store_address.Pincode,
             store_address.city,store_address.state from user_details left join 
             store_address on user_details.empid=store_address.user_id
             left join user_privilege_module_role on user_details.empid =user_privilege_module_role.emp_id
             left join roles on user_privilege_module_role.role_id=roles.id where roles.id="3" and
-             (store_address.address_type=1 ||isnull( store_address.address_type))');
+             (store_address.address_type=1 || isnull( store_address.address_type))
+             and empid="'.$empId[0]->user_id.'"
+             ');
+            }
 
         }
-        return view('users',['userList'=>$userList,'role'=>$userRole,'privilegeDetails'=>$privilegeDetails]);
+        return view('users',['userList'=>$userList,'role'=>$userRole,'privilegeDetails'=>$privilegeDetails
+        ,'name'=>$name]);
+    }
+
+    /* 
+     * function vendorDetails
+     * This function shows the different details corresponding the vendor
+     */
+    public function vendorDetails(Request $request)
+    {
+        $userRole = Session::get('userRole');
+        $userId=Session::get('userid');
+        $userList="";
+        $name=Session::get('username');
+        $privilegeDetails=DB::select('select * from user_privilege_module_role where emp_id ="'.$userId.'"'); 
+        $vendorId=$request->input('vendorId');
+         $vendorDetails=DB::select('select distinct (user_details.empid),(user_details.empname),user_details.emp_mobile,
+         user_details.emp_email,vendor_names.vendor_name,
+        vendor_roles.vendor_role_name from user_details
+        left join user_privilege_module_role on user_details.empid=user_privilege_module_role.emp_id
+        left join roles on roles.id=user_privilege_module_role.role_id
+        left join map_vendor_user on user_details.empid=map_vendor_user.user_id
+        left join vendor_names on vendor_names.id=map_vendor_user.vendor_id
+        left join vendor_roles on vendor_roles.id=user_privilege_module_role.vendor_role_id
+        where vendor_names.id="'.$vendorId.'" ');
+
+        /* echo '<pre/>';
+        print_r($vendorDetails);exit; */
+        return view('vendordetails',['vendorDetails'=>$vendorDetails,'name'=>$name,'role'=>
+        $userRole,'privilegeDetails'=>$privilegeDetails]);
+    }
+
+    /* 
+     * function checkVendorAdmin
+     * It checks if the particular vendor has an admin or not
+     */
+    public function checkVendorAdmin(Request $request)
+    {
+        $vendorName=$request->input('vendorName');
+       
+         $response=0; 
+         $vendorId= DB::select('select id from vendor_names where vendor_name="'.$vendorName.'"');
+        
+        
+         $userId=DB::select('select user_id from map_vendor_user where vendor_id="'.$vendorId[0]->id.'"'); 
+
+        
+            
+            
+        
+          for($i=0;$i<sizeof($userId);$i++){
+             $vendorAdmin=DB::select('select user_privilege_module_role.vendor_role_id from  
+        user_privilege_module_role left join vendor_roles on 
+        user_privilege_module_role.vendor_role_id=vendor_roles.id 
+         where (user_privilege_module_role.emp_id="'.$userId[$i]->user_id.'" and user_privilege_module_role.vendor_role_id=1)');
+            if(!empty($vendorAdmin)){
+                $response=1;
+            }
+        } 
+        echo $response; 
+       
+        
+    }
+    /* 
+     * function newUsers
+     * It adds newUsers to Database
+     */
+    public function newUsers()
+    {
+        $name=Session::get('username');
+        $userId=Session::get('userid');
+        $selectId=Session::get('selectId');
+        $role=Session::get('userRole');
+        $privilegeDetails=DB::select('select * from user_privilege_module_role where emp_id ="'.$userId.'"'); 
+        return view('newUsers',['name'=>$name,'selectId'=>$selectId,'role'=>$role,
+        'privilegeDetails'=>$privilegeDetails]);
     }
 
 }
