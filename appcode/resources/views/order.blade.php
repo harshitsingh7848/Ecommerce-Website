@@ -12,7 +12,7 @@
               <h4 >Price : {{$productDetails[0]->sellingprice }} </h4>
               <table>
                 <tr>
-                  <td>  Description:
+                  <td>  Warranty:
                   </td>
                   <td> {{ $productDetails[0]->warranty_summary }} </td>
                   </tr>

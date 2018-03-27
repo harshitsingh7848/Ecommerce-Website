@@ -26,14 +26,15 @@
       <div class="row">
 
         <div class="col-lg-4">
+          <input type="hidden" value="{{$productDetails[0]->id}}" id="productwId" name="productwId">
           <h2 class="my-4">{{ $productDetails[0]->product_name}}</h2>
           <div class="list-group ">
            <img src="/Ecommerce/assets/img/{{ $productDetails[0]->image_url }}" alt="">
            <div>
-           <a href="{{ url('cart')}}" class="btn btn-info btn-lg">
-          <span class="glyphicon glyphicon-shopping-cart"></span> ADD TO CART
+           <button  id="cart" class="btn btn-info btn-lg">ADD TO CART</button>
+          <!-- <span class="glyphicon glyphicon-shopping-cart"></span>  -->
         </a>
-           <a href="/Ecommerce/order-details?productId={{$productDetails[0]->id }} " class="btn btn-info btn-lg">
+           <a href="/Ecommerce/order-details?productId={{$productDetails[0]->id }}" class="btn btn-info btn-lg">
           <span class="glyphicon glyphicon-shopping-cart"></span> BUY NOW
         </a>
            </div>
@@ -255,31 +256,77 @@
 
     </div>
 
-    <script src="https://code.jquery.com/jquery.min.js"></script>
+    
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+       
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     
     <!-- Bootstrap JS form CDN -->
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    
     
     <!-- jQuery sticky menu -->
-    <script src="assets/js/owl.carousel.min.js"></script>
-    <script src="assets/js/jquery.sticky.js"></script>
+    <script src="/Ecommerce/assets/js/owl.carousel.min.js"></script>
+    <script src="/Ecommerce/assets/js/jquery.sticky.js"></script>
     
     <!-- jQuery easing -->
-    <script src="assets/js/jquery.easing.1.3.min.js"></script>
+    <script src="/Ecommerce/assets/js/jquery.easing.1.3.min.js"></script>
     
     <!-- Main Script -->
-    <script src="assets/js/main.js"></script>
+    <script src="/Ecommerce/assets/js/main.js"></script>
     
     <!-- Slider -->
-    <script type="text/javascript" src="assets/js/bxslider.min.js"></script>
-	<script type="text/javascript" src="assets/js/script.slider.js"></script>
+    <script type="text/javascript" src="/Ecommerce/assets/js/bxslider.min.js"></script>
+	<script type="text/javascript" src="/Ecommerce/assets/js/script.slider.js"></script>
     
-    <!-- /.container -->
+  <script>
+    $(document).ready(function(){
+      
+      $('#cart').click(function(){
+        var productId =$('#productwId').val();
+        var count=1;
+        var check=0;
+        
+          if(localStorage.getItem('productsId')){
+          var product=localStorage.getItem('productsId');
+          var checkDuplicate = product.split(",");
+          for(var i=0;i<checkDuplicate.length;i++)
+          {     
+            if(checkDuplicate[i]==productId)
+            {
+              check=1;
+            }
+          }
+          
+          if(check==0){
+          var productConcatId=product+","+productId;
+          }
+          else{
+            var productConcatId=product;
+          }
+          localStorage.setItem('productsId',productConcatId);
+        }
+      
+        else{
+        localStorage.setItem('productsId',productId);
+        }
+        var product=localStorage.getItem('productsId');
+        alert(product);
+        if(localStorage.getItem('count')){
+          var productCount=localStorage.getItem('count')
+        var totalCount=parseInt(productCount)+parseInt(count);
+        localStorage.setItem('count',totalCount);
+        }
+        else{
+          localStorage.setItem('count',count);
+        }
+        var finalCount=localStorage.getItem('count');
+        alert(finalCount);
+        $('.product-count').text(finalCount);       
+         
+      });
+    });
+  </script>   
 
-    <!-- Footer -->
-    
-    <!-- Bootstrap core JavaScript -->
-    <!-- <script src="assets/shop/jquery/jquery.min.js"></script>
-    <script src="assets/shop/bootstrap/js/bootstrap.bundle.min.js"></script>
- -->
   @endsection

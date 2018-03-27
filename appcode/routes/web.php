@@ -61,6 +61,8 @@ Route::post('/add-product','ProductController@addProduct'); */
 	Route::get('/category','ProductController@category');
 
 	Route::get('/buy','ProductController@buy');
+	Route::post('/cart','ProductController@addToCart');
+	Route::get('/viewcart','ProductController@viewCart');
 	Route::post('/get-quantity','ProductController@getQuantity');
 	
 		Route::post('/add-shipping-details','ProductController@addShippingDetails')->middleware('guest');
@@ -91,7 +93,11 @@ Route::post('/add-product','ProductController@addProduct'); */
 
 	Route::post('/select-product','ProductController@selectProduct')->middleware('guest');
 
-
+Route::prefix('api')->group(function () {
+		Route::get('/getUsers',function(){
+			return view('welcome');
+		});
+	});
 /* Route::get('/upload', 'testcontroller@uploadForm');
 Route::post('/upload', 'testcontroller@uploadSubmit'); */
 	

@@ -45,6 +45,7 @@
    <div class="header-area">
         <div class="container">
             <div class="row">
+                <input type="hidden" id="productId" name="productId" >
                 <div class="col-md-8">
                     <div class="user-menu">
                         <ul>
@@ -84,13 +85,17 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="logo">
-                        <h1><a href="./"><img src="/Ecommerce/assets/img/gm.png"></a></h1>
+                        <h1><a href="/Ecommerce"><img src="/Ecommerce/assets/img/gm.png"></a></h1>
                     </div>
                 </div>
                 
                 <div class="col-sm-6">
                     <div class="shopping-item">
-                        <a href="{{ url('cart') }}">My Cart <span class="cart-amunt"></span> <i class="fa fa-shopping-cart"></i> <span class="product-count"></span></a>
+                    
+                        
+                    
+                        <a id="anchor" href="">My Cart<i class="fa fa-shopping-cart"></i> <span class="product-count"></span></a>
+                    
                     </div>
                 </div>
             </div>
@@ -160,6 +165,31 @@
         </div>
     </div>
     
+
+    <script>
+    $(document).ready(function(){
+             if (localStorage.getItem('count')) {
+               var totalCount = localStorage.getItem('count');
+                $('.product-count').text(totalCount);
+                
+                
+             }
+             });
+            $(document).ready(function(){
+                
+                $('#anchor').mouseover(function(){
+                    if (localStorage.getItem('productsId')) {
+                    var productId=localStorage.getItem('productsId');
+                    $('#anchor').attr("href","/Ecommerce/viewcart?productId="+productId); 
+                
+                    }
+                });
+                
+    
+   
+});
+    </script>
+
   </body>
 
   </html>

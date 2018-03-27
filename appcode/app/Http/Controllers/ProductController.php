@@ -321,6 +321,8 @@ $dompdf->render(); */
     /* 
      * function productInfo
      * It retrieves the single product details and redirects to its page
+     *
+     *  @param int $slug
     */
     function productInfo($slug)
     {       
@@ -360,6 +362,8 @@ where products.product_name="'.$slug.'"');
 $name= Session::get('username');
 $role = Session::get('userRole');
 
+
+
        return view('single-product',['productDetails'=>$res,'name'=>$name,'role'=>$role]);
     }
 
@@ -391,6 +395,8 @@ $role = Session::get('userRole');
                 $brandList[$i]->product_name = explode(",", $brandList[$i]->product_name);
             }
               $name=Session::get('username');
+              
+              
             /* echo '<pre/>';
             print_r($brandList);
             exit; */
@@ -921,6 +927,89 @@ where products.id="'.$productId.'"');
        $name=Session::get('username');
         $billingDetails=DB::select('select * from store_address where address_type="1" and id="'.$orderDetail[0]->id.'"');
        return view('specificorder',['orderDetail'=>$orderDetail,'billingDetails'=>$billingDetails,'name'=>$name]);
+    }
+
+    /* 
+     * function addToCart
+     * It adds products to the cart
+     */
+    public function addToCart(Request $request)
+    {
+        $count=1;
+        $price=0;
+        $productId=$request->input('productId');
+        if(empty(Session::get('count'))){
+        Session::put('count',$count);
+        }
+        else{
+            $productCount=1;
+          $countFromSession=  Session::get('count');
+          $count=$productCount + $countFromSession;
+           $request->session()->forget('count');
+          Session::put('count',$count); 
+          
+        }
+        $productprice=DB::select('select product_price.sellingprice from product_price where product_id
+        ="'.$productId.'"');
+        if(empty(Session::get('price'))){
+            $price=$productprice[0]->sellingprice;
+            Session::put('price',$price);
+        }
+        else{
+            $sellPrice=$productprice[0]->sellingprice;
+            $priceFromSession=Session::get('price');
+            $price=$sellPrice + $priceFromSession;
+             $request->session()->forget('price');
+            Session::put('price',$price); 
+        }
+        $arr=['price'=>$price,'count'=>$count];
+        echo json_encode($arr);
+         
+    }
+
+    /* 
+     * function viewCart
+     * It shows all the items that are present in cart of the user
+     */
+    public function viewCart(Request $request)
+    {
+         $userRole = Session::get('userRole');
+        $userId=Session::get('userid');
+        $name=Session::get('username');
+        $privilegeDetails=DB::select('select * from user_privilege_module_role where emp_id ="'.$userId.'"');
+        
+    $products=$request->input('productId');
+    $productsId=explode(',',$products);
+
+    $str='products.id IN(';
+    $productDetails="";
+        if(!empty($products))
+        {
+        for($i=0;$i<sizeof($productsId);$i++)
+        {
+            $str.=''.$productsId[$i].',';
+        }
+        $str=rtrim($str,',');
+        $str.=')';
+        
+        
+         $productDetails = DB::select('SELECT products.id,products.product_name,products.product_description,products.model_name,product_price.sellingprice,
+       product_price.actualprice,warranty_features.warranty_summary,
+       memory_features.RAM,memory_features.internal_storage,
+       memory_features.expandable_storage
+        FROM products 
+LEFT JOIN product_price ON products.id =product_price.product_id
+LEFT JOIN map_product_memory_features on products.id =map_product_memory_features.product_id
+LEFT JOIN memory_features on memory_features.id =map_product_memory_features.memory_feature_id
+LEFT JOIN map_product_warranty_features on products.id=map_product_warranty_features.product_id
+LEFT JOIN warranty_features ON warranty_features.id=map_product_warranty_features.warranty_feature_id
+
+where '.$str.'');
+        
+        }
+        
+        return view('cart',['role'=>$userRole,'privilegeDetails'=>$privilegeDetails,
+        'name'=>$name,'productDetails'=>$productDetails]);
     }
 
 }
