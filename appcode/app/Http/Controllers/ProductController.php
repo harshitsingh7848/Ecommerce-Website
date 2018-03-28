@@ -985,15 +985,16 @@ where products.id="'.$productId.'"');
     for($i=0;$i<sizeof($productsId);$i++){
         $res[$i]=explode('-',$productsId[$i]);
     }
+    $m=0;
     for($i=0;$i<sizeof($res);$i++){
         $flag=0;
         if($i==0){
         for($j=0;$j<2;$j++){
-             $productDesc[$i]=$res[$i][$j];
+             $productDesc[$m]=$res[$i][$j];
              
              $j++;
-             $quantity[$i]=$res[$i][$j];
-             
+             $quantity[$m]=$res[$i][$j];
+             $m++;
         }
     }
     else{
@@ -1014,29 +1015,36 @@ where products.id="'.$productId.'"');
             }
         }
             if($flag==0){
-            $productDesc[$i]=$res[$i][$j];   
+            $productDesc[$m]=$res[$i][$j];   
              $j++;
-             $quantity[$i]=$res[$i][$j];
+             $quantity[$m]=$res[$i][$j];
+             $m++;
             }
        }
     }
     }
-      /* echo '<pre/>';
+       /* echo '<pre/>';
       print_r($productDesc);
       echo "<br>";
-    print_r( $quantity);   */
+    print_r( $quantity);  
+    exit;  */
    
     $str='products.id IN(';
+    $res='ORDER BY FIELD(products.id,';
     $productDetails="";
         if(!empty($products))
         {
         for($i=0;$i<sizeof($productDesc);$i++)
         {
             $str.=''.$productDesc[$i].',';
+            $res.=''.$productDesc[$i].',';
         }
         $str=rtrim($str,',');
         $str.=')';
-        /* echo $str;exit; */
+        $res=rtrim($res,',');
+        $res.=')';
+         
+        
         
         
          $productDetails = DB::select('SELECT products.id,products.product_name,products.product_description,products.model_name,product_price.sellingprice,
@@ -1050,7 +1058,7 @@ LEFT JOIN memory_features on memory_features.id =map_product_memory_features.mem
 LEFT JOIN map_product_warranty_features on products.id=map_product_warranty_features.product_id
 LEFT JOIN warranty_features ON warranty_features.id=map_product_warranty_features.warranty_feature_id
 
-where '.$str.'');
+where '.$str.' '.$res.' ');
         
         }
         

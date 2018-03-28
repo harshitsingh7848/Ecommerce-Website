@@ -180,8 +180,10 @@
                 $('#anchor').mouseover(function(){
                     if (localStorage.getItem('productsId')) {
                     var productId=localStorage.getItem('productsId');
-                    $('#anchor').attr("href","/Ecommerce/viewcart?products="+productId); 
-                
+                    var myUrl="/Ecommerce/viewcart?products="+productId;
+                    var encodeUrl=encodeURIComponent(myUrl);
+                    $('#anchor').attr("href",myUrl); 
+                    
                     }
                 });
                 

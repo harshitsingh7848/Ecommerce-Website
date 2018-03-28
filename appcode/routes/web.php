@@ -94,9 +94,8 @@ Route::post('/add-product','ProductController@addProduct'); */
 	Route::post('/select-product','ProductController@selectProduct')->middleware('guest');
 
 Route::prefix('api')->group(function () {
-		Route::get('/getUsers',function(){
-			return view('welcome');
-		});
+		Route::get('/getUsers','api\UserController@getUsers');
+		Route::get('/getOrders','api\OrderController@getOrders');
 	});
 /* Route::get('/upload', 'testcontroller@uploadForm');
 Route::post('/upload', 'testcontroller@uploadSubmit'); */

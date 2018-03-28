@@ -7,6 +7,7 @@
             <form id="orderform" action="get-quantity" method="POST">
             @if(!empty($productDetails))
             @foreach($productDetails as $i=>$j)
+            <div class="products" id="{{$productDetails[$i]->id}}">
             <input type="hidden" id="price" value="{{$productDetails[$i]->sellingprice}}">
             
               <h3 class="card-title">{{ $productDetails[$i]->product_name}}</h3>
@@ -59,16 +60,17 @@
               <td id="netAmount">
               </td>
               <td>
-              <a href="" id="delete">Delete Product</a>
+              <a href="" class="deletebtn" id="{{$productDetails[$i]->id."_". "1"}}">Delete Product</a>
               </td>
                 
               </table>
               </br>
-              
+              </div>
               @endforeach
               @else
               <h3> You have no Products to Show </h3>
               @endif
+              
               </form>
              
             </div>
@@ -122,14 +124,42 @@ $(document).ready(function(){
 </script>
 <script>
 $(document).ready(function(){
-  
+            /* var productId=localStorage.getItem('productsId');
+             var myUrl="/Ecommerce/viewcart?products="+productId;
+             var encodeUrl=encodeURIComponent(myUrl); 
+             window.history.pushState("", "", encodeUrl); */
             var price = $('#price').val();
             var quantity = $('#quantity').val();
+            
             var total = price * quantity;
+            
             $('#netAmount').text(total);
 
-            $('#delete').click(function(){
-              localStorage.removeItem('image');
+            $('.deletebtn').click(function(){
+               var buttonId=$(this).attr('id');
+              var parentId=$(this).closest('div').attr('id');
+              
+               if (localStorage.getItem('productsId')){
+                 var products=localStorage.getItem('productsId');
+                  var result=products.split(",");
+                  var productConcat=parentId+"-"+"1";
+                  var productId="";
+                 for(var i=0;i<result.length;i++){
+                   if(result[i]!=productConcat){
+                     if(i==(result.length-1)){
+                       productId=productId+result[i];
+                     }
+                     else
+                     {
+                       productId=productId+result[i]+",";
+                     }
+                   }
+                 }
+                 localStorage.removeItem('productsId');
+                 localStorage.getItem('order');
+                 alert(productId);
+                   localStorage.setItem('productsId',productId);
+               }
             });
      
 });
