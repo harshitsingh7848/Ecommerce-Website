@@ -6,22 +6,22 @@
             <h1>Shopping Cart</h1>
             <form id="orderform" action="get-quantity" method="POST">
             @if(!empty($productDetails))
-            @foreach($productDetails as $productDetail)
-            <input type="hidden" id="price" value="{{$productDetail->sellingprice}}">
+            @foreach($productDetails as $i=>$j)
+            <input type="hidden" id="price" value="{{$productDetails[$i]->sellingprice}}">
             
-              <h3 class="card-title">{{ $productDetail->product_name}}</h3>
-              <h4 >Price : {{$productDetail->sellingprice }} </h4>
+              <h3 class="card-title">{{ $productDetails[$i]->product_name}}</h3>
+              <h4 >Price : {{$productDetails[$i]->sellingprice }} </h4>
               <table>
                 <tr>
                   <td>  Warranty:
                   </td>
-                  <td> {{ $productDetail->warranty_summary }} </td>
+                  <td> {{ $productDetails[$i]->warranty_summary }} </td>
                   </tr>
                 <tr>
                   <td>  Highlights :
                   </td>
-                  <td> {{$productDetail->RAM}} | {{$productDetail->internal_storage}} ROM | 
-                   Expandable Upto {{$productDetail->expandable_storage}}
+                  <td> {{$productDetails[$i]->RAM}} | {{$productDetails[$i]->internal_storage}} ROM | 
+                   Expandable Upto {{$productDetails[$i]->expandable_storage}}
                   </td>
                 </tr>
                 <tr>
@@ -29,11 +29,12 @@
                 <tr>
                   <td>  Description :
                   </td>
-                  <td> {{ $productDetail->product_description }} </td>
+                  <td> {{ $productDetails[$i]->product_description }} </td>
                 </tr>
                 <tr>
                 <td> Quantity:
                 </td>
+                
                 <td>
                    
                   <div class="input-group">
@@ -42,7 +43,7 @@
                             <span class="glyphicon glyphicon-minus"></span>
                           </button>
                       </span>
-                      <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1"  min="1" max="100">
+                      <input type="text" id="quantity" name="quantity" class="form-control input-number" value="{{$quantity[$i]}}"  min="1" max="100">
                       <span class="input-group-btn">
                           <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus" data-field="">
                               <span class="glyphicon glyphicon-plus"></span>
@@ -51,6 +52,7 @@
                   </div>
                         
                 </td>
+  
               </tr>
               <td>Net Amount:
               </td>

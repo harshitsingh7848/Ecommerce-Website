@@ -978,19 +978,65 @@ where products.id="'.$productId.'"');
         $name=Session::get('username');
         $privilegeDetails=DB::select('select * from user_privilege_module_role where emp_id ="'.$userId.'"');
         
-    $products=$request->input('productId');
+    $products=$request->input('products');
+   
     $productsId=explode(',',$products);
+    
+    for($i=0;$i<sizeof($productsId);$i++){
+        $res[$i]=explode('-',$productsId[$i]);
+    }
+    for($i=0;$i<sizeof($res);$i++){
+        $flag=0;
+        if($i==0){
+        for($j=0;$j<2;$j++){
+             $productDesc[$i]=$res[$i][$j];
+             
+             $j++;
+             $quantity[$i]=$res[$i][$j];
+             
+        }
+    }
+    else{
+        
+        for($j=0;$j<2;$j++){
+            
+            if($j==0){
+            for($k=0;$k<$i;$k++){
+                
+                if($res[$i][0]==$res[$k][0]){
+                    
+                    $quantity[$k]+=$res[$i][$j+1];
+                    
+                    
+                    $flag=1;
 
+                }
+            }
+        }
+            if($flag==0){
+            $productDesc[$i]=$res[$i][$j];   
+             $j++;
+             $quantity[$i]=$res[$i][$j];
+            }
+       }
+    }
+    }
+      /* echo '<pre/>';
+      print_r($productDesc);
+      echo "<br>";
+    print_r( $quantity);   */
+   
     $str='products.id IN(';
     $productDetails="";
         if(!empty($products))
         {
-        for($i=0;$i<sizeof($productsId);$i++)
+        for($i=0;$i<sizeof($productDesc);$i++)
         {
-            $str.=''.$productsId[$i].',';
+            $str.=''.$productDesc[$i].',';
         }
         $str=rtrim($str,',');
         $str.=')';
+        /* echo $str;exit; */
         
         
          $productDetails = DB::select('SELECT products.id,products.product_name,products.product_description,products.model_name,product_price.sellingprice,
@@ -1009,7 +1055,7 @@ where '.$str.'');
         }
         
         return view('cart',['role'=>$userRole,'privilegeDetails'=>$privilegeDetails,
-        'name'=>$name,'productDetails'=>$productDetails]);
+        'name'=>$name,'productDetails'=>$productDetails,'quantity'=>$quantity]);
     }
 
 }

@@ -180,7 +180,7 @@
                 $('#anchor').mouseover(function(){
                     if (localStorage.getItem('productsId')) {
                     var productId=localStorage.getItem('productsId');
-                    $('#anchor').attr("href","/Ecommerce/viewcart?productId="+productId); 
+                    $('#anchor').attr("href","/Ecommerce/viewcart?products="+productId); 
                 
                     }
                 });

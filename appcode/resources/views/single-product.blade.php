@@ -287,32 +287,35 @@
         var productId =$('#productwId').val();
         var count=1;
         var check=0;
-        
+        var quantity=0;
           if(localStorage.getItem('productsId')){
           var product=localStorage.getItem('productsId');
-          var checkDuplicate = product.split(",");
+          quantity=quantity+1;
+          /* var checkDuplicate = product.split(",");
           for(var i=0;i<checkDuplicate.length;i++)
           {     
             if(checkDuplicate[i]==productId)
             {
               check=1;
             }
-          }
+          } */
           
-          if(check==0){
-          var productConcatId=product+","+productId;
-          }
-          else{
+          
+          var productConcatId=product+","+productId+"-"+quantity;
+          
+          /* else{
             var productConcatId=product;
-          }
+          } */
           localStorage.setItem('productsId',productConcatId);
         }
       
         else{
-        localStorage.setItem('productsId',productId);
+          quantity=quantity+1;
+          var productConcatQuantity=productId+"-"+quantity;
+        localStorage.setItem('productsId',productConcatQuantity);
         }
-        var product=localStorage.getItem('productsId');
-        alert(product);
+        var product1=localStorage.getItem('productsId');
+        alert(product1);
         if(localStorage.getItem('count')){
           var productCount=localStorage.getItem('count')
         var totalCount=parseInt(productCount)+parseInt(count);
