@@ -96,6 +96,8 @@ Route::post('/add-product','ProductController@addProduct'); */
 Route::prefix('api')->group(function () {
 		Route::get('/getUsers','api\UserController@getUsers');
 		Route::get('/getOrders','api\OrderController@getOrders');
+		Route::get('/getProduct','api\ProductComparisonController@getProducts');
+		Route::get('/getRegion','api\RegionController@getRegion');
 	});
 /* Route::get('/upload', 'testcontroller@uploadForm');
 Route::post('/upload', 'testcontroller@uploadSubmit'); */

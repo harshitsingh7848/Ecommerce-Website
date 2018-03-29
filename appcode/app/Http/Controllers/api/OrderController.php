@@ -11,6 +11,8 @@ class OrderController extends Controller
     /* 
      * function getOrders
      * It displays all the details of the Orders
+     * 
+     * @return Response
      */
     public function getOrders(Request $request)
     {   
@@ -19,15 +21,16 @@ class OrderController extends Controller
                
         $sql = 'select order_date from orders';
         $where = '';
+        if(!empty($request->input('startDate')) && !empty($request->input('startDate')))
+        {
         $startDate= $request->input('startDate')." 00.00.00"; 
         $endDate= $request->input('endDate')." 23.59.59";
-       
-        if(!empty($startDate) && !empty($endDate)){
-            $where = 'where order_date>"'.$startDate.'" and order_date<"'.$endDate.'"';
+         $where = 'where order_date>"'.$startDate.'" and order_date<"'.$endDate.'"';
         }
+        
 
         $sql = $sql." ".$where;
-        /* echo $sql;exit; */
+         /* echo $sql;exit;  */
         $orderDetails=DB::select($sql);
 
         

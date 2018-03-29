@@ -14,11 +14,25 @@ class UserController extends Controller
      * 
      * @return Response
      */
-    public function getUsers()
+    public function getUsers(Request $request)
     {
         $months=['Jan'=>0,'Feb'=>0,'Mar'=>0,'Apr'=>0,'May'=>0,'Jun'=>0,'Jul'=>0,
         'Aug'=>0,'Sep'=>0,'Oct'=>0,'Nov'=>0,'Dec'=>0];
-        $userDetails=DB::select('select created_at from user_details');
+
+         $sql = 'select created_at from user_details';
+        $where = '';
+        if(!empty($request->input('startDate')) && !empty($request->input('startDate')))
+        {
+        $startDate= $request->input('startDate')." 00.00.00"; 
+        $endDate= $request->input('endDate')." 23.59.59";
+         $where = 'where order_date>"'.$startDate.'" and order_date<"'.$endDate.'"';
+        }
+        
+
+        $sql = $sql." ".$where;
+        
+        $userDetails=DB::select($sql);
+
         
         foreach($userDetails as $i=>$v){
             $time= strtotime($userDetails[$i]->created_at);

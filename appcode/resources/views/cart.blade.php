@@ -124,6 +124,14 @@ $(document).ready(function(){
 </script>
 <script>
 $(document).ready(function(){
+
+  $.ajax({
+    url:'/Ecommerce/bindData',
+    success:function(response){
+      
+    },
+
+  });
             /* var productId=localStorage.getItem('productsId');
              var myUrl="/Ecommerce/viewcart?products="+productId;
              var encodeUrl=encodeURIComponent(myUrl); 

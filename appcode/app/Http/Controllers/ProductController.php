@@ -978,7 +978,7 @@ where products.id="'.$productId.'"');
         $name=Session::get('username');
         $privilegeDetails=DB::select('select * from user_privilege_module_role where emp_id ="'.$userId.'"');
         
-    $products=$request->input('products');
+   /*  $products=$request->input('products');
    
     $productsId=explode(',',$products);
     
@@ -1023,11 +1023,7 @@ where products.id="'.$productId.'"');
        }
     }
     }
-       /* echo '<pre/>';
-      print_r($productDesc);
-      echo "<br>";
-    print_r( $quantity);  
-    exit;  */
+       
    
     $str='products.id IN(';
     $res='ORDER BY FIELD(products.id,';
@@ -1060,10 +1056,10 @@ LEFT JOIN warranty_features ON warranty_features.id=map_product_warranty_feature
 
 where '.$str.' '.$res.' ');
         
-        }
+        } */
         
         return view('cart',['role'=>$userRole,'privilegeDetails'=>$privilegeDetails,
-        'name'=>$name,'productDetails'=>$productDetails,'quantity'=>$quantity]);
+        'name'=>$name]);
     }
 
 }

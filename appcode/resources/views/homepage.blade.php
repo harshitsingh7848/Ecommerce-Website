@@ -168,23 +168,23 @@
 
     <script>
     $(document).ready(function(){
-             if (localStorage.getItem('count')) {
+            /*  if (localStorage.getItem('count')) {
                var totalCount = localStorage.getItem('count');
+               alert(totalCount);
                 $('.product-count').text(totalCount);
                 
                 
-             }
+             } */
              });
             $(document).ready(function(){
                 
-                $('#anchor').mouseover(function(){
+                 $('#anchor').mouseover(function(){
                     if (localStorage.getItem('productsId')) {
                     var productId=localStorage.getItem('productsId');
-                    var myUrl="/Ecommerce/viewcart?products="+productId;
-                    var encodeUrl=encodeURIComponent(myUrl);
+                    var myUrl="/Ecommerce/viewcart";
                     $('#anchor').attr("href",myUrl); 
-                    
-                    }
+                    localStorage.removeItem('productsId');
+                    } 
                 });
                 
     
