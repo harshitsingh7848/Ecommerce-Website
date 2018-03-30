@@ -5,7 +5,71 @@
             <div class="card-body">
             <h1>Shopping Cart</h1>
             <form id="orderform" action="get-quantity" method="POST">
+            @if(!empty($productDetails))
+            @foreach($productDetails as $i=>$j)
+            <div class="products" id="{{$productDetails[$i]->id}}">
+            <input type="hidden" id="price" value="{{$productDetails[$i]->sellingprice}}">
             
+              <h3 class="card-title">{{ $productDetails[$i]->product_name}}</h3>
+              <h4 >Price : {{$productDetails[$i]->sellingprice }} </h4>
+              <table>
+                <tr>
+                  <td>  Warranty:
+                  </td>
+                  <td> {{ $productDetails[$i]->warranty_summary }} </td>
+                  </tr>
+                <tr>
+                  <td>  Highlights :
+                  </td>
+                  <td> {{$productDetails[$i]->RAM}} | {{$productDetails[$i]->internal_storage}} ROM | 
+                   Expandable Upto {{$productDetails[$i]->expandable_storage}}
+                  </td>
+                </tr>
+                <tr>
+                  
+                <tr>
+                  <td>  Description :
+                  </td>
+                  <td> {{ $productDetails[$i]->product_description }} </td>
+                </tr>
+                <tr>
+                <td> Quantity:
+                </td>
+                
+                <td>
+                   
+                  <div class="input-group">
+                      <span class="input-group-btn">
+                          <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="minus" data-field="">
+                            <span class="glyphicon glyphicon-minus"></span>
+                          </button>
+                      </span>
+                      <input type="text" id="quantity" name="quantity" class="form-control input-number" value="{{$quantity[$i]}}"  min="1" max="100">
+                      <span class="input-group-btn">
+                          <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus" data-field="">
+                              <span class="glyphicon glyphicon-plus"></span>
+                          </button>
+                      </span>
+                  </div>
+                        
+                </td>
+  
+              </tr>
+              <td>Net Amount:
+              </td>
+              <td id="netAmount">
+              </td>
+              <td>
+              <a href="" class="deletebtn" id="{{$productDetails[$i]->id."_". "1"}}">Delete Product</a>
+              </td>
+                
+              </table>
+              </br>
+              </div>
+              @endforeach
+              @else
+              <h3> You have no Products to Show </h3>
+              @endif
               
               </form>
              
@@ -75,9 +139,9 @@ $(document).ready(function(){
       console.log(response);
       var arr = JSON.parse(response);
       $.each(arr, function( index, value ) {
-        //console.log(value.id);
-         var res='<div><h3>'+value.product_name+'</h3></div>';
-         $("form").append(res);
+          $.each(value, function( index1, value1 ) {
+            console.log(index1+" --- "+value1);
+          });
       });
       //var str=JSON.parse(response);
       //alert(str);

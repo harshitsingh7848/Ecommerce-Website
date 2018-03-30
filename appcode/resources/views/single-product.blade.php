@@ -292,10 +292,10 @@
             if(localStorage.getItem('product')){   
             var productInfo = localStorage.getItem('product');
             var productsDetail = JSON.parse(productInfo);
-            alert(productsDetail.length);
+            //alert(productsDetail.length);
               
           //localStorage.removeItem('product');  
-             for(var i=0;i<productsDetail.length;i=i+2){
+              for(var i=0;i<productsDetail.length;i=i+2){
                
               if(productsDetail[i]==productId){
                 productsDetail[i+1]=productsDetail[i+1]+quantity;
@@ -306,10 +306,10 @@
               productsDetail.push(productId);
               productsDetail.push(quantity);
               count=count+quantity; 
-            }
+            } 
             localStorage.setItem('product',JSON.stringify(productsDetail)); 
             for(var i=0;i<productsDetail.length;i++){
-            console.log(productsDetail[i]);
+            //console.log(productsDetail[i]);
           }  
         } 
           else{
@@ -328,7 +328,8 @@
              }
              
           }
-          $('.product-count').val(count);  
+          localStorage.setItem('count',count);
+          $('.product-count').text(count);  
         });
       });
 

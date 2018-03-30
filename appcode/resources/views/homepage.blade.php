@@ -94,7 +94,7 @@
                     
                         
                     
-                        <a id="anchor" href="">My Cart<i class="fa fa-shopping-cart"></i> <span class="product-count"></span></a>
+                        <a id="anchor" href="/Ecommerce/viewcart">My Cart<i class="fa fa-shopping-cart"></i> <span class="product-count"></span></a>
                     
                     </div>
                 </div>
@@ -168,28 +168,12 @@
 
     <script>
     $(document).ready(function(){
-            /*  if (localStorage.getItem('count')) {
+              if (localStorage.getItem('count')) {
                var totalCount = localStorage.getItem('count');
-               alert(totalCount);
-                $('.product-count').text(totalCount);
-                
-                
-             } */
+                $('.product-count').text(totalCount);  
+             } 
              });
-            $(document).ready(function(){
-                
-                 $('#anchor').mouseover(function(){
-                    if (localStorage.getItem('productsId')) {
-                    var productId=localStorage.getItem('productsId');
-                    var myUrl="/Ecommerce/viewcart";
-                    $('#anchor').attr("href",myUrl); 
-                    localStorage.removeItem('productsId');
-                    } 
-                });
-                
-    
-   
-});
+
     </script>
 
   </body>

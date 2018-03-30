@@ -11,6 +11,7 @@ use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 use PDF;
 use Dompdf\Dompdf;
+use Excel;
 
 class ProductController extends Controller
 {   
@@ -1060,6 +1061,120 @@ where '.$str.' '.$res.' ');
         
         return view('cart',['role'=>$userRole,'privilegeDetails'=>$privilegeDetails,
         'name'=>$name]);
+    }
+
+    /* 
+     * function bindCartData
+     * It binds cart data on the blade page
+     */
+    public function bindCartData(Request $request)
+    {
+        $products=$request->input('products');
+        $m=0;
+        $quantity=[];
+        for($i=0;$i<sizeof($products);$i++){
+            $productsId[$m]=$products[$i];
+            $i++;
+            $quantity[$m]=$products[$i];
+            $m++;
+        }
+
+        $str='products.id IN(';
+    $res='ORDER BY FIELD(products.id,';
+    $productDetails="";
+    $str1 = "";
+    $res1 = "";
+        if(!empty($products))
+        {
+        for($i=0;$i<sizeof($productsId);$i++)
+        {
+            if ($str1 == "") {
+                $str1 = $productsId[$i];
+                $res1 = $productsId[$i];
+            } else {
+                $str1 = $str1.",".$productsId[$i];
+                $res1 = $res1.",".$productsId[$i];
+            }
+        }
+        $str = $str.$str1.")";
+        $res = $res.$res1.")";
+                
+          $productDetails = DB::select('SELECT products.id,products.product_name,products.product_description,products.model_name,product_price.sellingprice,
+       product_price.actualprice,warranty_features.warranty_summary,
+       memory_features.RAM,memory_features.internal_storage,
+       memory_features.expandable_storage
+        FROM products 
+LEFT JOIN product_price ON products.id =product_price.product_id
+LEFT JOIN map_product_memory_features on products.id =map_product_memory_features.product_id
+LEFT JOIN memory_features on memory_features.id =map_product_memory_features.memory_feature_id
+LEFT JOIN map_product_warranty_features on products.id=map_product_warranty_features.product_id
+LEFT JOIN warranty_features ON warranty_features.id=map_product_warranty_features.warranty_feature_id
+
+where '.$str.' '.$res.' ');
+        
+        } 
+       $i = 0;
+        foreach($productDetails as $p) {
+           
+            $p->quantity = $quantity[$i];
+            $i++;
+           
+        }
+       
+    print_r(json_encode($productDetails));
+    //return Response::json(array('productDetails'=>$productDetails,'quantity'=>$quantity));
+        
+    }
+
+    /* 
+     */
+    public function test()
+    {
+
+        Excel::load('/storage/test/Sample.xls', function($reader) {
+
+   //echo $reader->getTitle();
+    foreach ($reader->toArray() as $key => $row) {
+                    $data['title'] = $row['test1'];
+                    $data['description'] = $row['test2'];
+
+                   print_r($data);exit;
+                }
+     });
+ 
+   
+/* $obj= Excel::load('/storage/test/Book1.csv');
+foreach($obj->get() as $i){
+    //($obj->get());
+    print_r($i);
+} */
+        
+        /* Excel::create('Sample', function($excel) {
+
+    // Set the title
+    $excel->setTitle('Our new awesome title');
+
+    // Chain the setters
+    $excel->setCreator('Maatwebsite')
+          ->setCompany('Maatwebsite');
+
+    // Call them separately
+    $excel->setDescription('A demonstration to change the file properties');
+    $excel->sheet('Sheetname', function($sheet) {
+
+        // Sheet manipulation
+        // Manipulate first row
+$sheet->row(1, array(
+     'test1', 'test2'
+));
+
+// Manipulate 2nd row
+$sheet->row(2, array(
+    'test3', 'test4'
+));
+    });
+
+})->download('xls'); */
     }
 
 }
