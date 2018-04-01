@@ -11,7 +11,7 @@ use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 use PDF;
 use Dompdf\Dompdf;
-use Excel;
+//use Excel;
 
 class ProductController extends Controller
 {   
@@ -1131,7 +1131,7 @@ where '.$str.' '.$res.' ');
     public function test()
     {
 
-        Excel::load('/storage/test/Sample.xls', function($reader) {
+        /* Excel::load('/storage/test/Sample.xls', function($reader) {
 
    //echo $reader->getTitle();
     foreach ($reader->toArray() as $key => $row) {
@@ -1140,7 +1140,7 @@ where '.$str.' '.$res.' ');
 
                    print_r($data);exit;
                 }
-     });
+     }); */
  
    
 /* $obj= Excel::load('/storage/test/Book1.csv');

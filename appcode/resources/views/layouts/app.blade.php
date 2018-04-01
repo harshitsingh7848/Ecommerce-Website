@@ -114,11 +114,8 @@
     @section('content')
 
     @show
-    <script>
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
+    <script src="/Ecommerce/assets/js/applayout.js">
+    
     </script>
   </body>
 

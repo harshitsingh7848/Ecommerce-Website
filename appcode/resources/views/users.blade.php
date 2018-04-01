@@ -72,10 +72,8 @@
         <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
       
 
-   <script>
-        $(document).ready(function(){
-        $('#example').DataTable();
-        });
+   <script src="assets/js/dataTables.js">
+        
     </script>
 
 

@@ -85,22 +85,9 @@
 
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<script>
-$(document).ready(function(){
+<script src="assets/js/purchaseproduct.js">
+
   
-     var price = $('#price').text();
- var quantity = $('#quantity1').text();
- var total = price * quantity;
-$('#total').text(total);
-$('#subtotal').text(total);
-var shippingcharge=120;
-$('#shippingcharge').text(shippingcharge);
-var totalamount = shippingcharge + total;
-$('#totalamount').text(totalamount);
-
-
- 
-
-});
+    
 </script>
 @endsection

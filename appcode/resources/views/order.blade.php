@@ -67,61 +67,8 @@
           <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 
-<script>
-$(document).ready(function(){
+<script src="assets/js/order.js">
 
-var quantitiy=0;
-   $('.quantity-right-plus').click(function(e){
-        
-        // Stop acting like a button
-        e.preventDefault();
-        // Get the field name
-        var quantity = parseInt($('#quantity').val());
-        
-        // If is not undefined
-            
-            $('#quantity').val(quantity + 1);
-            var price = $('#price').val();
-            var quantity = $('#quantity').val();
-            var total = price * quantity;
-            $('#netAmount').text(total);
-
-          
-            // Increment
-        
-    });
-
-     $('.quantity-left-minus').click(function(e){
-        // Stop acting like a button
-        e.preventDefault();
-        // Get the field name
-        var quantity = parseInt($('#quantity').val());
-
-          
-        
-        // If is not undefined
-      
-            // Increment
-            if(quantity>0){
-            $('#quantity').val(quantity - 1);
-            }
-             var price = $('#price').val();
-            var quantity = $('#quantity').val();
-            var total = price * quantity;
-            $('#netAmount').text(total);
-    });
-    
-});
-</script>
-<script>
-$(document).ready(function(){
-  
-            var price = $('#price').val();
-            var quantity = $('#quantity').val();
-            var total = price * quantity;
-            $('#netAmount').text(total);
-     
-});
 </script>
   <!-- /Ecommerce/buy?productId={{$productDetails[0]->id }} -->
 @endsection

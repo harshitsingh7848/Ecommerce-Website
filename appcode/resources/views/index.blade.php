@@ -133,8 +133,10 @@
         <div class="zigzag-bottom"></div>
         <div class="container">
             <div class="row">
+            <h2>Brands</h2>   
                 <div class="col-md-12">
                     <div class="brand-wrapper">
+                   
                         <div class="brand-list">
                             <img src="assets/img/brand1.png" alt="">
                             <img src="assets/img/brand2.png" alt="">
@@ -151,7 +153,7 @@
         </div>
     </div> <!-- End brands area -->
     
-    <div class="product-widget-area">
+    <!-- <div class="product-widget-area">
         <div class="zigzag-bottom"></div>
         <div class="container">
             <div class="row">
@@ -301,7 +303,7 @@
                 </div>
             </div>
         </div>
-    </div> <!-- End product widget area -->
+    </div> --> <!-- End product widget area -->
     
      <!-- End footer top area -->
     

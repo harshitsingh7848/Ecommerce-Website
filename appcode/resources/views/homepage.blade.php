@@ -166,15 +166,7 @@
     </div>
     
 
-    <script>
-    $(document).ready(function(){
-              if (localStorage.getItem('count')) {
-               var totalCount = localStorage.getItem('count');
-                $('.product-count').text(totalCount);  
-             } 
-             });
-
-    </script>
+    <script src="/Ecommerce/assets/js/homepage.js"></script>
 
   </body>
 

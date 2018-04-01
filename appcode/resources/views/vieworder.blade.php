@@ -98,12 +98,9 @@
         
 
 
-  
-    <script>
-        $(document).ready(function(){
-        $('#example').DataTable();
-        });
-    </script>
+  <script src="assets/js/dataTables.js">
+         
+         </script>
       
        
 

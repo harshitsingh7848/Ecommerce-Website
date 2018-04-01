@@ -22,7 +22,7 @@
                         <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
                             <div class="card-header">Users</div>
                             <div class="card-body">
-                                <h5 class="card-title">Total Number of Users</h5>
+                                
                                 <p class="card-text" id="result"> <i class="fas fa-arrow-down"></i></p>
                             </div>
                         </div>
@@ -30,7 +30,7 @@
                     <div class="col-md-3"><div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
                             <div class="card-header">Products</div>
                             <div class="card-body">
-                                <h5 class="card-title">New Products added</h5>
+                                
                                 <p class="card-text" id="products" > <i class="fas fa-arrow-down"></i></p>
                             </div>
                         </div>
@@ -39,7 +39,7 @@
                         <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
                             <div class="card-header">Orders</div>
                             <div class="card-body">
-                                <h5 class="card-title">Primary card title</h5>
+                                
                                 <p class="card-text" id="orders"> <i class="fas fa-arrow-down"></i></p>
                                 
                             </div>
@@ -99,10 +99,7 @@
     
     <!-- Menu Toggle Script -->
     <script>
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
+    
     </script>
 
     <!-- <div id="tableusers">
@@ -112,7 +109,7 @@
        
 
 
-<script>
+<script src="assets/js/admin.js">
 /* var vendorId=document.getElementById('vendorId').value; */
 
 /* if(typeof(EventSource) !== "undefined") {
@@ -121,23 +118,7 @@
         document.getElementById("result").innerHTML = event.data ;
      };
 } */
-    timedCount();
     
-
-function timedCount() {
-  var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 ) {
-         document.getElementById("result").innerHTML=this.responseText;
-      }
-    };  
-
-      xhttp.open("GET", "/Ecommerce/getdetails",true);
-      xhttp.send(); 
-     
-     //postMessage(i);
-     setTimeout("timedCount()",1000);
-}
 
 
 </script>
