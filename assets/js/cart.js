@@ -111,6 +111,26 @@ $(document).ready(function(){
              //console.log(quantity);
              var total = price * quantity;
              
+            if(localStorage.getItem('product')){   
+            var proInfo = localStorage.getItem('product');
+            var proDetail = JSON.parse(proInfo);
+          }
+          console.log(proDetail);
+          
+            for(i=0;i<proDetail.length;i=i+2){
+              if(proDetail[i]==productId[1]){
+                proDetail[i+1]=parseInt(quantity);
+              }
+            }
+            console.log(proDetail);
+            //$('#'+'div-'+productId[1]+'').remove(); 
+              localStorage.setItem('product',JSON.stringify(proDetail));  
+             count=parseInt(quantity) + parseInt(count);
+             console.log(count);
+               localStorage.setItem('count',count);
+             $('.product-count').text(count);   
+                
+
              netTotal=total+netTotal;
              $('#'+"net"+ productId[1]+'').text(total);
           $("#totalcartvalue").html('<div><h3>Total Cart Value :'+netTotal+'</h3> </div>');
