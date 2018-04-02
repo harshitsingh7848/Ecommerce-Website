@@ -73,8 +73,6 @@
                         </ul>
                     </div>
                 </div>
-                
-                
                 </div>
             </div>
         </div>
@@ -91,11 +89,7 @@
                 
                 <div class="col-sm-6">
                     <div class="shopping-item">
-                    
-                        
-                    
                         <a id="anchor" href="/Ecommerce/viewcart">My Cart<i class="fa fa-shopping-cart"></i> <span class="product-count"></span></a>
-                    
                     </div>
                 </div>
             </div>

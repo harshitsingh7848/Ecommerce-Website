@@ -9,7 +9,7 @@
       <!-- <link href="assets/css/bootstrap.min.css" rel="stylesheet"> -->
 
       <!-- Custom styles for this template -->
-      <link href="/Ecommerce/assets/css/shop-item.css" rel="stylesheet">
+     <!--  <link href="/Ecommerce/assets/css/shop-item.css" rel="stylesheet"> -->
 
       <!-- font awesome icons CSS -->
     <!--   <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet"> -->

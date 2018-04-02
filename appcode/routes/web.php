@@ -96,6 +96,7 @@ Route::post('/add-product','ProductController@addProduct'); */
 	Route::post('/bindData','ProductController@bindCartData');
 Route::prefix('api')->group(function () {
 		Route::get('/getUsers','api\UserController@getUsers');
+		Route::get('/getOrdersDetails','api\OrderController@getOrdersDetails');
 		Route::get('/getOrders','api\OrderController@getOrders');
 		Route::get('/getProduct','api\ProductComparisonController@getProducts');
 		Route::get('/getRegion','api\RegionController@getRegion');

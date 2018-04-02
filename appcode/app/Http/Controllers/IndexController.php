@@ -58,9 +58,9 @@ class IndexController extends Controller
         $name=Session::get('username');
         $role=Session::get('userRole');
         
-        
+        $brands=DB::select('select * from brand');
         
         return view('index',['name'=>$name,'latestProductList'=>$latestProductList,'role'
-        => $role]);   
+        => $role,'brands'=>$brands]);   
     }
 }

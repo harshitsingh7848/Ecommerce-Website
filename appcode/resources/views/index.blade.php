@@ -138,14 +138,11 @@
                     <div class="brand-wrapper">
                    
                         <div class="brand-list">
-                            <img src="assets/img/brand1.png" alt="">
-                            <img src="assets/img/brand2.png" alt="">
-                            <img src="assets/img/brand3.png" alt="">
-                            <img src="assets/img/brand4.png" alt="">
-                            <img src="assets/img/brand5.png" alt="">
-                            <img src="assets/img/brand6.png" alt="">
-                            <img src="assets/img/brand1.png" alt="">
-                            <img src="assets/img/brand2.png" alt="">                            
+                        @if(!empty($brands))
+                        @foreach($brands as $brand)
+                            <img src="assets/img/{{$brand->brand_image_url}}" alt="">
+                             @endforeach
+                             @endif                       
                         </div>
                     </div>
                 </div>
