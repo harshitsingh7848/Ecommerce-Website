@@ -36,7 +36,6 @@ $('document').ready(function()
     email: {
      required: true,
      validemail: true,
-     duplicate:true
     },
     mobile: {
         required: true,
@@ -63,7 +62,7 @@ $('document').ready(function()
        },
        email: {
        required: "Please Enter Email Address",
-       validemail: "Enter Valid Email Address"
+       validemail: "Enter Valid Email Address",
         },
         mobile: {
             required: "Please Enter Mobile Number",
@@ -92,7 +91,7 @@ $('document').ready(function()
      
      submitHandler: function(form) {
                     form.submit();
-                    ignoreTitle: true
+                    
      $("#register-form")[0].reset();
      
                 }

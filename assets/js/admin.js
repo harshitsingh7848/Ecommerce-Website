@@ -23,6 +23,8 @@ function timedCount() {
 
 
 $(function () {
+  var datepicker = $.fn.datepicker.noConflict(); // return $.fn.datepicker to previously assigned value
+$.fn.bootstrapDP = datepicker;    
  //for orders
  $('#datetimepicker6').datetimepicker({
  format:'YYYY-MM-DD'

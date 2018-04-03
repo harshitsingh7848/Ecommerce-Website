@@ -112,9 +112,10 @@
 		 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	
 		 <script src="assets/js/jquery-1.11.2.min.js"></script>
+		 
 <script src="assets/js/jquery.validate.min.js"></script>
-    
-	<script src="assets/js/register.js"></script>
+    <script src="assets/js/register.js"></script>
+	
 	
 		
 	</body>

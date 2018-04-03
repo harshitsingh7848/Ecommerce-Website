@@ -93,14 +93,18 @@ Route::post('/add-product','ProductController@addProduct'); */
 
 	Route::post('/select-product','ProductController@selectProduct')->middleware('guest');
 
+	Route::get('/deleteAddress','ProductController@deleteAddress')->middleware('guest');
+	Route::get('/viewUpdateAddress','ProductController@viewUpdateAddress');
+	Route::post('/updateshippingdetails','ProductController@updateShippingDetails');
+
 	Route::post('/bindData','ProductController@bindCartData');
-Route::prefix('api')->group(function () {
+//Route::prefix('api')->group(function () {
 		Route::get('/getUsers','api\UserController@getUsers');
-		Route::get('/getOrdersDetails','api\OrderController@getOrdersDetails');
+		//Route::get('/getOrdersDetails','api\OrderController@getOrdersDetails');
 		Route::get('/getOrders','api\OrderController@getOrders');
 		Route::get('/getProduct','api\ProductComparisonController@getProducts');
 		Route::get('/getRegion','api\RegionController@getRegion');
-	});
+	//});
 /* Route::get('/upload', 'testcontroller@uploadForm');
 Route::post('/upload', 'testcontroller@uploadSubmit'); */
 	

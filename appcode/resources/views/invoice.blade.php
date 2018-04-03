@@ -121,4 +121,9 @@
 
 <script src="assets/js/invoice.js"></script>
 
+<script>
+function myFunction() {
+    window.print();
+}
+</script>
 @endsection

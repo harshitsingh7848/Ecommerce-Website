@@ -23,8 +23,7 @@ $('#totalamount').text(totalamount);
    }); 
 }); */
 
-function myFunction() {
-    window.print();
-}
+
 
 });
+
