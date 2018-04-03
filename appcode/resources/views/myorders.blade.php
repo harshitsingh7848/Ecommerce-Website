@@ -19,7 +19,7 @@
            </div> 
             <div class="card-body">
               <div>
-                <img src="/Ecommerce/assets/img/{{ $orders->image_url }}" height="50px">
+                <img src="/Ecommerce/assets/img/{{ $orders->image_url }}" width="100px">
                  Product Name:{{$orders->product_name}} 
                Product Price:{{$orders->sellingprice}}
                Product Quantity:{{$orders->order_quantity}}
