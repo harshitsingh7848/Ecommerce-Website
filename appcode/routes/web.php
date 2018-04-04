@@ -88,7 +88,8 @@ Route::post('/add-product','ProductController@addProduct'); */
 	Route::get('/view-orders','ProductController@viewOrders')->middleware('guest');
 
 	Route::get('/my-orders','ProductController@myOrders')->middleware('guest');
-	
+	Route::get('/myaccount','PrivilegesController@myAccount');
+	Route::post ('/updateaccount','PrivilegesController@updateAccount');
 	Route::get('/specific-order-details','ProductController@specificOrderDetails')->middleware('guest');
 
 	Route::post('/select-product','ProductController@selectProduct')->middleware('guest');

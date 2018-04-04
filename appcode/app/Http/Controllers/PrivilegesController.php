@@ -11,6 +11,52 @@ use Session;
 
 class PrivilegesController extends Controller
 {
+    
+    /* 
+     * function myAccount 
+     * It displays details of the Users
+     */
+    public function myAccount()
+    {
+        $roleId= Session::get('userRole');
+        $userId=Session::get('userid');
+        $name=Session::get('username');
+        $privilegeDetails=DB::select('select * from user_privilege_module_role where emp_id ="'.$userId.'"');
+        $accountDetails=DB::select('select user_details.empname,user_details.emp_email,user_details.emp_mobile,
+        store_address.address,store_address.city,store_address.Pincode,
+        store_address.state,store_address.Country from user_details left join store_address on
+        user_details.empid=store_address.user_id where user_details.empid="'.$userId.'"
+        and store_address.address_type="1"');
+        /* echo '<pre/>';
+        print_r($accountDetails);exit;  */   
+        return view('myaccount',['role'=>$roleId,'privilegeDetails'=>$privilegeDetails,
+        'name'=>$name,'accountDetails'=>$accountDetails]);
+    }
+
+    /* 
+     * function updateAccount
+     * It updates users account details
+     */
+    public function updateAccount(Request $request)
+    {
+        $userId=Session::get('userid');
+        $name=$request->input('name');
+        $address=$request->input('address');
+        $city=$request->input('city');
+        $state=$request->input('state');
+        $pincode=$request->input('pincode');
+        $country=$request->input('Country');
+        $email=$request->input('email');
+        $mobile=$request->input('contact');
+        
+        DB::select('update user_details set empname="'.$name.'",emp_email="'.$email.'",
+        emp_mobile="'.$mobile.'" where empid="'.$userId.'" ');
+        DB::select('update store_address set address="'.$address.'",city="'.$city.'",
+        state="'.$state.'",Pincode="'.$pincode.'",Country="'.$country.'" where user_id="'.$userId.'" ');
+
+        echo "Account Details Updated";
+    }
+    
     /* 
      * function index
      * Redirects to userlist page
