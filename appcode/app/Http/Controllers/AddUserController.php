@@ -48,7 +48,8 @@ class AddUserController extends Controller
       }
 
       Session::put('username', $_POST['name']);
-      $empId=DB::select('select Max(id) as id from user_details');
+      $empId=DB::select('select Max(empid) as id from user_details');
+      
       Session::put('userRole',"3"); 
        Session::put('userid',$empId[0]->id);
      $userId= DB::select('select empid from user_details where emp_email ="'.$res->emp_email .'"');

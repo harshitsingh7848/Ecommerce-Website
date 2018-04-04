@@ -9,6 +9,13 @@
               
               </form>
              <div id="totalcartvalue"></div>
+             <div>
+             
+             <a id="test" href="/Ecommerce/order-details?productId=" class="btn btn-info btn-lg">
+             Proceed to CheckOut
+          </a>
+             </div>
+             
             </div>
           </div>
           <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>

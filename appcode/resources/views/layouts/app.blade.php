@@ -12,8 +12,8 @@
     
      <title>@yield('title')</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" >
+  <!--   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"  > -->
     <!-- font awesome icons CSS -->
     <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
 
@@ -38,7 +38,7 @@
 
 <!-- Sidebar -->
 <div id="sidebar-wrapper" >
-     <ul class="sidebar-nav" id="tree1">
+     <ul  class="sidebar-nav"id="tree1">
         <li>
             <a href="{{url('/')}}"><img src="/Ecommerce/assets/img/gm.png"  width="80%"></a>
         </li>
@@ -53,7 +53,7 @@
         
         <li>
             <a href="#">Users</a>
-            <ul>
+            <ul >
             
            @if($role===1 || (!empty($privilegeDetails) && $privilegeDetails[0]->vendor_role_id===1) )
            <li><a href="new-users">Add New Users</a></li>

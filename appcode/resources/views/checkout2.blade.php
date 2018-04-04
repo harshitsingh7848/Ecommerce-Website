@@ -33,10 +33,12 @@
 
 <input type="hidden" name="shipId" id="shipId">
 <h1>Your Addresses</h1>
-<a href="/Ecommerce/select-shipping-details?userId={{$userAddress[0]->user_id }}">Add new Address </a>
-@if(!empty($address))
+<a href="/Ecommerce/select-shipping-details">Add new Address </a>
+
 <div>
-<input type="checkbox" id="{{$userAddress[0]->id}}" name="check" checked>
+@if(!empty($userAddress))
+<input type="checkbox" id="{{$userAddress[0]->id}}" class="checkbox1" name="check" checked>
+
   <p id="para{{$userAddress[0]->id}}">
   {{ $userAddress[0]->name}}
   <br>
@@ -48,10 +50,13 @@
   <br>
   </p>
 </div>
+@endif
+@if(!empty($address))
 @foreach($address as $a=>$d)
-<div>
-<input type="checkbox" id="{{$address[0]->id}}" name="check">
-  <p id="para{{$address[0]->id}}">
+<div >
+<input type="checkbox" id="{{$address[$a]->id}}" class="checkbox" name="checkbox[]">
+
+  <p id="para{{$address[$a]->id}}">
   {{ $address[$a]->name}}
   <br>
   {{ $address[$a]->address}}
@@ -60,13 +65,17 @@
   <br>
   Phone number : {{$address[$a]->mobile_number}}
   <br>
-  <a href=""> Edit Address </a> | <a href="">Delete Address</a>
+  <a href="/Ecommerce/viewUpdateAddress?shipId={{ $address[$a]->id }}"> Edit Address </a> | <a class="delete" id="{{$address[$a]->id}}" href="">Delete Address</a>
   </p>
+ 
 </div>
 @endforeach
 @endif
 </br>
   <button type="submit" id="btn" name="btn" > Confirm Address</button>
+  @if ($errors->has('ship'))
+    						<div class="error">{{ $errors->first('ship') }}</div>
+							@endif
 </form>
 </div>
 

@@ -1,11 +1,11 @@
 @extends('layouts.app')
 @section('head')
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"> -->
 
 <!-- Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
+
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" /> -->
 @endsection
 		
 @section('title','Admin Dashboard')
@@ -72,7 +72,7 @@
                  <!-- end date for orders -->
                 <div class='col-md-2'>
                 <div class="form-group">
-                <div class='input-group date' id='datetimepicker7'>
+                <div class='input-group date' data-provide="datepicker" id='datetimepicker7'>
                 <input type='text' class="form-control" placeholder="order-end-date"/>
                 <span class="input-group-addon">
                 <span class="glyphicon glyphicon-calendar"></span>
@@ -89,18 +89,18 @@
                 <!-- start date for users -->
                 <div class='col-md-2'>
                 <div class="form-group">
-                <div class='input-group date' id='datetimepicker8'>
+                <div class='input-group date' data-provide="datepicker-inline" id='datetimepicker8'>
                 <input type='text' class="form-control" placeholder="user-start-date"/>
-                <span class="input-group-addon">
+                <div class="input-group-addon">
                 <span class="glyphicon glyphicon-calendar"></span>
-                </span>
+                </div>
                 </div>
                 </div>
                 </div>
                 <!-- end date for users -->
                 <div class='col-md-2'>
                 <div class="form-group">
-                <div class='input-group date' id='datetimepicker9'>
+                <div  id='datetimepicker9'>
                 <input type='text' class="form-control" placeholder="user-end-date"/>
                 <span class="input-group-addon">
                 <span class="glyphicon glyphicon-calendar"></span>

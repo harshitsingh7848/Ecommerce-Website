@@ -25,7 +25,7 @@ class UserController extends Controller
         {
         $startDate= $request->input('startDate')." 00.00.00"; 
         $endDate= $request->input('endDate')." 23.59.59";
-         $where = 'where order_date>"'.$startDate.'" and order_date<"'.$endDate.'"';
+         $where = 'where created_at>"'.$startDate.'" and created_at<"'.$endDate.'"';
         }
         
 

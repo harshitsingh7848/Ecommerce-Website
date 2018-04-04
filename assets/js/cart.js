@@ -2,6 +2,26 @@ $(document).ready(function(){
    var test=0;
    var netTotal=0;
    var count=0;
+   var productid="";
+   if(localStorage.getItem('product')){   
+            var productInfo1 = localStorage.getItem('product');
+            var productsDetail1 = JSON.parse(productInfo1);
+            //console.log(productsDetail1);
+            for(i=0;i<productsDetail1.length;i++){
+              if(i==(productsDetail1.length-1))
+              {
+                productid = productid+productsDetail1[i];
+              }
+              else
+              {
+                productid = productsDetail1[i] + "-" +productid;
+              }
+              
+            }
+            $('#test').attr("href",'/Ecommerce/order-details?productId='+productid);
+            
+          }
+          
    
    window.deletebtn = function(tt){
             if(localStorage.getItem('product')){   
@@ -10,7 +30,7 @@ $(document).ready(function(){
           }
               //console.log(tt.id);
               var productId=tt.id.split('-');
-              console.log(productId[1]);
+              //console.log(productId[1]);
                var product=[];
                var m=0;
               //console.log(productsDetail1);
@@ -56,11 +76,11 @@ $(document).ready(function(){
   window.myFunction = function(tt) {
             
              var productId=tt.id.split('-');
-             
+             var count=0;
               count=localStorage.getItem('count');
              var quantity = parseInt($('#'+"quantity"+productId[1]+'').val());
              count=count-quantity;
-             //console.log(count);
+             
              var price = $('#'+productId[1]+'').val();
              var oldTotal=quantity*price;
              
@@ -72,18 +92,18 @@ $(document).ready(function(){
             var proInfo = localStorage.getItem('product');
             var proDetail = JSON.parse(proInfo);
           }
-          console.log(proDetail);
+          
           
             for(i=0;i<proDetail.length;i=i+2){
               if(proDetail[i]==productId[1]){
                 proDetail[i+1]=parseInt(quantity);
               }
             }
-            console.log(proDetail);
+            
             //$('#'+'div-'+productId[1]+'').remove(); 
               localStorage.setItem('product',JSON.stringify(proDetail));  
              count=parseInt(quantity) + parseInt(count);
-             console.log(count);
+             //console.log(count);
                localStorage.setItem('count',count);
              $('.product-count').text(count);   
                 
@@ -99,7 +119,10 @@ $(document).ready(function(){
   }
   window.subtract = function(tt) {
     var productId=tt.id.split('-');
+    var count=0;
+     count=localStorage.getItem('count');
     var quantity = parseInt($('#'+"quantity"+productId[1]+'').val());
+    count=count-quantity;
     var price = $('#'+productId[1]+'').val();
     var oldTotal=quantity*price;
              if(quantity>0){
@@ -115,18 +138,19 @@ $(document).ready(function(){
             var proInfo = localStorage.getItem('product');
             var proDetail = JSON.parse(proInfo);
           }
-          console.log(proDetail);
+         
+         // console.log(proDetail);
           
             for(i=0;i<proDetail.length;i=i+2){
               if(proDetail[i]==productId[1]){
                 proDetail[i+1]=parseInt(quantity);
               }
             }
-            console.log(proDetail);
+            //console.log(proDetail);
             //$('#'+'div-'+productId[1]+'').remove(); 
               localStorage.setItem('product',JSON.stringify(proDetail));  
              count=parseInt(quantity) + parseInt(count);
-             console.log(count);
+            // console.log(count);
                localStorage.setItem('count',count);
              $('.product-count').text(count);   
                 

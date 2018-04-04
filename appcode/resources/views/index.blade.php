@@ -108,7 +108,7 @@
                                     <img src="assets/img/product-1.jpg" alt="">
                                     <div class="product-hover">
                                         <a href="#" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
-                                        <a href="#" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                                        <a href="" class="view-details-link"><i class="fa fa-link"></i> See details</a>
                                     </div>
                                 </div>                                
                                 <h2><a href="single-product.html">{{$latestProduct->product_name }}</a></h2>                                
@@ -140,7 +140,7 @@
                         <div class="brand-list">
                         @if(!empty($brands))
                         @foreach($brands as $brand)
-                            <img src="assets/img/{{$brand->brand_image_url}}" alt="">
+                            <img src="assets/img/{{$brand->brand_image_url}}" alt="" >
                              @endforeach
                              @endif                       
                         </div>
