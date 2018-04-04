@@ -137,7 +137,7 @@
 <span class="input-group-addon "><i class="fa fa-user fa" aria-hidden="true"></i></span>
 <input type="text" class="form-control" name="sname" id="sname"  placeholder="Enter your Name" />
 </div>
-<span class="help-block" id="error"></span>
+
 </div>
 </div>
 

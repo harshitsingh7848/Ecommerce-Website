@@ -8,6 +8,7 @@ use App\dropdownbind;
 use Illuminate\Http\Request;
 use DB;
 use Session;
+use Redirect;
 
 class PrivilegesController extends Controller
 {
@@ -26,7 +27,7 @@ class PrivilegesController extends Controller
         store_address.address,store_address.city,store_address.Pincode,
         store_address.state,store_address.Country from user_details left join store_address on
         user_details.empid=store_address.user_id where user_details.empid="'.$userId.'"
-        and store_address.address_type="1"');
+        and (store_address.address_type="1" or isNull(store_address.address))');
         /* echo '<pre/>';
         print_r($accountDetails);exit;  */   
         return view('myaccount',['role'=>$roleId,'privilegeDetails'=>$privilegeDetails,
@@ -51,10 +52,23 @@ class PrivilegesController extends Controller
         
         DB::select('update user_details set empname="'.$name.'",emp_email="'.$email.'",
         emp_mobile="'.$mobile.'" where empid="'.$userId.'" ');
-        DB::select('update store_address set address="'.$address.'",city="'.$city.'",
-        state="'.$state.'",Pincode="'.$pincode.'",Country="'.$country.'" where user_id="'.$userId.'" ');
+        $billAdd=DB::select('select * from store_address where user_id="'.$userId.'"');
+        
+        if(empty($billAdd)){
+            DB::select('insert into store_address (address,address_type,user_id,Pincode,city,state,mobile_number,name,show_backend,
+            Country) values("'.$address.'","1","'.$userId.'","'.$pincode.'",
+            "'.$city.'","'.$state.'","'.$mobile.'","'.$name.'","1","'.$country.'")');
+        }
+        else{
+            DB::select('update store_address set address="'.$address.'",city="'.$city.'",
+        state="'.$state.'",Pincode="'.$pincode.'",Country="'.$country.'" where user_id="'.$userId.'"  and store_address.address_type="1"');
+        }
+        
 
-        echo "Account Details Updated";
+        /* echo "Account Details Updated"; */
+        Session::flash('message', "Account Details Updated");
+        return Redirect::back();
+        /* return redirect('/myaccount'); */
     }
     
     /* 
@@ -267,7 +281,8 @@ class PrivilegesController extends Controller
             }
             
             
-            $userList=DB::select('select DISTINCT(user_details.empid),user_details.empname,user_details.emp_email 
+            $userList=DB::select('select DISTINCT(user_details.empid),user_details.empname,user_details.emp_email,
+            user_details.emp_mobile
             ,store_address.address,store_address.Pincode,
             store_address.city,store_address.state from user_details left join 
             store_address on user_details.empid=store_address.user_id

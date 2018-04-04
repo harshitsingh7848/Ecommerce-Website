@@ -30,7 +30,7 @@ $('document').ready(function()
        return this.optional( element ) || mregex.test( value );
    });
    
-   $("#buy_form1").validate({
+   $("#myacc").validate({
      
     rules:
     {
@@ -40,29 +40,29 @@ $('document').ready(function()
      minlength: 3
     },
    
-    bmobile: {
+    contact: {
         required: true,
         validmobilenumber:true,
         minlength: 10,
         maxlength: 10
        },
-    bpin:{
+    pincode:{
          required:true,
          validpin:true,
        },
-       bcity:{
+       city:{
          required:true,
          validname:true,
        },
-       bstate:{
+       state:{
          required:true,
          validname:true,
        },
-       bcountry:{
+       Country:{
          required:true,
          validname:true,
        },
-       billingaddress:{
+       address:{
          required:true,
          validadd:true,
        },
@@ -76,28 +76,28 @@ $('document').ready(function()
      minlength: "Your Name is Too Short"
        },
       
-        bmobile: {
+        contact: {
             required: "Please Enter Mobile Number",
             validmobilenumber: "Enter Valid Mobile Number",
             minlength:"Mobile Number is not of 10 digits"
              },
-             bpin:{
+             pincode:{
                required:"Please Enter Pincode",
                validpin:"Enter Valid Pincode",
              },
-             bcity:{
+             city:{
                required:"Please Enter City",
                validname:"City must contain only alphabets and space",
              },
-             bstate:{
+             state:{
                required:"Please Enter State",
                validname:"State must contain only alphabets and space",
              },
-             bcountry:{
+             Country:{
                required:"Please Enter Country",
                validname:"Country must contain only alphabets and space",
              },
-             billingaddress:{
+             address:{
                required:"Please Enter Your Address",
                validname:"Please Enter Valid Address",
              },
@@ -117,7 +117,7 @@ $('document').ready(function()
      submitHandler: function(form) {
                     form.submit();
                     ignoreTitle: true
-     $("#buy_form1")[0].reset();
+     $("#myacc")[0].reset();
      
                 }
      }); 

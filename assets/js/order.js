@@ -31,7 +31,7 @@ $(document).ready(function(){
             // If is not undefined
                 
                 $('#quantity').val(quantity + 1);
-                localStorage.setItem('quantity',quantity);
+                //localStorage.setItem('quantity',quantity);
                 var price = $('#price').val();
                 var quantity = $('#quantity').val();
                 var total = price * quantity;
@@ -56,7 +56,7 @@ $(document).ready(function(){
                 if(quantity>0){
                 $('#quantity').val(quantity - 1);
                 }
-                localStorage.setItem('quantity',quantity);
+                //localStorage.setItem('quantity',quantity);
                  var price = $('#price').val();
                 var quantity = $('#quantity').val();
                 var total = price * quantity;

@@ -18,7 +18,7 @@ $(document).ready(function(){
               }
               
             }
-            $('#test').attr("href",'/Ecommerce/order-details?productId='+productid);
+            $('#test').attr("href",'/Ecommerce/checkoutToDB?cart='+productid);
             
           }
           

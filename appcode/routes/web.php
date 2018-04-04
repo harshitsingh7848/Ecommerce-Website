@@ -64,6 +64,7 @@ Route::post('/add-product','ProductController@addProduct'); */
 	Route::post('/cart','ProductController@addToCart');
 	Route::get('/viewcart','ProductController@viewCart');
 	Route::post('/get-quantity','ProductController@getQuantity');
+	Route::get('checkoutToDB','ProductController@checkoutToDB');
 	
 		Route::post('/add-shipping-details','ProductController@addShippingDetails')->middleware('guest');
 	Route::get('/select-shipping-details','ProductController@selectShippingDetails')->middleware('guest');
@@ -88,8 +89,8 @@ Route::post('/add-product','ProductController@addProduct'); */
 	Route::get('/view-orders','ProductController@viewOrders')->middleware('guest');
 
 	Route::get('/my-orders','ProductController@myOrders')->middleware('guest');
-	Route::get('/myaccount','PrivilegesController@myAccount');
-	Route::post ('/updateaccount','PrivilegesController@updateAccount');
+	Route::get('/myaccount','PrivilegesController@myAccount')->middleware('guest');
+	Route::post ('/updateaccount','PrivilegesController@updateAccount')->middleware('guest');
 	Route::get('/specific-order-details','ProductController@specificOrderDetails')->middleware('guest');
 
 	Route::post('/select-product','ProductController@selectProduct')->middleware('guest');

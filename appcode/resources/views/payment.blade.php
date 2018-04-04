@@ -3,8 +3,7 @@
 @section('body')
 
 <form action="invoice" method="post">
-<input type="hidden" value="{{$quantity}}" id="quantity" name="quantity">
-<input type="hidden" value="{{$productId}}" name="productId" id="productId">
+<!--  -->
 <input type="hidden" name="shipId" id="shipId" value="{{$shipId}}">
 <input type="hidden" name="paymentMode" id="paymentMode">
 <div id="payment">

@@ -17,6 +17,25 @@ class ProductController extends Controller
 {   
 
     /* 
+     * function checkoutToDB
+     * It adds products and quantity to database
+     */
+    public function checkoutToDB(Request $request)
+    {
+        $products=$request->input('cart');
+        $productsDetails=explode('-',$products);
+         /* print_r($productsDetails);exit;  */
+        $str='';
+        for($i=0;$i<sizeof($productsDetails);$i=$i+2){
+            $str.='("'.$productsDetails[$i].'","'.$productsDetails[$i+1].'"),';
+        }
+        $str=rtrim($str,',');
+        //echo $str;exit;
+        DB::select('insert into map_quantity_product (product_id,quantity) values '.$str.'');
+        return redirect('/buy');
+    }
+
+    /* 
      * function getQuantity
      * It gets quantity and redirects to checkout page
      */
@@ -25,7 +44,8 @@ class ProductController extends Controller
         $userId= Session::get('userid');
         if(isset($_POST['quantity'])){
             $quantity=$_POST['quantity'];
-            Session::put('quantity',$quantity);
+            
+            //Session::put('quantity',$quantity);
         }
              
         
@@ -108,11 +128,46 @@ class ProductController extends Controller
      * It redirects to Purchase Product page 
      */
     public function showPurchasedProduct()
-    {
+    {   
+        $quantity='';
+        $proid='';
          $userId= Session::get('userid'); 
-        $quantity=Session::get('quantity');
+         if(Session::get('quantity'))
+         {
+             $quantity=Session::get('quantity');
+         }
+        else{
+            $q=DB::select('select quantity from map_quantity_product');
+            foreach($q as $quant){
+                $qu.=$quant->quantity."-";
+            }
+            $qu=rtrim($qu,'-');
+            $quantity=explode('-',$qu);
+        }
         
-        $productId=Session::get('productId');
+        if(Session::get('productsId')){
+           $productId=Session::get('productId');
+
+       }
+       else{
+           $p=DB::select('select product_id from map_quantity_product');
+           foreach($p as $product){
+                $proid.=$product->product_id."-";
+            }
+            $proid=rtrim($proid,'-');
+            //echo $proid;exit;
+       }
+
+       $productId=explode('-',$proid);
+       
+       $checkstr='IN(';
+       foreach($productId as $prod){
+           $checkstr.=$prod.",";
+       }
+       $checkstr=rtrim($checkstr,',').")";
+       //echo $checkstr;exit;
+         
+        
         
        $name=Session::get('username');
        $role=Session::get('userRole');
@@ -126,7 +181,7 @@ class ProductController extends Controller
             $invoiceNum .= $characters[mt_rand(0, $max)];
             
         }
-        $invoiceNum .= $productId.$userId;
+        $invoiceNum .= $userId;
         
         
         /* DB::select('insert into invoice (invoice_number) values("'.$invoiceNum.'")');
@@ -140,16 +195,15 @@ class ProductController extends Controller
          $productDetails = DB::select('SELECT products.id,products.product_name,products.product_description,products.model_name,product_price.sellingprice,
        product_price.actualprice FROM products 
 LEFT JOIN product_price ON products.id =product_price.product_id
-where products.id="'.$productId.'"');
+where products.id  '.$checkstr.'');
 
-/*  echo '<pre/>';
-print_r($shippingAddress);exit;  */
+  
 
 
 
         
         return view('purchaseproductdetails',['shippingAddress'=>$shippingAddress
-        ,'productDetails'=>$productDetails,'name'=>$name,'productId'=>$productId,'quantity'=>
+        ,'productDetails'=>$productDetails,'name'=>$name,'quantity'=>
         $quantity,'invoiceNumber'=>$invoiceNum,'role'=>$role]); 
         
     }
@@ -161,21 +215,70 @@ print_r($shippingAddress);exit;  */
     public function invoice(Request $request)
     {
        $userId= Session::get('userid');
-       $quantity=$_POST['quantity'];
+       //$quantity=$_POST['quantity'];
        $paymentMode=$_POST['payment_method'];
-       $productId=$_POST['productId'];
+       //$productId=$_POST['productId'];
        $shipId=$_POST['shipId'];
        $name=Session::get('username');
        $role=Session::get('userRole');
+       $qu='';
+       $proid='';
+       $checkst=0;
         
+        if(Session::get('quantity1'))
+         {  
+             
+             $quantity=Session::get('quantity');
+         }
+        else{
+            
+            $q=DB::select('select quantity from map_quantity_product');
+            foreach($q as $quant){
+                $qu.=$quant->quantity."-";
+            }
+            $qu=rtrim($qu,'-');
+            $quantity=explode('-',$qu);
+            foreach($quantity as $a){
+           
+       }
+       
+       
+            
+        }
+        
+        if(Session::get('productsId1')){
+           $productId=Session::get('productId');
+
+       }
+       else{
+           
+           $p=DB::select('select product_id from map_quantity_product');
+           
+           foreach($p as $product){
+                $proid.=$product->product_id."-";
+            }
+            $proid=rtrim($proid,'-');
+            
+       }
+
+       $productId=explode('-',$proid);
+       
+       echo '<pre/>';
+       print_r($productId);exit; 
+
+       $checkstr='IN(';
+       foreach($productId as $prod){
+           $checkstr.=$prod.",";
+       }
+       $checkstr=rtrim($checkstr,',').")";
 
 
         DB::select('insert into orders (order_quantity,mode_of_payment) values
-       ("'.$quantity.'","'.$paymentMode.'")');
+       ("'.$checkst.'","'.$paymentMode.'")');
        $order=DB::select('SELECT MAX(id) as `id` from orders');
        $orderId=$order[0]->id;
        DB::select('insert into map_product_order (order_id,product_id)values("'.$orderId.'",
-       "'.$productId.'")');
+       "'.$productId[0].'")');
        DB::select('insert into map_user_order (order_id,user_id)values("'.$orderId.'",
        "'.$userId.'")');
 
@@ -828,10 +931,36 @@ where products.id="'.$productId .'"');
     {
 
         $userId= Session::get('userid');
+        $quantity='';
+        $proid='';
+        $qu='';
+        if(Session::get('quantity'))
+        {
+            $qu=Session::get('quantity');
+            $quantity=$qu;
+            Session::put('quantity',$quantity);
+        }
         
+            
+       
+            /* echo $qu;exit; */
+            
         
-        $quantity=Session::get('quantity');
-        if($quantity==0){
+        if(Session::get('productsId')){
+           $productId=Session::get('productId');
+
+       }
+       else{
+           $p=DB::select('select product_id from map_quantity_product');
+           foreach($p as $product){
+                $proid.=$product->product_id."-";
+            }
+            $proid=rtrim($proid,'-');
+            //echo $proid;exit;
+       }
+       
+       
+         if($qu==0){
             $errors['quantity']="Quantity is zero can't place order";
             return redirect()->back()
             ->withErrors($errors); 
@@ -840,18 +969,23 @@ where products.id="'.$productId .'"');
         $role=Session::get('userRole');
         $userAddress=DB::select('select * from store_address 
         where user_id="'.$userId.'" and address_type= "1"' );
-        /* echo '<pre/>';
-        print_r($userAddress);exit; */
+        
         $userDetail=DB::select('select empid,empname,emp_mobile from user_details where
-        empid="'.$userId.'"') ;
+        empid="'.$userId.'"') ; 
         
         
+       $productId=explode('-',$proid);
+       
+       $checkstr='IN(';
+       foreach($productId as $prod){
+           $checkstr.=$prod.",";
+       }
+       $checkstr=rtrim($checkstr,',').")";
+       
         
-      
-        $productId=Session::get('productId');
        
        
-        $productDetails=DB::select('select * from products where id="'.$productId.'"');
+        $productDetails=DB::select('select * from products where id '.$checkstr.'');
         
         /* $checkAddress=DB::select('select * from store_address where user_id=2 and address=
         "'.$userAddress[0]->address.'"'); */
@@ -867,7 +1001,8 @@ where products.id="'.$productId .'"');
             
              $shippingAddress = DB::select('select * from store_address where user_id=
         "'.$userId.'" and address_type="2" and address<>"'.$userAddress[0]->address.'" and show_backend="1"');
-        
+        /* echo '<pre/>';
+        print_r($shippingAddress);exit; */
          
         
         return view('checkout2',['userDetail'=>$userDetail,'userAddress'=>$userAddress,'productDetails'=>$productDetails,
@@ -906,12 +1041,13 @@ where products.id="'.$productId .'"');
         }
         }
         $m=0;
+        $quantity=[];
         for($i=1;$i<sizeof($productsId);$i=$i+2){
             $quantity[$m]=$productsId[$i];
             $m++;
         }
          /* echo '<pre/>';
-        print_r($quantity);exit;   */
+        print_r($quantity);exit;   */ 
         $str = $str.$str1.")";
          /* echo $str;exit;  */
 
@@ -940,13 +1076,13 @@ where '.$str.'');
     public function showPayment()
     {
         $shippingAddressId=$_POST['shipId'];
-        $productId=$_POST['productId'];
-        $quantity=$_POST['quantity'];
+        //$productId=$_POST['productId'];
+       // $quantity=$_POST['quantity'];
         $name=Session::get('username');
          $role=Session::get('userRole');
 
-        return view('payment',['quantity'=>$quantity,'shipId'=>$shippingAddressId,
-        'productId'=>$productId,'name'=>$name,'role'=>$role]);
+        return view('payment',['shipId'=>$shippingAddressId,
+        'name'=>$name,'role'=>$role]);
     }
 
     /* 

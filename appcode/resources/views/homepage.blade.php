@@ -119,26 +119,29 @@
         <div class="zigzag-bottom"></div>
         <div class="container">
             <div class="row">
-                <div class="col-md-3 col-sm-6">
+                <div class="col-md-6">
                     <div class="footer-about-us">
                         <h2>Gadget<span>Maniac</span></h2>
                         <p>A website for every age groups. Everything is easy to use. Happy Shopping</p>
-                        <div class="footer-social">
+                        <!-- <div class="footer-social">
                             <a href="#" target="_blank"><i class="fa fa-facebook"></i></a>
                             <a href="#" target="_blank"><i class="fa fa-twitter"></i></a>
                             <a href="#" target="_blank"><i class="fa fa-youtube"></i></a>
                             <a href="#" target="_blank"><i class="fa fa-linkedin"></i></a>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
-                
+                </div>
+                </div>
+                </div>
+
                 
                 
                 
                 
                 
 
-    <div class="footer-bottom-area">
+    <!-- <div class="footer-bottom-area">
         <div class="container">
             <div class="row">
                 <div class="col-md-8">
@@ -157,7 +160,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     
 
     <script src="/Ecommerce/assets/js/homepage.js"></script>

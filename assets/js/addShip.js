@@ -14,13 +14,6 @@ $('document').ready(function()
    $.validator.addMethod("validpin", function( value, element ) {
        return this.optional( element ) || pinregex.test( value );
    });
-
-   // var address pattern
-   var addregex=/^[#.0-9a-zA-Z\s,-]+$/;
-
-   $.validator.addMethod("validadd", function( value, element ) {
-       return this.optional( element ) || addregex.test( value );
-   });
    
 
    // valid mobile pattern
@@ -29,78 +22,87 @@ $('document').ready(function()
    $.validator.addMethod("validmobilenumber", function( value, element ) {
        return this.optional( element ) || mregex.test( value );
    });
+   // var address pattern
+   var addregex=/^[#.0-9a-zA-Z\s,-]+$/;
+
+   $.validator.addMethod("validadd", function( value, element ) {
+       return this.optional( element ) || addregex.test( value );
+   });
    
-   $("#buy_form1").validate({
+   $("#addForm").validate({
      
     rules:
     {
-    name: {
+    sname: {
      required: true,
      validname: true,
      minlength: 3
     },
    
-    bmobile: {
+    smobile: {
         required: true,
         validmobilenumber:true,
         minlength: 10,
         maxlength: 10
        },
-    bpin:{
+       spin:{
          required:true,
          validpin:true,
        },
-       bcity:{
+       scity:{
          required:true,
          validname:true,
        },
-       bstate:{
+       shstate:{
          required:true,
          validname:true,
        },
-       bcountry:{
+       scountry:{
          required:true,
          validname:true,
        },
-       billingaddress:{
+       shippingaddress:{
          required:true,
          validadd:true,
        },
+
+    
     
      },
      messages:
      {
-    name: {
+    sname: {
      required: "Please Enter User Name",
      validname: "Name must contain only alphabets and space",
      minlength: "Your Name is Too Short"
        },
       
-        bmobile: {
+        smobile: {
             required: "Please Enter Mobile Number",
             validmobilenumber: "Enter Valid Mobile Number",
             minlength:"Mobile Number is not of 10 digits"
              },
-             bpin:{
+             spin:{
                required:"Please Enter Pincode",
                validpin:"Enter Valid Pincode",
              },
-             bcity:{
+             scity:{
                required:"Please Enter City",
                validname:"City must contain only alphabets and space",
              },
-             bstate:{
+             shstate:{
                required:"Please Enter State",
                validname:"State must contain only alphabets and space",
              },
-             bcountry:{
+             scountry:{
                required:"Please Enter Country",
                validname:"Country must contain only alphabets and space",
              },
-             billingaddress:{
+             shippingaddress:{
                required:"Please Enter Your Address",
                validname:"Please Enter Valid Address",
              },
+
    
      },
      errorPlacement : function(error, element) {
@@ -117,7 +119,7 @@ $('document').ready(function()
      submitHandler: function(form) {
                     form.submit();
                     ignoreTitle: true
-     $("#buy_form1")[0].reset();
+     $("#addForm")[0].reset();
      
                 }
      }); 

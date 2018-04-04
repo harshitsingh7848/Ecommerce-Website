@@ -2,8 +2,7 @@
 
 @section('body')
 <form action="show-payment" method="post" >
-<input type="hidden" value="{{$quantity}}" id="quantity" name="quantity">
-<input type="hidden" value="{{$productId}}" name="productId" id="productId">
+
 <input type="hidden" name="shipId" id="shipId" value="{{$shippingAddress[0]->id}}">
 <div class="container">
     <div class="row">
@@ -36,7 +35,7 @@
     			</div>
     			<div class="panel-body">
     				<div class="table-responsive">
-    					<table class="table table-condensed">
+    					<table class="table table-condensed" >
     						<thead>
                                 <tr>
         							<td><strong>Item</strong></td>
@@ -47,30 +46,25 @@
     						</thead>
     						<tbody>
     							<!-- foreach ($order->lineItems as $line) or some such thing here -->
+									@if(!empty($productDetails))
+									@foreach($productDetails as $i=>$v)
     							<tr>
-    								<td>{{ $productDetails[0]->product_name }}</td>
-    								<td class="text-center" id="price">{{ $productDetails[0]->sellingprice }}</td>
-    								<td class="text-center" id="quantity1">{{ $quantity }}</td>
-    								<td class="text-right" id="total" ></td>
+    								<td >{{ $productDetails[$i]->product_name }}</td>
+    								<td class="text-center" name="price[]" class="price" id="{{$productDetails[$i]->id}}">{{ $productDetails[$i]->sellingprice }}</td>
+    								<td class="text-center" name="quantity[]" id="{{"quantity".$productDetails[$i]->id}}">{{ $quantity[$i] }}</td>
+    								<td class="text-right" name="total[]" id="{{"total".$productDetails[$i]->id}}" ></td>
     							</tr>
-                               
-    								<td class="thick-line"></td>
-    								<td class="thick-line"></td>
-    								<td class="thick-line text-center" ><strong>Subtotal</strong></td>
-    								<td class="thick-line text-right" id="subtotal"></td>
-    							</tr>
-    							<tr>
-    								<td class="no-line"></td>
-    								<td class="no-line"></td>
-    								<td class="no-line text-center" ><strong>Shipping</strong></td>
-    								<td class="no-line text-right" id="shippingcharge"></td>
-    							</tr>
+                    @endforeach
+									@endif           
+    								
+    							
     							<tr>
     								<td class="no-line"></td>
     								<td class="no-line"></td>
     								<td class="no-line text-center" ><strong>Total</strong></td>
     								<td class="no-line text-right" id="totalamount"></td>
     							</tr>
+									
     						</tbody>
     					</table>
               

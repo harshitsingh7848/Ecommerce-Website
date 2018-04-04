@@ -59,7 +59,8 @@
                             <span class="glyphicon glyphicon-minus"></span>
                           </button>
                       </span>
-                      <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1"  min="1" max="100">
+                      <input type="text" id="quantity" name="quantity" class="form-control input-number" value="{{$quantity[$i]}}"  min="1" max="100">
+                      
                       <span class="input-group-btn">
                           <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus" data-field="">
                               <span class="glyphicon glyphicon-plus"></span>
@@ -84,9 +85,10 @@
               <hr>
               @endforeach
              @endif
+             <button type="submit" id="btn"  > Confirm Order</button>
               </form>
              
-             <button type="submit" id="btn"  > Confirm Order</button>
+             
             </div>
           </div>
           <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>

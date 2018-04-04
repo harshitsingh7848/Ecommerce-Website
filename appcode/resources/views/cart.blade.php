@@ -11,7 +11,10 @@
              <div id="totalcartvalue"></div>
              <div>
              
-             <a id="test" href="/Ecommerce/order-details?productId=" class="btn btn-info btn-lg">
+             <!-- <a id="test" href="/Ecommerce/order-details?productId=" class="btn btn-info btn-lg">
+             Proceed to CheckOut
+          </a> -->
+          <a id="test" href="" class="btn btn-info btn-lg">
              Proceed to CheckOut
           </a>
              </div>
