@@ -5,6 +5,7 @@
 
 @endsection
 @section('content')
+@if(!empty($vendorDetails))
 <h2>Employee Details of {{$vendorDetails[0]->vendor_name}}</h2>
   <div>
     <table id="example" class="table table-striped table-advance table-hover">
@@ -28,8 +29,9 @@
       </tbody>
     </table>    
   </div> 
-
-
+@else
+<h3> No employees to show</h3>
+@endif
         
         <script src="assets/js/jquery-1.11.2.min.js"></script>
         <script src="assets/js/jquery.validate.min.js"></script>

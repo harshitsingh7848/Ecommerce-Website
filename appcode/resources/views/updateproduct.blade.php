@@ -35,6 +35,9 @@
                     <h1 class="">Update Products</h1>
                     <hr class="my-4">
                 </div>
+                @if (Session::has('message'))
+                <div class="alert alert-info">{{ Session::get('message') }}</div>
+            @endif
               <form class=""  id="productForm" method="post" action="update-db">
                 <input type="hidden" value="{{ $productDetail[0]->id }}" id="product_id" name="product_id">
                 <div class="form-group row">
@@ -171,7 +174,7 @@
                 
                 
                 <div class="form-group row">
-                  <input type="submit" class="btn btn-success" name="btn" value="add product" id="btn"/>
+                  <input type="submit" class="btn btn-success" name="btn" value="update product" id="btn"/>
                 </div>
               </form>
               <div id="addbtn">

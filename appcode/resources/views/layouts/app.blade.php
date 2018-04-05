@@ -38,11 +38,11 @@
 
 <!-- Sidebar -->
 <div id="sidebar-wrapper" >
-     <ul  class="sidebar-nav"id="tree1">
-        <li>
-            <a href="{{url('/')}}"><img src="/Ecommerce/assets/img/gm.png"  width="80%"></a>
-        </li>
-
+     <div class="sidebar-title brand">
+        <a href="{{url('/')}}"><img src="/Ecommerce/assets/img/gm.png"></a>
+     </div>
+     
+     <ul  class="sidebar-nav" id="tree1">
         <li>
             <a href="{{url('view-products') }}">Products</a>
         </li>
@@ -102,7 +102,10 @@
                  </ul>
               
                 @if (!empty($name))    
-                <a class=" nav-link float-right" href="{{ url('/logout') }}">Logout</a>
+                <a class=" btn btn-info nav-link float-right" href="{{ url('/logout') }}">
+                <i class="fas fa-sign-out-alt"></i> Logout
+                
+                </a>
                 @endif
             
             <!-- form class="form-inline my-2 my-lg-0">

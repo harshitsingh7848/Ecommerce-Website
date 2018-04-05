@@ -24,59 +24,66 @@
 @section('content')
 
 
- <div id="page-content-wrapper">
-               <div class="jumbotron">
-                    <h1 class="">Orders</h1>         
-                    <hr class="my-4">
-                </div>
-         
-                <table id="example" class="display"  >
-                    <thead>
-                        <tr>
-                            <th>Order Number</th>
-                            <th>Order Quantity</td>
-                            <th>Order Date</td> 
-                            <th>Mode of Payment</th>
-                            <th>Order Description</th>
-                            <th> Order Status</th>
-                            <th> Order Details</th>    
-                        </tr>
-                    </thead>
-                    
-                    <tbody>
-                    @if(!empty($orders))
-                    @foreach($orders as $order)
-                        <tr>
-                            <td>
-                            {{ $order->order_number }}
-                            </td>
-                            <td>
-                            {{ $order->order_quantity}}
-                            </td>
-                            <td>
-                            {{ $order->order_date }}
-                            </td>
-                            <td>
-                            {{ $order->mode_of_payment }}
-                            </td>
-                            <td>
-                            Product Name : {{$order->product_name}}<br>
-                            Product Quantity : {{$order->order_quantity}}
-                            </td>
-                            <td>
-                            {{$order->order_status}}
-                            </td>
-                            <td>
-                               <a href="/Ecommerce/specific-order-details?orderNumber={{$order->order_number}}">
-                               View Order Details </a> 
-                            </td>
-                            
-                        </tr>
-                    @endforeach
-                    @endif
-                    </tbody>
-                </table>
-            </div>
+ <div class="container">
+    <div class="row" style="margin:20px 0px">
+        <div class="col-md-12">
+            <h3 class="panel-title">
+                <i class="fas fa-shopping-cart"></i><strong> Orders </strong>
+            </h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table id="example" class="display"  >
+                <thead>
+                    <tr>
+                        <th>Order Number</th>
+                        <th>Order Quantity</td>
+                        <th>Order Date</td> 
+                        <th>Mode of Payment</th>
+                        <th>Order Description</th>
+                        <th> Order Status</th>
+                        <th> Order Details</th>    
+                    </tr>
+                </thead>
+                
+                <tbody>
+                @if(!empty($orders))
+                @foreach($orders as $order)
+                    <tr>
+                        <td>
+                        {{ $order->order_number }}
+                        </td>
+                        <td>
+                        {{ $order->order_quantity}}
+                        </td>
+                        <td>
+                        {{ $order->order_date }}
+                        </td>
+                        <td>
+                        {{ $order->mode_of_payment }}
+                        </td>
+                        <td>
+                        Product Name : {{$order->product_name}}<br>
+                        Product Quantity : {{$order->order_quantity}}
+                        </td>
+                        <td>
+                        {{$order->order_status}}
+                        </td>
+                        <td>
+                            <a href="/Ecommerce/specific-order-details?orderNumber={{$order->order_number}}">
+                            View Order Details </a> 
+                        </td>
+                        
+                    </tr>
+                @endforeach
+                @endif
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+</div>
             <!-- /#page-content-wrapper -->
 
     

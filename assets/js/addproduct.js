@@ -1,4 +1,4 @@
-// JavaScript Validation For Registration Page
+// JavaScript Validation For Add Products Page
 
 $('document').ready(function()
 {  
@@ -113,8 +113,8 @@ $('document').ready(function()
        simsize: {
         required: true,
         validprocessor: true,
-       },
-       
+       }
+    
        
        
      },
@@ -122,7 +122,7 @@ $('document').ready(function()
      {
     product_name: {
      required: "Please Enter Product Name",
-     validname: "Name must contain only alphabets and space",
+     validprocessor: "Name must contain only alphabets ,space and numeric",
        },
        product_description: {
        required: "Please Enter Product Description",

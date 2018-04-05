@@ -1,5 +1,10 @@
 $(document).ready(function(){
   
+  var countCart=$('#countCart').val();
+  if(countCart==1){
+    localStorage.removeItem('count');
+    localStorage.removeItem('product');
+  }
     var prices=[];
     var quant=[];
     var total=[];

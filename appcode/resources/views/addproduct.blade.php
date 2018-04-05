@@ -37,6 +37,8 @@
                       <h1 class="">Add New Products</h1>
                       <hr class="my-4">
                   </div>
+
+                  
                 <form class=""  id="productForm" method="post" action="add-product"  enctype="multipart/form-data">
                   <div class="form-group row">
                     <label class="col-sm-2 col-form-label" for="product_name" >Product Name</label>	

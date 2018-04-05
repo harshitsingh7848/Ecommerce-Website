@@ -52,7 +52,7 @@
                     @foreach($productDetails as $productDetail)
                         <tr>
                             <td>
-                            {{ $productDetail->id }}
+                            {{ $productDetail->product_id}}
                             </td>
                             <td>
                             {{ $productDetail->product_name}}

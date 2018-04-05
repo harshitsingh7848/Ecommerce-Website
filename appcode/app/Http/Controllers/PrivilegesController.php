@@ -8,7 +8,7 @@ use App\dropdownbind;
 use Illuminate\Http\Request;
 use DB;
 use Session;
-use Redirect;
+
 
 class PrivilegesController extends Controller
 {
@@ -139,24 +139,24 @@ class PrivilegesController extends Controller
     public function addPrivileges(Request $request)
     {   $vendorId="";
         $vendorRoleId="";
-        if(isset($_POST['vendorName'])){
+         if(isset($_POST['vendorName'])){
+             //echo 'hi';
             $vendorName=$_POST['vendorName'];
-            
             $vendor=DB::select('select id from vendor_names where vendor_name="'.$vendorName.'"');
             $vendorId=$vendor[0]->id;
-        }  
-        
+        }   
         $checkId = trim($_POST['checkId']);
-        
          $privilege=explode(" ",$checkId); 
-        
          $concatUserRole=$_POST['concatUserRole'];
            $result= explode("-",$concatUserRole);
+            
           $role=$result[0];
+          //echo $role;
           $roles = DB::select('select id from roles where role_name = "'.$role.'"');
 
           $roleId=$roles[0]->id;
-          if(isset($_POST['vendorRole'])){
+         // echo $roleId;
+           if(isset($_POST['vendorRole'])){
           $vendorRole= $_POST['vendorRole'];
           $vendorRoles=DB::select('select id from vendor_roles where vendor_role_name
           ="'.$vendorRole.'"');
@@ -166,9 +166,9 @@ class PrivilegesController extends Controller
           
           $empId=$result[1];
           $moduleId=$_POST['moduleId']; 
-
+           
           $str="";
-            if($roleId==4 && !empty($vendorRoleId))
+             if($roleId==4 && !empty($vendorRoleId))
             {
                 foreach($privilege as $p=>$v)
            {     
@@ -190,7 +190,7 @@ class PrivilegesController extends Controller
            
             DB::select('insert into user_privilege_module_role (emp_id,module_id,privilege_id,role_id) 
           values '.rtrim( $str, ' , '));
-            }
+            } 
 
           if(!empty($vendorId)){
              $userId= DB::select('select user_id from map_vendor_user where user_id="'.$empId.'"');
@@ -198,8 +198,8 @@ class PrivilegesController extends Controller
           DB::select('insert into map_vendor_user (vendor_id,user_id) values("'.$vendorId.'"
           ,"'.$empId.'") ');
           }
-          }
-          echo 'Privilege Saved Successfully';
+          } 
+         echo 'Privilege Saved Successfully';
          
     }
     /* 
@@ -320,8 +320,8 @@ class PrivilegesController extends Controller
         left join vendor_roles on vendor_roles.id=user_privilege_module_role.vendor_role_id
         where vendor_names.id="'.$vendorId.'" ');
 
-        /* echo '<pre/>';
-        print_r($vendorDetails);exit; */
+         /* echo '<pre/>';
+        print_r($vendorDetails);exit;  */
         return view('vendordetails',['vendorDetails'=>$vendorDetails,'name'=>$name,'role'=>
         $userRole,'privilegeDetails'=>$privilegeDetails]);
     }

@@ -42,7 +42,7 @@ class LoginController extends Controller
                 
                 return redirect('/buy');
             } 
-            else if( $user_role[0]->role_id==3){
+            else if( $user_role[0]->role_id==3 ||empty($user_role[0]->role_id)){
                 return redirect('/');
             }
             else if($user_role[0]->role_id==1 || $user_role[0]->role_id==2){

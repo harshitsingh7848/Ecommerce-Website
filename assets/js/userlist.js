@@ -152,7 +152,20 @@ checked +=' ';
 var moduleId = buttonId;
 
 var concatUserRole =$('#concatemailusertype').val();
-$.ajax({
+console.log(vendorName);
+if(!(vendorName))
+{
+ $.ajax({
+url:'/Ecommerce/add-privileges',
+method:'POST',
+data:{'checkId':checked,'concatUserRole':concatUserRole,'moduleId':moduleId},
+success:function(response){
+    alert(response);
+},
+}); 
+}
+else{
+  $.ajax({
 url:'/Ecommerce/add-privileges',
 method:'POST',
 data:{'checkId':checked,'concatUserRole':concatUserRole,'moduleId':moduleId,'vendorName':vendorName,
@@ -160,8 +173,8 @@ data:{'checkId':checked,'concatUserRole':concatUserRole,'moduleId':moduleId,'ven
 success:function(response){
     alert(response);
 },
-}); 
-
+});   
+}
 
 });
 

@@ -5,9 +5,9 @@
     <div class="row">
         <div class="col-xs-12">
 				<form method="POST" action="download">
-				
+				<input type="hidden" value={{$countCart}} id="countCart" name="countCart">
     		<div class="invoice-title">
-    			<h2>Your Order</h2><h3 >Order # {{$productDetails[0]->order_number}} </h3>
+    			<h2>Your Order</h2><h3 >Order # {{$orderDetail[0]->order_number}} </h3>
     		</div>
     		<hr>
     		<div class="row">
@@ -36,13 +36,13 @@
 
     				<address>
     					<strong>Payment Method:</strong><br>
-    					{{ $productDetails[0]->mode_of_payment }}<br>
+    					{{ $orderDetail[0]->mode_of_payment }}<br>
     				</address>
     			</div>
     			<div class="col-xs-6 text-right">
     				<address>
     					<strong>Order Date:</strong><br>
-    					{{ $productDetails[0]->order_date }}<br><br>
+    					{{ $orderDetail[0]->order_date }}<br><br>
     				</address>
     			</div>
     		</div>
@@ -72,9 +72,9 @@
     							<!-- foreach ($order->lineItems as $line) or some such thing here -->
     							<tr>
     								<td>{{ $productDetails[$i]->product_name }}</td>
-    								<td class="text-center" name="price[]"id="{{$productDetails[$i]->productId}}">{{ $productDetails[$i]->sellingprice }}</td>
-    								<td class="text-center" name="quantity[]" id="{{"quantity".$productDetails[$i]->productId}}">{{ $productDetails[$i]->order_quantity }}</td>
-    								<td class="text-right" name="total[]" id="{{"total".$productDetails[$i]->productId}}" ></td>
+    								<td class="text-center" name="price[]"id="{{$productDetails[$i]->id}}">{{ $productDetails[$i]->sellingprice }}</td>
+    								<td class="text-center" name="quantity[]" id="{{"quantity".$productDetails[$i]->id}}">{{ $orderDetail[$i]->order_quantity }}</td>
+    								<td class="text-right" name="total[]" id="{{"total".$productDetails[$i]->id}}" ></td>
     							</tr>
 								@endforeach
 								@endif

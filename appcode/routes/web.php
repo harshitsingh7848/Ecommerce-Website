@@ -56,7 +56,7 @@ Route::post('/add-product','ProductController@addProduct'); */
 	
 	Route::get('/update-product','ProductController@updateProduct')->middleware('guest');
 
-	Route::get('/update-db','ProductController@updateDatabase')->middleware('guest');
+	Route::post('/update-db','ProductController@updateDatabase')->middleware('guest');
 
 	Route::get('/category','ProductController@category');
 

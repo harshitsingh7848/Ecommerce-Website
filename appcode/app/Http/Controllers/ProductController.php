@@ -11,6 +11,7 @@ use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 use PDF;
 use Dompdf\Dompdf;
+use Redirect;
 //use Excel;
 
 class ProductController extends Controller
@@ -31,6 +32,7 @@ class ProductController extends Controller
         }
         $str=rtrim($str,',');
         //echo $str;exit;
+        session::put('countCart',1);
         DB::select('insert into map_quantity_product (product_id,quantity) values '.$str.'');
         return redirect('/buy');
     }
@@ -205,7 +207,7 @@ where products.id  '.$checkstr.'');
 
   
         /* echo '<pre/>';
-        print_r($productDetails);exit; */
+        print_r($productDetails);exit;  */
 
         /* echo '<pre/>';
         print_r($quantity);exit; */
@@ -229,6 +231,8 @@ where products.id  '.$checkstr.'');
        $shipId=$_POST['shipId'];
        $name=Session::get('username');
        $role=Session::get('userRole');
+       $countCart=Session::get('countCart');
+       //echo $countCart;exit;
        $qu='';
        $proid='';
        $quantity=[];
@@ -250,13 +254,8 @@ where products.id  '.$checkstr.'');
             $qu=rtrim($qu,'-');
             $quantity=explode('-',$qu);
         
-           /* foreach($quantity as $b){
-            $checkst.='("'.$b.'","'.$paymentMode.'","'.$neworderId.'"),';
-           }
-           $checkst=rtrim($checkst,','); */
-    
         }
-        //echo $checkst;exit;
+        
         $checkproduct='IN(';
         
        //echo $neworderId;exit;
@@ -267,39 +266,28 @@ where products.id  '.$checkstr.'');
                 
             }
             
+            $productId=explode('-',$proid);
             
-            for($i=0;$i<sizeof($productId);$i++){
+            DB::select('DELETE FROM `map_quantity_product`');
+
+       for($i=0;$i<sizeof($quantity);$i++){
                 $checkst.='("'.$quantity[$i].'","'.$paymentMode.'","'.$neworderId.'",
             "'.$productId[$i].'"),';
                }
                $checkst=rtrim($checkst,',');
-               echo $checkst;
-               exit;
-       $checkstr='';
-       foreach($productId as $prod){
-           $checkstr.='("'.$neworderId.'","'.$prod.'"),';
-           $checkproduct.=$prod.",";
-       }
-       $checkstr=rtrim($checkstr,',');
-       $checkproduct=rtrim($checkproduct,',').")";
         }
         else{
            $productId=Session::get('productId');
-for($i=0;$i<sizeof($quantity);$i++){
+           for($i=0;$i<sizeof($quantity);$i++){
                 $checkst.='("'.$quantity[$i].'","'.$paymentMode.'","'.$neworderId.'",
             "'.$productId.'"),';
                }
                $checkst=rtrim($checkst,',');
-               //echo $checkst;exit;
+               
         }    
-        
-         //echo $checkproduct;exit; 
-       
+        //echo $checkst;exit;
 
-       //echo $checkst;
-        
-
-        DB::select('insert into orders (order_quantity,mode_of_payment,id,product_id) values
+        DB::select('insert into orders (order_quantity,mode_of_payment,order_id,product_id) values
        '.$checkst.'');
        
        //DB::select('insert into map_product_order (order_id,product_id)values'.$checkstr.' ');
@@ -322,17 +310,24 @@ for($i=0;$i<sizeof($quantity);$i++){
        $shippingAddress=DB::select('select * from store_address 
         where id="'.$shipId.'" ' ); 
 
-         $productDetails = DB::select('SELECT DISTINCT(orders.id) ,orders.product_id ,products.product_name,products.product_description,products.model_name,product_price.sellingprice,
-       product_price.actualprice,orders.order_quantity,orders.mode_of_payment,orders.order_date,orders.order_number
-        FROM products 
+        $orderDetail=DB::select('select * from orders where order_id="'.$neworderId.'"');
+        $productInfo='IN(';
+        foreach($orderDetail as $o){
+            $productInfo.=''.$o->product_id.',';
+        }       
+        $productInfo=rtrim($productInfo,',');
+        $productInfo.=')';
+       // echo $productInfo;exit;
+         $productDetails = DB::select('SELECT DISTINCT(products.id),products.product_name,products.product_description,products.model_name,product_price.sellingprice,
+product_price.actualprice
+FROM products 
 LEFT JOIN product_price ON products.id =product_price.product_id
 LEFT JOIN map_product_order on products.id=map_product_order.product_id
-LEFT JOIN orders ON orders.id=map_product_order.order_id
-where  orders.id="'.$neworderId.'"');
+where products.id '.$productInfo.' ');
 
- echo '<pre/>';
-print_r($productDetails);exit; 
-
+  /* echo '<pre/>';
+print_r($productDetails);exit;  
+ */
 /* $pdf = \App::make('dompdf.wrapper');
 $pdf->loadHtml('invoice');
 return $pdf->download('invoice.pdf'); */
@@ -346,7 +341,8 @@ $dompdf->render(); */
             
         
         return view('invoice',['billingAddress'=>$billing,'shippingAddress'=>$shippingAddress
-        ,'productDetails'=>$productDetails,'name'=>$name,'role'=>$role,'quantity'=>$quantity]);  
+        ,'productDetails'=>$productDetails,'name'=>$name,'role'=>$role,'quantity'=>$quantity,
+        'orderDetail'=>$orderDetail,'countCart'=>$countCart]);  
     }
 
     /* 
@@ -562,6 +558,8 @@ $role = Session::get('userRole');
         {
            $productDetails= DB::select('select * from products where added_by="'.$userId.'"'); 
         }
+        /* echo '<pre/>';
+        print_r($productDetails); */
         return view('viewproduct',['productDetails'=>$productDetails,'role'=>$roleId,'privilegeDetails'=>$privilegeDetails]);
 
     }
@@ -781,7 +779,13 @@ $role = Session::get('userRole');
         $userId=Session::get('userid');
         $name=Session::get('username');
         $privilegeDetails=DB::select('select * from user_privilege_module_role where emp_id ="'.$userId.'"'); 
-       $productDetail = DB::select('SELECT * FROM products 
+       $productDetail = DB::select('SELECT products.id,products.product_id,products.product_name,products.product_description,products.model_name,product_price.sellingprice,
+       product_price.actualprice,product_weight.weight,colour.color,warranty_features.warranty_summary,
+       os_features.os,os_features.processor_type,os_features.processor_core,memory_features.RAM,memory_features.internal_storage,
+       memory_features.expandable_storage,display_features.display_size,display_features.resolution,display_features.display_colors,
+       dimensions.dimension,connectivity_features.network_type,connectivity_features.supported_networks,connectivity_features.gprs,
+       camera_features.primary_camera,camera_features.secondary_camera,battery_features.battery_capacity,
+       additional_features.sim_size FROM products 
 LEFT JOIN map_product_display_features ON products.id=map_product_display_features.product_id
 LEFT JOIN display_features ON map_product_display_features.display_feature_id=display_features.id
 LEFT JOIN map_product_camera_features ON products.id=map_product_camera_features.product_id
@@ -806,6 +810,8 @@ LEFT JOIN map_product_warranty_features on products.id=map_product_warranty_feat
 LEFT JOIN warranty_features ON warranty_features.id=map_product_warranty_features.warranty_feature_id
 where products.id="'.$productId .'"');
 
+/* echo '<pre/>';
+print_r($productDetail);exit; */
 
     return view('updateproduct',['productDetail'=>$productDetail,'role'=>$userRole,
     'privilegeDetails'=>$privilegeDetails,'name'=>$name]);
@@ -833,12 +839,14 @@ where products.id="'.$productId .'"');
      * function updateDatabase
      * It updates the data in database and redirects to viewproducts page
      */
-    function updateDatabase()
+    function updateDatabase(Request $request)
     {
         $product_id=$_POST['product_id'];
+        //echo $product_id;exit;
         $product_name = $_POST['product_name'];
           //echo $product_name;
         $product_description = $_POST['product_description'];   
+        //echo $product_description;exit;
         if(isset($_POST['show_users'])){
         $showUser   = $_POST['show_users'];
         }
@@ -868,14 +876,16 @@ where products.id="'.$productId .'"');
         $secondaryCamera = $_POST['scfeatures'];
         $battery = $_POST['battcapac'];
         $simSize   = $_POST['simsize']; 
-
+        $fileName='';
         $file = $request->file('image');
-        $image=$file->getClientOriginalName();
+        if(!empty($file)){
+            $image=$file->getClientOriginalName();
         $fileName=$product_name.$image;
+        }
         
         
 
-        DB::select('update table products set product_name= "'.$product_name.'"
+        DB::select('update products set product_name= "'.$product_name.'"
         ,product_description="'.$product_description.'",show_users="'.$showUser.'",
         show_backend="'.$showInDB.'" where id="'.$product_id.'"');  
 
@@ -908,44 +918,61 @@ where products.id="'.$productId .'"');
        $warrId= DB::select('select warranty_feature_id from map_product_warranty_features
        where product_id="'.$product_id.'" ');  
 
-                 
-        DB::select('update table colour set color ="'.$color.'" where id="'.$colId.'" ');
-        
-        DB::select('update table battery_features set battery_capacity="'.$battery.'"where id="'.$battId.'"');
-        DB::select('update table dimensions set dimension="'.$dim.'"where id="'.$dimId.'"');
-        DB::select('update table warranty_features set warranty_summary="'.$warranty.'"where id="'.$warrId.'"');
-
-        DB::select('update table os_features set os="'.$os.'",processor_type="'.$processType.'",processor_core= "'.$processCore.'" where id="'.$operatingId.'" ');        
-
-        DB::select('update table memory_features set internal_storage="'.$iStorage.'",RAM="'.$ram.'",
-        expandable_storage="'.$eStorage.'"  where id="'.$memId.'"');
-
-         DB::select('update table display_features set display_size="'.$displaySize.'",
-         resolution="'.$resolution.'",display_colors="'.$dColors.'"  where id="'.$disId.'" ');  
-        
-         DB::select('update table connectivity_features set network_type="'.$networkType.'"
+        if(!empty($colId)){
+            DB::select('update  colour set color ="'.$color.'" where id="'.$colId[0]->color_id.'" ');
+        }
+        if(!empty($battId)){
+            DB::select('update battery_features set battery_capacity="'.$battery.'"where id="'.$battId[0]->battery_feature_id.'"');
+        }
+        if(!empty($dimId)){
+            DB::select('update  dimensions set dimension="'.$dim.'"where id="'.$dimId[0]->dimension_feature_id.'"');
+        }
+        if(!empty($warrId)){
+            DB::select('update  warranty_features set warranty_summary="'.$warranty.'"where id="
+            '.$warrId[0]->warranty_feature_id.'"');
+        }
+        if(!empty($operatingId)){
+            DB::select('update  os_features set os="'.$os.'",processor_type="'.$processType.'",
+            processor_core= "'.$processCore.'" where id="'.$operatingId[0]->os_feature_id.'" ');        
+        }
+        if(!empty($memId)){
+        DB::select('update  memory_features set internal_storage="'.$iStorage.'",RAM="'.$ram.'",
+        expandable_storage="'.$eStorage.'"  where id="'.$memId[0]->memory_feature_id.'"');
+        }
+        if(!empty($disId)){
+         DB::select('update  display_features set display_size="'.$displaySize.'",
+         resolution="'.$resolution.'",display_colors="'.$dColors.'"  where id="'.$disId[0]->display_feature_id.'" ');  
+        }
+        if(!empty($connId)){
+         DB::select('update  connectivity_features set network_type="'.$networkType.'"
          ,supported_networks="'.$supportedNet.'",gprs="'.$gprs.'"
-        where id="'.$connId.'" ');
-         
-         DB::select('update table camera_features set primary_camera="'.$primaryCamera.'"
-         ,secondary_camera="'.$secondaryCamera.'"  where id="'.$camId.'" ');  
-
-          DB::select('update table additional_features set sim_size="'.$simSize.'"
-          where id="'.$additionalId.'"');  
-
-          DB::select('update table images set image_url="'.$fileName.'"
-          where id="'.$imgId.'"');  
-
+        where id="'.$connId[0]->connectivity_feature_id.'" ');
+        }
+        if(!empty($camId)){
+         DB::select('update  camera_features set primary_camera="'.$primaryCamera.'"
+         ,secondary_camera="'.$secondaryCamera.'"  where id="'.$camId[0]->camera_feature_id.'" ');  
+        }
+        if(!empty($additionalId)){
+          DB::select('update  additional_features set sim_size="'.$simSize.'"
+          where id="'.$additionalId[0]->additional_features_id.'"');  
+        }
+        if(!empty($imgId)){
+          DB::select('update  images set image_url="'.$fileName.'"
+          where id="'.$imgId[0]->image_id.'"'); 
           $sourcePath=$file->getRealPath();
         $destinationPath = 'assets/img';
-      $file->move($destinationPath,$fileName);
+      $file->move($destinationPath,$fileName); 
+        }
+          
 
-      DB::select('update table product_price  set actualprice="'.$actualPrice.'",
+      DB::select('update  product_price  set actualprice="'.$actualPrice.'",
       sellingprice="'.$sellingPrice.'"where product_id="'.$product_id.'"');
 
-      DB::select('update table product_weight  set weight="'.$weight.'"
+      DB::select('update product_weight  set weight="'.$weight.'"
       where product_id="'.$product_id.'"');
       
+      Session::flash('message', "Product Details Updated");
+        return Redirect::back();
     }
 
     /* 
@@ -1154,7 +1181,12 @@ where products.id="'.$productId.'"');
      */
     public function specificOrderDetails()
     {
+        $userRole = Session::get('userRole');
+        $userId=Session::get('userid');
+        $privilegeDetails=DB::select('select * from user_privilege_module_role where emp_id ="'.$userId.'"');
         $orderNumber=$_GET['orderNumber'];
+        //$name=Session::get('username');
+
         $orderDetail=DB::select('select orders.order_number,orders.mode_of_payment,orders.order_quantity,
        orders.order_date,products.product_name,products.product_description,store_address.id,
        store_address.address,store_address.Pincode,store_address.city,store_address.state,
@@ -1174,7 +1206,8 @@ where products.id="'.$productId.'"');
        where orders.order_number="'.$orderNumber.'"');
        $name=Session::get('username');
         $billingDetails=DB::select('select * from store_address where address_type="1" and id="'.$orderDetail[0]->id.'"');
-       return view('specificorder',['orderDetail'=>$orderDetail,'billingDetails'=>$billingDetails,'name'=>$name]);
+       return view('specificorder',['orderDetail'=>$orderDetail,'billingDetails'=>$billingDetails,'name'=>$name,
+       'role'=>$userRole,'privilegeDetails'=>$privilegeDetails]);
     }
 
     /* 
