@@ -22,7 +22,7 @@ class LoginController extends Controller
         $password=$_POST['pass'];
 
         $res    =  json_decode(ecommerce::where('emp_email',$username)->get(['emp_email','emp_pass','empname','empid']));
-        
+        if(!empty($res)){
         $user_role  = json_decode(Mapping::where('emp_id',$res[0]->empid)->get(['role_id']));
 
         $userfromDb=$res[0]->emp_email;
@@ -30,6 +30,7 @@ class LoginController extends Controller
 
        Session::put('username',$res[0]->empname);
        Session::put('userid',$res[0]->empid);
+        
        if(!empty($user_role))
        Session::put('userRole',$user_role[0]->role_id);
       
@@ -53,7 +54,14 @@ class LoginController extends Controller
             else if($user_role->role_id==5){
                 return redirect('/employee');
             }
-        
+        }
+        else{
+            $errors=['error'=>'Wrong Username or Password'];
+            return redirect()->back()
+             ->withErrors($errors); 
+            /* echo "Wrong Username or Password";
+            return view('login'); */
+        }
            
        }
        else{

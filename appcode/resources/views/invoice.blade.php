@@ -5,6 +5,7 @@
     <div class="row">
         <div class="col-xs-12">
 				<form method="POST" action="download">
+				
     		<div class="invoice-title">
     			<h2>Your Order</h2><h3 >Order # {{$productDetails[0]->order_number}} </h3>
     		</div>
@@ -32,6 +33,7 @@
     		</div>
     		<div class="row">
     			<div class="col-xs-6">
+
     				<address>
     					<strong>Payment Method:</strong><br>
     					{{ $productDetails[0]->mode_of_payment }}<br>
@@ -65,31 +67,25 @@
                                 </tr>
     						</thead>
     						<tbody>
+							@if(!empty($productDetails))
+				@foreach($productDetails as $i=>$v)
     							<!-- foreach ($order->lineItems as $line) or some such thing here -->
     							<tr>
-    								<td>{{ $productDetails[0]->product_name }}</td>
-    								<td class="text-center" id="price">{{ $productDetails[0]->sellingprice }}</td>
-    								<td class="text-center" id="quantity">{{ $productDetails[0]->order_quantity }}</td>
-    								<td class="text-right" id="total" ></td>
+    								<td>{{ $productDetails[$i]->product_name }}</td>
+    								<td class="text-center" name="price[]"id="{{$productDetails[$i]->productId}}">{{ $productDetails[$i]->sellingprice }}</td>
+    								<td class="text-center" name="quantity[]" id="{{"quantity".$productDetails[$i]->productId}}">{{ $productDetails[$i]->order_quantity }}</td>
+    								<td class="text-right" name="total[]" id="{{"total".$productDetails[$i]->productId}}" ></td>
     							</tr>
-                               
-    								<td class="thick-line"></td>
-    								<td class="thick-line"></td>
-    								<td class="thick-line text-center" ><strong>Subtotal</strong></td>
-    								<td class="thick-line text-right" id="subtotal"></td>
-    							</tr>
-    							<tr>
-    								<td class="no-line"></td>
-    								<td class="no-line"></td>
-    								<td class="no-line text-center" ><strong>Shipping</strong></td>
-    								<td class="no-line text-right" id="shippingcharge"></td>
-    							</tr>
+								@endforeach
+								@endif
+    								
     							<tr>
     								<td class="no-line"></td>
     								<td class="no-line"></td>
     								<td class="no-line text-center" ><strong>Total</strong></td>
     								<td class="no-line text-right" id="totalamount"></td>
     							</tr>
+								
     						</tbody>
     					</table>
               </div>
@@ -106,6 +102,7 @@
 				
 				
 				</div>
+				
 				</form>	
 				<div class="col-md-6">
 				<p>Click the button to print the current page.<p>
