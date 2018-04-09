@@ -7,9 +7,6 @@
  @if(!empty($orderDetail))
   @foreach($orderDetail as $orders)
 
-
-
-          
           <div class="card mt-4">
           <div class="card-header">
           Order Number : {{$orders->order_number}}
@@ -29,12 +26,8 @@
             </div>
           </div>
           </div>
-          
 
-          
           @endforeach
           @endif
 
-
-       
         @endsection

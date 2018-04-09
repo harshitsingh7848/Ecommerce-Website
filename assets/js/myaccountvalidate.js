@@ -22,6 +22,12 @@ $('document').ready(function()
        return this.optional( element ) || addregex.test( value );
    });
    
+   // valid email pattern
+   var eregex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+   
+   $.validator.addMethod("validemail", function( value, element ) {
+       return this.optional( element ) || eregex.test( value );
+   });
 
    // valid mobile pattern
    var mregex = /^[6-9]\d{9}$/;
@@ -38,6 +44,10 @@ $('document').ready(function()
      required: true,
      validname: true,
      minlength: 3
+    },
+    email: {
+     required: true,
+     validemail: true,
     },
    
     contact: {
@@ -75,7 +85,10 @@ $('document').ready(function()
      validname: "Name must contain only alphabets and space",
      minlength: "Your Name is Too Short"
        },
-      
+      email: {
+       required: "Please Enter Email Address",
+       validemail: "Enter Valid Email Address",
+        },
         contact: {
             required: "Please Enter Mobile Number",
             validmobilenumber: "Enter Valid Mobile Number",

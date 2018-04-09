@@ -37,7 +37,9 @@
                       <h1 class="">Add New Products</h1>
                       <hr class="my-4">
                   </div>
-
+                @if (Session::has('message'))
+                <div class="alert alert-info">{{ Session::get('message') }}</div>
+            @endif
                   
                 <form class=""  id="productForm" method="post" action="add-product"  enctype="multipart/form-data">
                   <div class="form-group row">
@@ -264,7 +266,7 @@
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
       
         <script src="assets/js/addproduct.js"></script> 
-      <!-- <script>
+      <!--  <script>
 
        $(document).ready(function() {
         $('#btn').click(function(e){ 
@@ -286,7 +288,7 @@
 
   });
   }); 
-  </script> -->
+  </script>  -->
       
         
       

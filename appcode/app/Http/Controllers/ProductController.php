@@ -47,7 +47,11 @@ class ProductController extends Controller
        
         if(isset($_POST['quantity'])){
             $quantity=$_POST['quantity'];
-           
+           if($quantity==0){
+               $errors=['quantity'=>'Quantity is zero'];
+            return redirect()->back()
+            ->withErrors($errors); 
+           }
             Session::put('quantity',$quantity);
         }
         
@@ -138,17 +142,18 @@ class ProductController extends Controller
          $userId= Session::get('userid'); 
          if(Session::get('quantity'))
          {
+             
              $i=0;
              $quantity[$i]=Session::get('quantity');
          }
         else{
+            
             $q=DB::select('select quantity from map_quantity_product');
             foreach($q as $quant){
                 $qu.=$quant->quantity."-";
             }
             $qu=rtrim($qu,'-');
             $quantity=explode('-',$qu);
-            
         }
         
         $p=DB::select('select product_id from map_quantity_product');
@@ -205,13 +210,6 @@ class ProductController extends Controller
 LEFT JOIN product_price ON products.id =product_price.product_id
 where products.id  '.$checkstr.'');
 
-  
-        /* echo '<pre/>';
-        print_r($productDetails);exit;  */
-
-        /* echo '<pre/>';
-        print_r($quantity);exit; */
-        
         return view('purchaseproductdetails',['shippingAddress'=>$shippingAddress
         ,'productDetails'=>$productDetails,'name'=>$name,'quantity'=>
         $quantity,'invoiceNumber'=>$invoiceNum,'role'=>$role]); 
@@ -256,6 +254,8 @@ where products.id  '.$checkstr.'');
         
         }
         
+        $request->session()->forget('quantity');
+
         $checkproduct='IN(';
         
        //echo $neworderId;exit;
@@ -495,6 +495,8 @@ LEFT JOIN map_product_image on products.id=map_product_image.product_id
 LEFT JOIN images ON images.id=map_product_image.image_id
 where products.product_name="'.$slug.'"');
  
+ 
+ 
 $name= Session::get('username');
 $role = Session::get('userRole');
 
@@ -525,7 +527,7 @@ $role = Session::get('userRole');
         
         $brandList =DB::select('select DISTINCT(brand.brand_name) as brand_name,
          GROUP_CONCAT(products.product_name) as product_name from brand left join brand_product on brand.id = brand_product.brand_id LEFT JOIN products
-         on brand_product.product_id = products.id where products.show_users=1 and products.show_backend=1 GROUP BY brand.brand_name');
+         on brand_product.product_id = products.id  GROUP BY brand.brand_name');
             $role = Session::get('userRole');
             for($i=0; $i<count($brandList); $i++) {
                 $brandList[$i]->product_name = explode(",", $brandList[$i]->product_name);
@@ -570,8 +572,13 @@ $role = Session::get('userRole');
      */
      public function addProduct(Request $request)
     {
+        $modelName='';
         $product_name = $_POST['product_name'];
+        //echo $product_name;exit;
+        $res=DB::select('select Max(id) as id from products');
+        
         $model=explode(' ',$product_name);
+        $brand=DB::select('select id from brand where brand_name="'.$model[0].'"');
         for($i=1;$i<sizeof($model);$i++){
             $modelName .= $model[$i]." ";
         }
@@ -581,18 +588,19 @@ $role = Session::get('userRole');
         $sourcePath=$file->getRealPath();
         $destinationPath = 'assets/img';
       $file->move($destinationPath,$fileName);
-
+       $invoiceNum=''; 
       $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
       $productNum = '';
+      $productId=$res[0]->id +1;
+      //echo $productId;exit;
       $max = strlen($characters) - 1;
       for ($i = 0; $i < 10; $i++) {
-          $invoiceNum .= $characters[mt_rand(0, $max)];
-          
+          $invoiceNum .= $characters[mt_rand(0, $max)];  
       }
-      $productNum .= $productId;
+      $productNum .=$invoiceNum.$productId;
      
           
-        $product_description = $_POST['product_description'];   
+        $product_description = trim($_POST['product_description'],"");   
         if(isset($_POST['show_users'])){
         $showUser   = $_POST['show_users'];
         }
@@ -641,7 +649,7 @@ $role = Session::get('userRole');
         DB::select('insert into os_features ( os,processor_type,processor_core)  values("'.$os.'","'.$processType.'","'.$processCore.'") ');        
 
         DB::select('insert into memory_features ( internal_storage,RAM,expandable_storage)
-        values("'.$ram.'","'.$iStorage.'","'.$eStorage.'") ');
+        values("'.$iStorage.'","'.$ram.'","'.$eStorage.'") ');
 
          DB::select('insert into display_features( display_size,resolution,display_colors)
         values("'.$displaySize.'","'.$resolution.'","'.$dColors.'" )');  
@@ -658,7 +666,7 @@ $role = Session::get('userRole');
        
       $productId= DB::select('SELECT MAX(id) as `id` from products ');
 
-         echo $productId[0]->id;
+        // echo $productId[0]->id;
      
       $colorId= DB::select('SELECT MAX(id) as `id` from colour ');
 
@@ -685,7 +693,8 @@ $role = Session::get('userRole');
       
       $imageId= DB::select('SELECT MAX(id) as `id` from images');
       
-
+    DB::select('insert into brand_product (brand_id,product_id) values(
+    "'.$brand[0]->id.'","'.$productId[0]->id.'")');
      
 
      DB::select('insert into map_product_additional_features (product_id,additional_features_id)
@@ -729,7 +738,8 @@ $role = Session::get('userRole');
     DB::select('insert into product_weight (product_id,weight)
     values("'.$productId[0]->id.'","'.$weight.'")');   
 
-        echo 'Successfully Added Product';
+        Session::flash('message', "Product Added");
+        return Redirect::back();
            
     }
 
@@ -752,7 +762,8 @@ $role = Session::get('userRole');
     public function deleteProduct()
     {
         $productId =    $_GET['id'];
-        DB::select('update products set show_backend=0 where id="'.$productId.'"');
+        //echo $productId;exit;
+        DB::select('update products set show_backend=0 where product_id="'.$productId.'"');
         echo "Product Deleted";
     }
 
@@ -778,6 +789,7 @@ $role = Session::get('userRole');
         $userRole = Session::get('userRole');
         $userId=Session::get('userid');
         $name=Session::get('username');
+
         $privilegeDetails=DB::select('select * from user_privilege_module_role where emp_id ="'.$userId.'"'); 
        $productDetail = DB::select('SELECT products.id,products.product_id,products.product_name,products.product_description,products.model_name,product_price.sellingprice,
        product_price.actualprice,product_weight.weight,colour.color,warranty_features.warranty_summary,
@@ -785,7 +797,7 @@ $role = Session::get('userRole');
        memory_features.expandable_storage,display_features.display_size,display_features.resolution,display_features.display_colors,
        dimensions.dimension,connectivity_features.network_type,connectivity_features.supported_networks,connectivity_features.gprs,
        camera_features.primary_camera,camera_features.secondary_camera,battery_features.battery_capacity,
-       additional_features.sim_size FROM products 
+       additional_features.sim_size ,images.image_url FROM products 
 LEFT JOIN map_product_display_features ON products.id=map_product_display_features.product_id
 LEFT JOIN display_features ON map_product_display_features.display_feature_id=display_features.id
 LEFT JOIN map_product_camera_features ON products.id=map_product_camera_features.product_id
@@ -808,6 +820,8 @@ LEFT JOIN map_product_os_features ON products.id = map_product_os_features.produ
 LEFT JOIN os_features ON os_features.id=map_product_os_features.os_feature_id
 LEFT JOIN map_product_warranty_features on products.id=map_product_warranty_features.product_id
 LEFT JOIN warranty_features ON warranty_features.id=map_product_warranty_features.warranty_feature_id
+LEFT JOIN map_product_image on map_product_image.product_id=products.id
+LEFT JOIN images on images.id=map_product_image.image_id
 where products.id="'.$productId .'"');
 
 /* echo '<pre/>';
@@ -956,13 +970,13 @@ print_r($productDetail);exit; */
           DB::select('update  additional_features set sim_size="'.$simSize.'"
           where id="'.$additionalId[0]->additional_features_id.'"');  
         }
-        if(!empty($imgId)){
+        /* if(!empty($imgId)){
           DB::select('update  images set image_url="'.$fileName.'"
           where id="'.$imgId[0]->image_id.'"'); 
           $sourcePath=$file->getRealPath();
         $destinationPath = 'assets/img';
       $file->move($destinationPath,$fileName); 
-        }
+        } */
           
 
       DB::select('update  product_price  set actualprice="'.$actualPrice.'",

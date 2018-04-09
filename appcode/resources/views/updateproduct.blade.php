@@ -22,12 +22,7 @@
     
 	
     @section('content')
-    
-
         <!-- Sidebar -->
-      
-       
-
         <!-- Page Content -->
         <div class="container">
             <div class="container-fluid">
@@ -46,7 +41,8 @@
                 </div>
                 <div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="product_description" >Product Description</label>	
-                    <textarea id="product_description" class="col-sm-10 form-control" value="{{ $productDetail[0]->product_description }}" name="product_description" >
+                    <textarea id="product_description" class="col-sm-10 form-control" name="product_description" >
+                     {{$productDetail[0]->product_description }}
                     </textarea>  
                 </div>
                 <div class="form-group row">
@@ -68,8 +64,11 @@
                 </div>
                  <div class="form-group row"> 
                    <label class="col-sm-2 col-form-label" for="file" > Upload Product Image</label>	
-                        <input class="col-sm-10 form-control" type="file" name="file" id="file">
+                    <input class="col-sm-4" type="file" name="file" id="file">
+                    <img class="col-sm-6" src="/Ecommerce/assets/img/{{$productDetail[0]->image_url}}" style="width:25% !important; height:25% !important; padding-left: 0px !important;"/>
                 </div>
+                 <div class="form-group row">
+                 </div>
                 <!-- <div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="box" >What is in Box?</label>	
                       <input class="col-sm-10 form-control" type="text"  name="box" id="box"  placeholder="what is in box "  />

@@ -58,7 +58,7 @@ class AddUserController extends Controller
       values("'.$userId[0]->empid.'","1","3","3"),("'.$userId[0]->empid.'","2","5","3"),("'.$userId[0]->empid.'","5","5","3")');
       
       $selectId= Session::get('selectId');
-      echo $selectId;exit;
+      
             if($selectId==1){
                 
                 return redirect('/buy');

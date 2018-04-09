@@ -99,7 +99,7 @@ $(document).ready(function()
        },
        gprs: {
         required: true,
-        validnet: true
+        validprocessor: true
        },
        cfeatures: {
         required: true,
@@ -189,7 +189,7 @@ $(document).ready(function()
     },
     gprs: {
     required: "Enter gprs",
-    validnet: "gprs should contain letters spaces and numerics only"
+    validprocessor: "gprs should contain letters spaces and numerics only"
     },   
     cfeatures: {
     required: "Please enter primary camera feature",

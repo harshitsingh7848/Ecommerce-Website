@@ -8,7 +8,7 @@ use App\dropdownbind;
 use Illuminate\Http\Request;
 use DB;
 use Session;
-
+use Redirect;
 
 class PrivilegesController extends Controller
 {
