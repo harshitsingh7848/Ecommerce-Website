@@ -21,19 +21,45 @@ class UserController extends Controller
 
          $sql = 'select created_at from user_details';
         $where = '';
+        $result = '';
+        $flag = '';
         if(!empty($request->input('startDate')) && !empty($request->input('startDate')))
         {
         $startDate= $request->input('startDate')." 00.00.00"; 
         $endDate= $request->input('endDate')." 23.59.59";
          $where = 'where created_at>"'.$startDate.'" and created_at<"'.$endDate.'"';
+         $flag=0;   
+         $role=Session::get('userRole');
+
+         if($role==4){
+            $vendorId=DB::select('select vendor_role_id from user_privilege_module_role where emp_id
+            ="'.$userId.'"');
+            if($vendorId[0]->vendor_role_id=="2"){
+                $flag=1;
+            }
+            else{
+                $vendor=DB::select('select vendor_names.id from map_vendor_user left join vendor_names ON
+                vendor_names.id=map_vendor_user.vendor_id
+                where user_id="'.$userId.'"');
+                $userDt=DB::select('select user_id from map_vendor_user where 
+                vendor_id="'.$vendor[0]->id.'"');
+                $str='IN(';
+                foreach($userDt as $user){
+                    $str.=$user.",";
+                }
+                $str=rtrim($str,',').")";
+                $result='and empid '.$str.'';
+                
+            }
+        } 
         }
         
 
-        $sql = $sql." ".$where;
-        
-        $userDetails=DB::select($sql);
+        $sql = $sql." ".$where." ".$result;
 
-        
+        if($flag==0)
+         {
+        $userDetails=DB::select($sql);        
         foreach($userDetails as $i=>$v){
             $time= strtotime($userDetails[$i]->created_at);
             $month=date('m',$time);
@@ -67,5 +93,6 @@ class UserController extends Controller
             } 
         }
         return response()->json($months)->header('Content-Type', 'text/json');
+    }
     }
 }

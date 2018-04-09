@@ -61,14 +61,26 @@ class UpdateController extends Controller
         $role=Session::get('userRole');
         $userId=Session::get('userid');
         $result="";
+        $str='';
         if($role===4){
-        $result=DB::select('select count(orders.order_number) as id from
-       orders left join map_product_order on orders.id=map_product_order.order_id
-       left join products on products.id= map_product_order.product_id   
-       join map_order_status on orders.id = map_order_status.order_id
-       join order_status on order_status.id= map_order_status.status_id 
-       where products.added_by="'.$userId.'"
-       '); 
+            $vendor=DB::select('select vendor_names.id from map_vendor_user left join vendor_names ON
+            vendor_names.id=map_vendor_user.vendor_id
+            where user_id="'.$userId.'"');
+            $userDt=DB::select('select user_id from map_vendor_user where 
+            vendor_id="'.$vendor[0]->id.'"');
+            $str='IN(';
+            foreach($userDt as $user){
+                $str.=$user->user_id.",";
+            }
+            $str=rtrim($str,',').")";
+            
+            $result=DB::select('select count(orders.order_number) as id from
+   orders left join map_product_order on orders.id=map_product_order.order_id
+   left join products on products.id= map_product_order.product_id   
+   join map_order_status on orders.id = map_order_status.order_id
+   join order_status on order_status.id= map_order_status.status_id 
+   where products.added_by '.$str.'
+   '); 
         }
         else{
         $result = DB::select('select count(id) as id from orders ');

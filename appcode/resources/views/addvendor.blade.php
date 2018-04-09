@@ -1,11 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-<h3> Add New Vendors </h3>
+
 
   <div class="container">
     <div class="row main">
       <div class="main-login main-center">
+      <h3> Add New Vendors </h3>
         <form class=""  id="vendor-form" >
           <div class="form-group">
             <label for="name" class="cols-sm-2 control-label">Vendor Name</label>

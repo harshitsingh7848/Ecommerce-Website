@@ -71,7 +71,7 @@
                   
                   <div class="form-group row">
                     <label class="col-sm-2 col-form-label" for="product_color" >Product Color</label>	
-                        <input class="col-sm-10 form-control" type="textarea"  name="product_color" id="product_color"  placeholder="Enter Product Color"  />
+                        <input class="col-sm-10 form-control" type="text"  name="product_color" id="product_color"  placeholder="Enter Product Color"  />
                     <span class="help-block" id="error"></span>
                   
                   </div>
@@ -94,7 +94,7 @@
 
                   <div class="form-group row">
                     <label class="col-sm-2 col-form-label" for="os" >Operating System</label>	
-                        <input class="col-sm-10 form-control" type="text"  name="os" id="os"  placeholder="OS of the product  "  />
+                        <input class="col-sm-10 form-control" type="text"  name="os" id="os"  placeholder="OS of the product "  />
                     <span class="help-block" id="error"></span>
                   
                   </div>
@@ -263,7 +263,7 @@
       <script src="http://malsup.github.com/jquery.form.js"></script> 
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
       
-       <script src="assets/js/addproduct.js" ></script>
+        <script src="assets/js/addproduct.js"></script> 
       <!-- <script>
 
        $(document).ready(function() {
